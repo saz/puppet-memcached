@@ -1,3 +1,4 @@
+
 # puppet-memcached
 
 Manage memcached via Puppet
@@ -7,17 +8,18 @@ Manage memcached via Puppet
 ### Use roughly 90% of memory
 
 ```
-    include memcached
+    class { 'memcached': }
 ```
 
 ### Set a fixed memory limit in MB
 
 ```
-    $memcached_max_memory = 2048
-    include memcached
+    class { 'memcached':
+      memcached_max_memory => 2048
+    }
 ```
 
-### Other variables
+### Other class parameters
 
 * $memcached_logfile = '/var/log/memcached.log'
 * $memcached_listen_ip = '0.0.0.0'

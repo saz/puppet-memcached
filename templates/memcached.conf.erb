@@ -7,29 +7,29 @@
 -P /var/run/memcached.pid
 
 # Log memcached's output
-logfile <%= scope.lookupvar('memcached::params::logfile') %>
+logfile <%= logfile %>
 
 # Use <num> MB memory max to use for object storage.
-<% if scope.lookupvar('memcached::params::max_memory') != false -%>
--m <%= scope.lookupvar('memcached::params::max_memory') %>
+<% if max_memory -%>
+-m <%= max_memory %>
 <% else -%>
 -m <%= ((memorysize.to_f*1024)*0.95).floor %>
 <% end -%>
 
 # IP to listen on
--l <%= scope.lookupvar('memcached::params::listen_ip') %>
+-l <%= listen_ip %>
 
 # TCP port to listen on
--p <%= scope.lookupvar('memcached::params::tcp_port') %>
+-p <%= tcp_port %>
 
 # UDP port to listen on
--U <%= scope.lookupvar('memcached::params::udp_port') %>
+-U <%= udp_port %>
 
 # Run daemon as user
--u <%= scope.lookupvar('memcached::params::user') %>
+-u <%= user %>
 
 # Limit the number of simultaneous incoming connections.
--c <%= scope.lookupvar('memcached::params::max_connections') %>
+-c <%= max_connections %>
 
 # Number of threads to use to process incoming requests.
 -t <%= processorcount %>

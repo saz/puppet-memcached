@@ -12,9 +12,9 @@ class memcached(
   include memcached::params
 
   if $user == '' {
-    $run_user = $memcached::params::default_user
+    $user_real = $memcached::params::user
   } else {
-    $run_user = $user
+    $user_real = $user
   }
 
   package { $memcached::params::package_name:
@@ -22,9 +22,9 @@ class memcached(
   }
 
   file { $memcached::params::config_file:
-    owner   => root,
-    group   => root,
-    mode    => 0644,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
     content => template($memcached::params::config_tmpl),
     require => Package[$memcached::params::package_name],
   }

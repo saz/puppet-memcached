@@ -5,11 +5,17 @@ class memcached(
   $listen_ip       = '0.0.0.0',
   $tcp_port        = '11211',
   $udp_port        = '11211',
-  $user            = 'nobody',
+  $user            = '',
   $max_connections = '8192'
 ) {
 
   include memcached::params
+
+  if $user == '' {
+    $run_user = $memcached::params::default_user
+  } else {
+    $run_user = $user
+  }
 
   package { $memcached::params::package_name:
     ensure => $package_ensure,
@@ -18,7 +24,8 @@ class memcached(
   file { $memcached::params::config_file:
     owner   => root,
     group   => root,
-    content => template("${module_name}/memcached.conf.erb"),
+    mode    => 0644,
+    content => template($memcached::params::config_tmpl),
     require => Package[$memcached::params::package_name],
   }
 

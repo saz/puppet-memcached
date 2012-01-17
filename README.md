@@ -25,5 +25,5 @@ Manage memcached via Puppet
 * $memcached_listen_ip = '0.0.0.0'
 * $memcached_tcp_port = 11211
 * $memcached_udp_port = 11211
-* $memcached_user = 'nobody'
+* $memcached_user = '' (OS specific setting, see params.pp)
 * $memcached_max_connections = 8192

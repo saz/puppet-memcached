@@ -5,17 +5,9 @@ class memcached(
   $listen_ip       = '0.0.0.0',
   $tcp_port        = '11211',
   $udp_port        = '11211',
-  $user            = '',
+  $user            = $::memcached::params::user,
   $max_connections = '8192'
-) {
-
-  include memcached::params
-
-  if $user == '' {
-    $user_real = $memcached::params::user
-  } else {
-    $user_real = $user
-  }
+) inherits memcached::params {
 
   package { $memcached::params::package_name:
     ensure => $package_ensure,

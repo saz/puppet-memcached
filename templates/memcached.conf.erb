@@ -1,4 +1,28 @@
-# File managed by puppet
+<%
+def memory_in_mb(size)
+  size=~ /^([.\d]+)?[\s+]?([a-zA-Z]+)?$/
+
+  value = $1.to_f
+  unit = $2
+  unit ||= ''
+
+  case unit
+  when '':
+    return (value / 1024 / 1024)
+  when /kB/i:
+    return (values / 1024)
+  when /MB/i:
+    return value
+  when /GB/i:
+    return (value * 1024)
+  when /TB/i:
+    return (value * 1024 * 1024)
+  else
+    raise Puppet::Error "Unknown memory unit #{unit}."
+  end
+end
+-%>
+# Managed by Puppet
 
 # Run memcached as a daemon.
 -d
@@ -10,10 +34,10 @@
 logfile <%= logfile %>
 
 # Use <num> MB memory max to use for object storage.
-<% if max_memory -%>
+<% if has_variable?('max_memory') and ! max_memory.empty? -%>
 -m <%= max_memory %>
 <% else -%>
--m <%= ((memorysize.to_f*1024)*0.95).floor %>
+-m <%= (memory_in_mb(memory_size) * 0.9).floor %>
 <% end -%>
 
 # IP to listen on

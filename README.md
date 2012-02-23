@@ -15,15 +15,15 @@ Manage memcached via Puppet
 
 ```
     class { 'memcached':
-      memcached_max_memory => 2048
+      max_memory => 2048
     }
 ```
 
 ### Other class parameters
 
-* $memcached_logfile = '/var/log/memcached.log'
-* $memcached_listen_ip = '0.0.0.0'
-* $memcached_tcp_port = 11211
-* $memcached_udp_port = 11211
-* $memcached_user = '' (OS specific setting, see params.pp)
-* $memcached_max_connections = 8192
+* $logfile = '/var/log/memcached.log'
+* $listen_ip = '0.0.0.0'
+* $tcp_port = 11211
+* $udp_port = 11211
+* $user = '' (OS specific setting, see params.pp)
+* $max_connections = 8192

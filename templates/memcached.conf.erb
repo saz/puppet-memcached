@@ -7,29 +7,29 @@
 -P /var/run/memcached.pid
 
 # Log memcached's output
-logfile <%= logfile %>
+logfile <%= memcached::params::logfile %>
 
 # Use <num> MB memory max to use for object storage.
-<% if max_memory -%>
--m <%= max_memory %>
+<% if memcached::params::max_memory -%>
+-m <%= memcached::params::max_memory %>
 <% else -%>
 -m <%= ((memorysize.to_f*1024)*0.95).floor %>
 <% end -%>
 
 # IP to listen on
--l <%= listen_ip %>
+-l <%= memcached::params::listen_ip %>
 
 # TCP port to listen on
--p <%= tcp_port %>
+-p <%= memcached::params::tcp_port %>
 
 # UDP port to listen on
--U <%= udp_port %>
+-U <%= memcached::params::udp_port %>
 
 # Run daemon as user
--u <%= user %>
+-u <%= memcached::params::user %>
 
 # Limit the number of simultaneous incoming connections.
--c <%= max_connections %>
+-c <%= memcached::params::max_connections %>
 
 # Number of threads to use to process incoming requests.
 -t <%= processorcount %>

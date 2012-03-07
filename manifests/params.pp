@@ -7,7 +7,7 @@ class memcached::params {
       $config_tmpl  = "${module_name}/memcached.conf.erb"
       $user = 'nobody'
     }
-    centos, redhat: {
+    centos, redhat, fedora: {
       $package_name = 'memcached'
       $service_name = 'memcached'
       $config_file = '/etc/sysconfig/memcached'

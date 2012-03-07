@@ -9,7 +9,7 @@ class memcached(
   $max_connections = $::memcached::params::max_connections
 ) inherits memcached::params {
 
-  if !($::operatingsystem in ['ubuntu','debian','centos','redhat']) {
+  if !($::operatingsystem in ['ubuntu','debian','centos','redhat','Debian']) {
     fail("Unsupported platform for memcached module: ${::operatingsystem}")
   }
 

@@ -1,13 +1,13 @@
 class memcached::params {
-  case $::operatingsystem {
-    ubuntu, debian: {
+  case $::osfamily {
+    'Debian': {
       $package_name = 'memcached'
       $service_name = 'memcached'
       $config_file  = '/etc/memcached.conf'
       $config_tmpl  = "${module_name}/memcached.conf.erb"
       $user = 'nobody'
     }
-    centos, redhat, fedora: {
+    'RedHat': {
       $package_name = 'memcached'
       $service_name = 'memcached'
       $config_file = '/etc/sysconfig/memcached'

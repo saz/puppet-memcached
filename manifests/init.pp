@@ -7,8 +7,8 @@ class memcached(
   $udp_port        = '11211',
   $user            = $::memcached::params::user,
   $max_connections = '8192',
-  $verbosity       = "",
-  $unix_socket     = "",
+  $verbosity       = false,
+  $unix_socket     = false,
 ) inherits memcached::params {
 
   package { $memcached::params::package_name:

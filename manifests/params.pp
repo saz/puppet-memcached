@@ -10,7 +10,7 @@ class memcached::params {
     'RedHat': {
       $package_name = 'memcached'
       $service_name = 'memcached'
-      $config_file = '/etc/sysconfig/memcached'
+      $config_file  = '/etc/sysconfig/memcached'
       $config_tmpl  = "${module_name}/memcached_sysconfig.erb"
       $user = 'memcached'
     }

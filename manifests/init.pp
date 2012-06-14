@@ -3,10 +3,18 @@ class memcached(
   $logfile         = '/var/log/memcached.log',
   $max_memory      = false,
   $listen_ip       = '0.0.0.0',
-  $tcp_port        = '11211',
-  $udp_port        = '11211',
+  $tcp_port        = $unix_socket ? {
+  	undef	=> '11211',
+	default	=> '0',
+  },
+  $udp_port        = $unix_socket ? {
+  	undef	=> '11211',
+	default	=> '0',
+  },
   $user            = $::memcached::params::user,
-  $max_connections = '8192'
+  $max_connections = '8192',
+  $verbosity       = false,
+  $unix_socket     = false,
 ) inherits memcached::params {
 
   package { $memcached::params::package_name:

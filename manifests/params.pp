@@ -15,7 +15,7 @@ class memcached::params {
       $user = 'memcached'
     }
     default: {
-      fail("Unsupported platform: ${::operatingsystem}")
+      fail("Unsupported platform: ${::osfamily}")
     }
   }
 }

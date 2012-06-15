@@ -36,17 +36,17 @@ describe 'memcached' do
         param_set
       end
 
-      ['Debian', 'Ubuntu'].each do |os|
+      ['Debian'].each do |osfamily|
 
         let :facts do
           {
-            :operatingsystem => os,
+            :osfamily => osfamily,
             :memorysize => '1',
             :processorcount => '1',
           }
         end
 
-        describe "on supported operatingsystem: #{os}" do
+        describe "on supported osfamily: #{osfamily}" do
 
           it { should contain_class('memcached::params') }
 
@@ -89,7 +89,7 @@ describe 'memcached' do
           end
         end
       end
-      ['Redhat'].each do |os|
+      ['Redhat'].each do |osfamily|
         describe 'on supported platform' do
           it 'should fail' do
 

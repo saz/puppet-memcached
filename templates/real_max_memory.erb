@@ -1,0 +1,20 @@
+<%
+result_in_MB = 0
+if max_memory and ! max_memory.to_s.end_with?('%')
+  result_in_MB = max_memory.to_i
+else
+  mem, unit = scope.lookupvar('::memorysize').split
+  mem = mem.to_f
+  # Normalize mem to bytes
+  # @see https://groups.google.com/forum/?fromgroups=#!topic/puppet-users/8cBona2TeFM
+  case unit
+    when nil:  mem *= (1 <<  0)
+    when 'kB': mem *= (1 << 10)
+    when 'MB': mem *= (1 << 20)
+    when 'GB': mem *= (1 << 30)
+    when 'TB': mem *= (1 << 40)
+  end
+  max_memory_percent = max_memory ? max_memory : '95%'
+  result_in_MB = ( (mem.to_f / (1 << 20) ) * (max_memory_percent.to_f / 100.0) ).floor
+end
+%><%= result_in_MB -%>

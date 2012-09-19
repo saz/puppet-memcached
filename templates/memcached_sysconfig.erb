@@ -1,5 +1,20 @@
-PORT="<%= udp_port %>"
+PORT="<%= tcp_port %>"
 USER="<%= user %>"
 MAXCONN="<%= max_connections %>"
-CACHESIZE="<%= max_memory %>"
-OPTIONS=""
+CACHESIZE="<%= real_max_memory %>"
+OPTIONS="<%
+result = []
+if @verbosity
+  result << '-' + verbosity
+end
+if @lock_memory
+  result << '-k'
+end
+if @listen_ip
+  result << '-l ' + listen_ip
+end
+if @udp_port
+  result << '-U ' + udp_port
+end
+result << '-t ' + processorcount
+-%><%= result.join(' ') -%>"

@@ -11,7 +11,7 @@ describe 'memcached' do
       :tcp_port        => '11211',
       :udp_port        => '11211',
       :user            => 'nobody',
-      :max_connections => '8192',
+      :max_connections => '8192'
     }
   end
 

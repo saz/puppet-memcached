@@ -27,6 +27,18 @@ describe 'memcached' do
       :user            => 'somebdy',
       :max_connections => '8193',
       :verbosity       => 'vvv'
+    },
+    {
+      :package_ensure  => 'present',
+      :logfile         => '/var/log/memcached.log',
+      :max_memory      => '20%',
+      :lock_memory     => false,
+      :listen_ip       => '127.0.0.1',
+      :tcp_port        => '11212',
+      :udp_port        => '11213',
+      :user            => 'somebdy',
+      :max_connections => '8193',
+      :verbosity       => 'vvv'
     }
   ].each do |param_set|
     describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
@@ -84,7 +96,11 @@ describe 'memcached' do
               "-t #{facts[:processorcount]}"
             ]
             if(param_hash[:max_memory])
-              expected_lines.push("-m #{param_hash[:max_memory]}")
+              if(param_hash[:max_memory].end_with?('%'))
+                expected_lines.push("-m 200")
+              else
+                expected_lines.push("-m #{param_hash[:max_memory]}")
+              end
             else
               expected_lines.push("-m 950")
             end

@@ -1,7 +1,7 @@
 class memcached(
   $package_ensure  = 'present',
   $logfile         = '/var/log/memcached.log',
-  $max_memory      = '95%',
+  $max_memory      = false,
   $lock_memory     = false,
   $listen_ip       = '0.0.0.0',
   $tcp_port        = 11211,
@@ -11,8 +11,6 @@ class memcached(
   $verbosity       = undef,
   $unix_socket     = undef
 ) inherits memcached::params {
-
-  $real_max_memory = template("$module_name/real_max_memory.erb")
 
   package { $memcached::params::package_name:
     ensure => $package_ensure,

@@ -1,7 +1,7 @@
 PORT="<%= tcp_port %>"
 USER="<%= user %>"
 MAXCONN="<%= max_connections %>"
-CACHESIZE="<%= real_max_memory %>"
+CACHESIZE="<%= scope.function_memcached_max_memory([max_memory]) %>">"
 OPTIONS="<%
 result = []
 if @verbosity

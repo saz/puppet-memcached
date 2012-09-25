@@ -6,7 +6,7 @@ module Puppet::Parser::Functions
 
     raise(Puppet::ParseError, "memcached_max_memory(): " +
           "Wrong number of arguments given " +
-          "(#{arguments.size} for 1) #{arguments} BLA") if arguments.size != 1
+          "(#{arguments.size} for 1)") if arguments.size != 1
 
     arg = arguments[0]
     memsize = lookupvar('memorysize')
@@ -14,20 +14,9 @@ module Puppet::Parser::Functions
     if arg and !arg.to_s.end_with?('%')
       result_in_mb = arg.to_i
     else
-      value,prefix = */([0-9.e+-]*)\s*([^bB]?)/.match(memsize)[1,2]
-
-      value = value.to_f
-      case prefix
-        when '' then value = value.to_i
-        when 'k' then value *= (1 << 10)
-        when 'M' then value *= (1 << 20)
-        when 'G' then value *= (1 << 30)
-        when 'T' then value *= (1 << 40)
-        when 'E' then value *= (1 << 50)
-      else raise Puppet::ParseError, "memcached_max_memory(): Unknown prefix #{prefix}"
-      end
       max_memory_percent = arg ? arg : '95%'
-      result_in_mb = ( (value.to_f / (1 << 20) ) * (max_memory_percent.to_f / 100.0) ).floor
+      Puppet::Parser::Functions.autoloader.loadall
+      result_in_mb = ( (function_to_bytes([memsize]) / (1 << 20) ) * (max_memory_percent.to_f / 100.0) ).floor
     end
 
     return result_in_mb

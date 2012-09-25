@@ -15,7 +15,7 @@ module Puppet::Parser::Functions
       result_in_mb = arg.to_i
     else
       max_memory_percent = arg ? arg : '95%'
-      Puppet::Parser::Functions.autoloader.loadall
+      Puppet::Parser::Functions.function('to_bytes')
       result_in_mb = ( (function_to_bytes([memsize]) / (1 << 20) ) * (max_memory_percent.to_f / 100.0) ).floor
     end
 

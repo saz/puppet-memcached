@@ -10,6 +10,8 @@ branches:
 env:
   - PUPPET_VERSION=2.7.13
   - PUPPET_VERSION=2.7.6
+  - PUPPET_VERSION=2.6.9
+  - PUPPET_VERSION=3.0.0
 notifications:
   email: false
 gemfile: .gemfile

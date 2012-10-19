@@ -15,6 +15,7 @@ logfile <%= logfile -%>
 <% end -%>
 
 # Use <num> MB memory max to use for object storage.
+<% Puppet::Parser::Functions.function('memcached_max_memory') -%>
 -m <%= scope.function_memcached_max_memory([max_memory]) %>
 
 <% if @lock_memory -%>

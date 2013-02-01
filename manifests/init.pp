@@ -9,11 +9,19 @@ class memcached(
   $user            = $::memcached::params::user,
   $max_connections = '8192',
   $verbosity       = undef,
-  $unix_socket     = undef
+  $unix_socket     = undef,
+  $install_dev     = false
 ) inherits memcached::params {
 
   package { $memcached::params::package_name:
     ensure => $package_ensure,
+  }
+
+  if $install_dev {
+    package { $memcached::params::dev_package_name:
+      ensure  => $package_ensure,
+      require => Package[$memcached::params::package_name]
+    }
   }
 
   file { $memcached::params::config_file:

@@ -17,5 +17,8 @@ end
 if @udp_port
   result << '-U ' + udp_port
 end
+if @item_size
+  result << '-I ' + item_size
+end
 result << '-t ' + processorcount
 -%><%= result.join(' ') -%>"

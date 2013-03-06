@@ -45,3 +45,9 @@ logfile <%= logfile -%>
 
 # Number of threads to use to process incoming requests.
 -t <%= processorcount %>
+
+<% if @item_size -%>
+# Override  the  default size of each slab page
+-I <%= item_size %>
+<% end -%>
+

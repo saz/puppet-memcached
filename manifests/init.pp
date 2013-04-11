@@ -38,7 +38,7 @@ class memcached(
     ensure     => running,
     enable     => true,
     hasrestart => true,
-    hasstatus  => false,
+    hasstatus  => $memcached::params::service_hasstatus,
     subscribe  => File[$memcached::params::config_file],
   }
 }

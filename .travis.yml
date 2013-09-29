@@ -19,8 +19,11 @@ env:
   - PUPPET_VERSION=3.1.0
   - PUPPET_VERSION=3.3.0
   global:
-    PUBLISHER_LOGIN=saz
-    secure: KHycFEf0ALVjITczYG0pcfk912muQkbJiGzKa5yyC8C9ppDW+dTYgDQu8AO1KXFHzdsNUASY2XNjrJNv27w7A2eMp88qU1ID1s8CWALph4fuxGcM/HoPw9q8sldJ9/sHGlY9YeDEeIvgt9qkwKtG/kb7dN7la42nv5fffWE95OU=
+    - PUBLISHER_LOGIN=saz
+    - secure: |- 
+        KHycFEf0ALVjITczYG0pcfk912muQkbJiGzKa5yyC8C9ppDW+dTYgDQu8AO1KXFHzds
+        NUASY2XNjrJNv27w7A2eMp88qU1ID1s8CWALph4fuxGcM/HoPw9q8sldJ9/sHGlY9Ye
+        DEeIvgt9qkwKtG/kb7dN7la42nv5fffWE95OU=
 notifications:
   email: false
 gemfile: .gemfile

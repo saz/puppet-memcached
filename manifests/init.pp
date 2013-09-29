@@ -14,6 +14,12 @@ class memcached(
   $install_dev     = false
 ) inherits memcached::params {
 
+  if $package_ensure == 'absent' {
+    $service_ensure = 'stopped'
+  } else {
+    $service_ensure = 'running'
+  }
+
   package { $memcached::params::package_name:
     ensure => $package_ensure,
   }
@@ -34,7 +40,7 @@ class memcached(
   }
 
   service { $memcached::params::service_name:
-    ensure     => running,
+    ensure     => $service_ensure,
     enable     => true,
     hasrestart => true,
     hasstatus  => $memcached::params::service_hasstatus,

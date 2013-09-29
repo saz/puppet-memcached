@@ -63,16 +63,16 @@ describe 'memcached' do
 
         describe "on supported osfamily: #{osfamily}" do
 
-          it { should contain_class('memcached::params') }
+          it { should contain_class("memcached::params") }
 
-          it { should contain_package('memcached').with_ensure(param_hash[:package_ensure]) }
+          it { should contain_package("memcached").with_ensure(param_hash[:package_ensure]) }
 
-          it { should contain_file('/etc/memcached.conf').with(
+          it { should contain_file("/etc/memcached.conf").with(
             'owner'   => 'root',
             'group'   => 'root'
           )}
 
-          it { should contain_service('memcached').with(
+          it { should contain_service("memcached").with(
             'ensure'     => 'running',
             'enable'     => true,
             'hasrestart' => true,

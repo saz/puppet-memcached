@@ -12,7 +12,8 @@ class memcached(
   $verbosity       = undef,
   $unix_socket     = undef,
   $install_dev     = false
-) inherits memcached::params {
+) {
+  include memcached::params
 
   package { $memcached::params::package_name:
     ensure => $package_ensure,
@@ -37,7 +38,7 @@ class memcached(
     ensure     => running,
     enable     => true,
     hasrestart => true,
-    hasstatus  => false,
+    hasstatus  => $memcached::params::service_hasstatus,
     subscribe  => File[$memcached::params::config_file],
   }
 }

@@ -33,11 +33,13 @@ class memcached(
     require => Package[$memcached::params::package_name],
   }
 
-  service { $memcached::params::service_name:
-    ensure     => running,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => false,
-    subscribe  => File[$memcached::params::config_file],
+  if $package_ensure == 'ensure' {
+	  service { $memcached::params::service_name:
+		ensure     => running,
+		enable     => true,
+		hasrestart => true,
+		hasstatus  => false,
+		subscribe  => File[$memcached::params::config_file],
+	  }
   }
 }

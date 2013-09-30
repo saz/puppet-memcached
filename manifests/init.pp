@@ -11,7 +11,8 @@ class memcached(
   $max_connections = '8192',
   $verbosity       = undef,
   $unix_socket     = undef,
-  $install_dev     = false
+  $install_dev     = false,
+  $processorcount  = $::processorcount
 ) inherits memcached::params {
 
   if $package_ensure == 'absent' {

@@ -6,12 +6,15 @@ describe 'memcached' do
       :package_ensure  => 'present',
       :logfile         => '/var/log/memcached.log',
       :max_memory      => false,
+      :item_size       => false,
       :lock_memory     => false,
       :listen_ip       => '0.0.0.0',
       :tcp_port        => '11211',
       :udp_port        => '11211',
       :user            => 'nobody',
-      :max_connections => '8192'
+      :max_connections => '8192',
+      :install_dev     => false,
+      :processorcount  => 1
     }
   end
 
@@ -20,13 +23,15 @@ describe 'memcached' do
       :package_ensure  => 'latest',
       :logfile         => '/var/log/memcached.log',
       :max_memory      => '2',
+      :item_size       => false,
       :lock_memory     => true,
       :listen_ip       => '127.0.0.1',
       :tcp_port        => '11212',
       :udp_port        => '11213',
       :user            => 'somebdy',
       :max_connections => '8193',
-      :verbosity       => 'vvv'
+      :verbosity       => 'vvv',
+      :processorcount  => 3
     },
     {
       :package_ensure  => 'present',
@@ -38,7 +43,9 @@ describe 'memcached' do
       :udp_port        => '11213',
       :user            => 'somebdy',
       :max_connections => '8193',
-      :verbosity       => 'vvv'
+      :verbosity       => 'vvv',
+      :install_dev     => true,
+      :processorcount  => 1
     }
   ].each do |param_set|
     describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
@@ -67,6 +74,12 @@ describe 'memcached' do
 
           it { should contain_package("memcached").with_ensure(param_hash[:package_ensure]) }
 
+          it {
+            if param_hash[:install_dev]
+            should contain_package("libmemcached-dev").with_ensure(param_hash[:package_ensure])
+            end
+          }
+
           it { should contain_file("/etc/memcached.conf").with(
             'owner'   => 'root',
             'group'   => 'root'
@@ -93,7 +106,7 @@ describe 'memcached' do
               "-U #{param_hash[:udp_port]}",
               "-u #{param_hash[:user]}",
               "-c #{param_hash[:max_connections]}",
-              "-t #{facts[:processorcount]}"
+              "-t #{param_hash[:processorcount]}"
             ]
             if(param_hash[:max_memory])
               if(param_hash[:max_memory].end_with?('%'))

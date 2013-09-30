@@ -1,5 +1,5 @@
 name    'saz-memcached'
-version '2.2.2'
+version '2.2.3'
 source 'git://github.com/saz/puppet-memcached.git'
 author 'saz'
 license 'Apache License, Version 2.0'

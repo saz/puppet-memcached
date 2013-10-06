@@ -1,6 +1,4 @@
-# puppet-memcached
-
-[![Build Status](https://secure.travis-ci.org/saz/puppet-memcached.png)](http://travis-ci.org/saz/puppet-memcached)
+# puppet-memcached [![Build Status](https://secure.travis-ci.org/saz/puppet-memcached.png)](http://travis-ci.org/saz/puppet-memcached)
 
 Manage memcached via Puppet
 

@@ -7,7 +7,6 @@ class memcached::params {
       $dev_package_name  = 'libmemcached-dev'
       $config_file       = '/etc/memcached.conf'
       $config_tmpl       = "${module_name}/memcached.conf.erb"
-      $user              = 'nobody'
     }
     'RedHat': {
       $package_name      = 'memcached'
@@ -26,7 +25,11 @@ class memcached::params {
     'Ubuntu': {
       $user = 'memcached'
     }
+    'Debian': {
+      $user = 'nobody'
+    }
     default: {
+      $user = 'memcached'
     }
   }
 }

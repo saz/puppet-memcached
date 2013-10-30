@@ -22,4 +22,11 @@ class memcached::params {
       fail("Unsupported platform: ${::osfamily}")
     }
   }
+  case $::operatingsystem {
+    'Ubuntu': {
+      $user = 'memcached'
+    }
+    default: {
+    }
+  }
 }

@@ -23,7 +23,7 @@ class memcached::params {
   }
   case $::operatingsystem {
     'Ubuntu': {
-      $user = 'memcached'
+      $user = 'memcache'
     }
     'Debian': {
       $user = 'nobody'

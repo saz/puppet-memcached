@@ -2,6 +2,9 @@
 
 Manage memcached via Puppet
 
+## Show some love
+If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiNqA3KY2j9
+
 ## How to use
 
 ### Use roughly 90% of memory

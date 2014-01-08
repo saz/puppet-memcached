@@ -11,6 +11,7 @@ class memcached(
   $max_connections = '8192',
   $verbosity       = undef,
   $unix_socket     = undef,
+  $svc_restart     = true,
   $install_dev     = false
 ) inherits memcached::params {
 
@@ -38,6 +39,12 @@ class memcached(
     enable     => true,
     hasrestart => true,
     hasstatus  => false,
-    subscribe  => File[$memcached::params::config_file],
+  }
+
+  # If restarting we use the notification arrow, otherwise the ordering arrow
+  if $svc_restart {
+    File[$memcached::params::config_file] ~> Service[$memcached::params::service_name]
+  } else {
+    File[$memcached::params::config_file] -> Service[$memcached::params::service_name]
   }
 }

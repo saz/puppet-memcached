@@ -32,6 +32,18 @@ class memcached(
     }
   }
 
+  firewall { "100_tcp_${tcp_port}_for_memcached":
+    port   => "$tcp_port",
+    proto  => 'tcp',
+    action => 'accept',
+  }
+
+  firewall { "100_udp_${udp_port}_for_memcached":
+    port   => "$udp_port",
+    proto  => 'udp',
+    action => 'accept',
+  }
+
   file { $memcached::params::config_file:
     owner   => 'root',
     group   => 'root',

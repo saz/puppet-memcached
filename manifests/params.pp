@@ -1,3 +1,5 @@
+# == Class: memcached::params
+#
 class memcached::params {
   case $::osfamily {
     'Debian': {

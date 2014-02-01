@@ -1,4 +1,8 @@
-class memcached(
+# == Class: memcached
+#
+# Manage memcached
+#
+class memcached (
   $package_ensure  = 'present',
   $logfile         = '/var/log/memcached.log',
   $manage_firewall = false,

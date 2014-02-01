@@ -1,6 +1,51 @@
 require 'spec_helper'
 describe 'memcached' do
 
+  describe 'with manage_firewall parameter' do
+    ['Debian','RedHat'].each do |osfam|
+      context "on osfamily #{osfam}" do
+        let(:facts) do
+          { :osfamily       => osfam,
+            :memorysize     => '1000 MB',
+            :processorcount => '1',
+          }
+        end
+
+        ['true',true].each do |value|
+          context "set to #{value}" do
+            let(:params) { { :manage_firewall => value } }
+
+            it { should contain_class('memcached') }
+
+            it { should contain_firewall('100_tcp_11211_for_memcached') }
+            it { should contain_firewall('100_udp_11211_for_memcached') }
+          end
+        end
+
+        ['false',false].each do |value|
+          context "set to #{value}" do
+            let(:params) { { :manage_firewall => value } }
+
+            it { should contain_class('memcached') }
+
+            it { should_not contain_firewall('100_tcp_11211_for_memcached') }
+            it { should_not contain_firewall('100_udp_11211_for_memcached') }
+          end
+        end
+
+        context 'set to an invalid type (array)' do
+          let(:params) { { :manage_firewall => ['invalid','type'] } }
+
+          it do
+            expect {
+              should contain_class('memcached')
+            }.to raise_error(Puppet::Error)
+          end
+        end
+      end
+    end
+  end
+
   let :default_params do
     {
       :package_ensure  => 'present',
@@ -66,6 +111,9 @@ describe 'memcached' do
           it { should contain_class('memcached::params') }
 
           it { should contain_package('memcached').with_ensure(param_hash[:package_ensure]) }
+
+          it { should_not contain_firewall('100_tcp_11211_for_memcached') }
+          it { should_not contain_firewall('100_udp_11211_for_memcached') }
 
           it { should contain_file('/etc/memcached.conf').with(
             'owner'   => 'root',

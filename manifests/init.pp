@@ -1,6 +1,7 @@
 class memcached(
   $package_ensure  = 'present',
   $logfile         = '/var/log/memcached.log',
+  $manage_firewall = false,
   $max_memory      = false,
   $lock_memory     = false,
   $listen_ip       = '0.0.0.0',
@@ -13,6 +14,14 @@ class memcached(
   $install_dev     = false
 ) inherits memcached::params {
 
+  # validate type and convert string to boolean if necessary
+  if type($manage_firewall) == 'String' {
+    $manage_firewall_bool = str2bool($manage_firewall)
+  } else {
+    $manage_firewall_bool = $manage_firewall
+  }
+  validate_bool($manage_firewall_bool)
+
   package { $memcached::params::package_name:
     ensure => $package_ensure,
   }
@@ -24,16 +33,18 @@ class memcached(
     }
   }
 
-  firewall { "100_tcp_${tcp_port}_for_memcached":
-    port   => "$tcp_port",
-    proto  => 'tcp',
-    action => 'accept',
-  }
+  if $manage_firewall_bool == true {
+    firewall { "100_tcp_${tcp_port}_for_memcached":
+      port   => $tcp_port,
+      proto  => 'tcp',
+      action => 'accept',
+    }
 
-  firewall { "100_udp_${udp_port}_for_memcached":
-    port   => "$udp_port",
-    proto  => 'udp',
-    action => 'accept',
+    firewall { "100_udp_${udp_port}_for_memcached":
+      port   => $udp_port,
+      proto  => 'udp',
+      action => 'accept',
+    }
   }
 
   file { $memcached::params::config_file:

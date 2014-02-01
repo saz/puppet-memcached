@@ -34,6 +34,7 @@ Manage memcached via Puppet
 * $listen_ip = '0.0.0.0'
 * $tcp_port = 11211
 * $udp_port = 11211
+* $manage_firewall = false
 * $user = '' (OS specific setting, see params.pp)
 * $max_connections = 8192
 * $lock_memory = false (WARNING: good if used intelligently, google for -k key)

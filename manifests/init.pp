@@ -3,6 +3,7 @@ class memcached(
   $logfile         = '/var/log/memcached.log',
   $manage_firewall = false,
   $max_memory      = false,
+  $item_size       = false,
   $lock_memory     = false,
   $listen_ip       = '0.0.0.0',
   $tcp_port        = 11211,
@@ -11,7 +12,8 @@ class memcached(
   $max_connections = '8192',
   $verbosity       = undef,
   $unix_socket     = undef,
-  $install_dev     = false
+  $install_dev     = false,
+  $processorcount  = $::processorcount
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -21,6 +23,12 @@ class memcached(
     $manage_firewall_bool = $manage_firewall
   }
   validate_bool($manage_firewall_bool)
+
+  if $package_ensure == 'absent' {
+    $service_ensure = 'stopped'
+  } else {
+    $service_ensure = 'running'
+  }
 
   package { $memcached::params::package_name:
     ensure => $package_ensure,
@@ -56,10 +64,10 @@ class memcached(
   }
 
   service { $memcached::params::service_name:
-    ensure     => running,
+    ensure     => $service_ensure,
     enable     => true,
     hasrestart => true,
-    hasstatus  => false,
+    hasstatus  => $memcached::params::service_hasstatus,
     subscribe  => File[$memcached::params::config_file],
   }
 }

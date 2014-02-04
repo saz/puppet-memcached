@@ -1,5 +1,15 @@
 class memcached::params {
-  case $::osfamily {
+
+  # Sets osfamily_
+  #   osfamily_ is the same than ::osfamily but also considers
+  #   Amazon Linux as member of RedHat family
+  if ($::osfamily == 'Linux' and $::operatingsystem == 'Amazon') {
+    $osfamily_ = 'RedHat'
+  } else {
+    $osfamily_ = $::osfamily
+  }
+
+  case $osfamily_ {
     'Debian': {
       $package_name      = 'memcached'
       $service_name      = 'memcached'
@@ -19,7 +29,7 @@ class memcached::params {
       $user              = 'memcached'
     }
     default: {
-      fail("Unsupported platform: ${::osfamily}")
+      fail("Unsupported platform: ${osfamily_}")
     }
   }
 }

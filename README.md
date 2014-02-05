@@ -39,6 +39,7 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 * $listen_ip = '0.0.0.0'
 * $tcp_port = 11211
 * $udp_port = 11211
+* $manage_firewall = false
 * $user = '' (OS specific setting, see params.pp)
 * $max_connections = 8192
 * $verbosity = undef

@@ -21,7 +21,20 @@ class memcached::params {
       $user              = 'memcached'
     }
     default: {
-      fail("Unsupported platform: ${::osfamily}")
+      case $::operatingsystem {
+        'Amazon': {
+          $package_name      = 'memcached'
+          $service_name      = 'memcached'
+          $service_hasstatus = true
+          $dev_package_name  = 'libmemcached-devel'
+          $config_file       = '/etc/sysconfig/memcached'
+          $config_tmpl       = "${module_name}/memcached_sysconfig.erb"
+          $user              = 'memcached'
+        }
+        default: {
+          fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+        }
+      }
     }
   }
 }

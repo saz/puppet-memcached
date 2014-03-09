@@ -65,6 +65,7 @@ class memcached (
     mode    => '0644',
     content => template($memcached::params::config_tmpl),
     require => Package[$memcached::params::package_name],
+    notify  => Service[$memcached::params::service_name]
   }
 
   service { $memcached::params::service_name:

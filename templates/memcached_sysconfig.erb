@@ -21,4 +21,7 @@ if @item_size
   result << '-I ' + @item_size
 end
 result << '-t ' + @processorcount
+if @logfile
+  result << '>> ' + @logfile + ' 2>&1'
+end
 -%><%= result.join(' ') -%>"

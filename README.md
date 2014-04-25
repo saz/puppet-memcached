@@ -32,6 +32,7 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 ### Other class parameters
 
 * $package_ensure = 'present'
+* $service_manage = true
 * $logfile = '/var/log/memcached.log'
 * $max_memory = false
 * $item_size = false

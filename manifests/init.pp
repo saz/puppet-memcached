@@ -4,6 +4,7 @@
 #
 class memcached (
   $package_ensure  = 'present',
+  $service_manage  = true,
   $logfile         = '/var/log/memcached.log',
   $manage_firewall = false,
   $max_memory      = false,
@@ -67,11 +68,13 @@ class memcached (
     require => Package[$memcached::params::package_name],
   }
 
-  service { $memcached::params::service_name:
-    ensure     => $service_ensure,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => $memcached::params::service_hasstatus,
-    subscribe  => File[$memcached::params::config_file],
+  if ($service_manage == true) {
+    service { $memcached::params::service_name:
+      ensure     => $service_ensure,
+      enable     => true,
+      hasrestart => true,
+      hasstatus  => $memcached::params::service_hasstatus,
+      subscribe  => File[$memcached::params::config_file],
+    }
   }
 }

@@ -46,3 +46,4 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 * $unix_socket = undef
 * $install_dev = false (TRUE if 'libmemcached-dev' package should be installed)
 * $processorcount = $::processorcount
+* $service_restart = true (restart service after configuration changes, false to prevent restarts)

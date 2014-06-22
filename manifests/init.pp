@@ -17,7 +17,8 @@ class memcached (
   $verbosity       = undef,
   $unix_socket     = undef,
   $install_dev     = false,
-  $processorcount  = $::processorcount
+  $processorcount  = $::processorcount,
+  $service_restart = true
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -27,6 +28,7 @@ class memcached (
     $manage_firewall_bool = $manage_firewall
   }
   validate_bool($manage_firewall_bool)
+  validate_bool($service_restart)
 
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'
@@ -59,12 +61,19 @@ class memcached (
     }
   }
 
+  if $service_restart {
+    $service_notify_real = Service[$memcached::params::service_name]
+  } else {
+    $service_notify_real = undef
+  }
+
   file { $memcached::params::config_file:
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     content => template($memcached::params::config_tmpl),
     require => Package[$memcached::params::package_name],
+    notify  => $service_notify_real,
   }
 
   service { $memcached::params::service_name:
@@ -72,6 +81,5 @@ class memcached (
     enable     => true,
     hasrestart => true,
     hasstatus  => $memcached::params::service_hasstatus,
-    subscribe  => File[$memcached::params::config_file],
   }
 }

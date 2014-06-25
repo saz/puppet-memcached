@@ -11,7 +11,7 @@ class memcached::params {
       $config_tmpl       = "${module_name}/memcached.conf.erb"
       $user              = 'nobody'
     }
-    'RedHat': {
+    /RedHat|Suse/: {
       $package_name      = 'memcached'
       $service_name      = 'memcached'
       $service_hasstatus = true

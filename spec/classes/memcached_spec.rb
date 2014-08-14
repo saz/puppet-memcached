@@ -91,6 +91,10 @@ describe 'memcached' do
       :verbosity       => 'vvv',
       :install_dev     => true,
       :processorcount  => 1
+    },
+    {
+      :package_ensure  => 'absent',
+      :install_dev     => true
     }
   ].each do |param_set|
     describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
@@ -133,12 +137,21 @@ describe 'memcached' do
             'group'   => 'root'
           )}
 
-          it { should contain_service("memcached").with(
-            'ensure'     => 'running',
-            'enable'     => true,
-            'hasrestart' => true,
-            'hasstatus'  => false
-          )}
+          it { 
+            if param_hash[:package_ensure] == 'absent'
+              should contain_service("memcached").with(
+                'ensure'     => 'stopped',
+                'enable'     => false
+              )
+            else
+              should contain_service("memcached").with(
+                'ensure'     => 'running',
+                'enable'     => true,
+                'hasrestart' => true,
+                'hasstatus'  => false
+              )
+            end
+          }
 
           it 'should compile the template based on the class parameters' do
             content = param_value(
@@ -185,3 +198,5 @@ describe 'memcached' do
     end
   end
 end
+
+# vim: expandtab shiftwidth=2 softtabstop=2

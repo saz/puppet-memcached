@@ -32,8 +32,10 @@ class memcached (
 
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'
+    $service_enable = false
   } else {
     $service_ensure = 'running'
+    $service_enable = true
   }
 
   package { $memcached::params::package_name:
@@ -78,7 +80,7 @@ class memcached (
 
   service { $memcached::params::service_name:
     ensure     => $service_ensure,
-    enable     => true,
+    enable     => $service_enable,
     hasrestart => true,
     hasstatus  => $memcached::params::service_hasstatus,
   }

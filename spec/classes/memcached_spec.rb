@@ -59,7 +59,8 @@ describe 'memcached' do
       :user            => 'nobody',
       :max_connections => '8192',
       :install_dev     => false,
-      :processorcount  => 1
+      :processorcount  => 1,
+      :use_sasl        => false
     }
   end
 
@@ -76,7 +77,8 @@ describe 'memcached' do
       :user            => 'somebdy',
       :max_connections => '8193',
       :verbosity       => 'vvv',
-      :processorcount  => 3
+      :processorcount  => 3,
+      :use_sasl        => true
     },
     {
       :package_ensure  => 'present',
@@ -183,6 +185,9 @@ describe 'memcached' do
             end
             if(param_hash[:verbosity])
               expected_lines.push("-vvv")
+            end
+            if(param_hash[:use_sasl])
+              expected_lines.push("-S")
             end
             (content.split("\n") & expected_lines).should =~ expected_lines
           end

@@ -17,7 +17,8 @@ class memcached (
   $verbosity       = undef,
   $unix_socket     = undef,
   $install_dev     = false,
-  $processorcount  = $::processorcount
+  $processorcount  = $::processorcount,
+  $use_sasl        = false,
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary

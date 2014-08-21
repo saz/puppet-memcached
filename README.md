@@ -46,3 +46,4 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 * $unix_socket = undef
 * $install_dev = false (TRUE if 'libmemcached-dev' package should be installed)
 * $processorcount = $::processorcount
+* $use_sasl = false (Enable SASL support)

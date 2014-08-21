@@ -59,7 +59,8 @@ describe 'memcached' do
       :user            => 'nobody',
       :max_connections => '8192',
       :install_dev     => false,
-      :processorcount  => 1
+      :processorcount  => 1,
+      :use_sasl        => false
     }
   end
 
@@ -76,6 +77,7 @@ describe 'memcached' do
       :user            => 'somebdy',
       :max_connections => '8193',
       :verbosity       => 'vvv',
+      :use_sasl        => true,
       :processorcount  => 3
     },
     {
@@ -167,6 +169,9 @@ describe 'memcached' do
             end
             if(param_hash[:lock_memory])
               expected_lines.push("-k")
+            end
+            if(param_hash[:use_sasl])
+              expected_lines.push("-S")
             end
             if(param_hash[:verbosity])
               expected_lines.push("-vvv")

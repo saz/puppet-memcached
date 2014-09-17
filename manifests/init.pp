@@ -22,7 +22,7 @@ class memcached (
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
-  if type($manage_firewall) == 'String' {
+  if is_string($manage_firewall) {
     $manage_firewall_bool = str2bool($manage_firewall)
   } else {
     $manage_firewall_bool = $manage_firewall

@@ -19,7 +19,8 @@ class memcached (
   $install_dev     = false,
   $processorcount  = $::processorcount,
   $service_restart = true,
-  $auto_removal    = false
+  $auto_removal    = false,
+  $use_sasl        = false
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary

@@ -51,3 +51,7 @@ logfile <%= @logfile -%>
 -I <%= @item_size %>
 <% end -%>
 
+<% if @auto_removal -%>
+# Disable automatic removal of items from the cache when out of memory
+-M
+<% end -%>

@@ -3,8 +3,10 @@
 # Run memcached as a daemon.
 -d
 
+<% if @pidfile -%>
 # pidfile
--P /var/run/memcached.pid
+-P <%= @pidfile %>
+<% end -%>
 
 # Log memcached's output
 logfile <%= @logfile -%>

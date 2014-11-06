@@ -33,6 +33,7 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 
 * $package_ensure = 'present'
 * $logfile = '/var/log/memcached.log'
+* $pidfile = '/var/run/memcached.pid' (Debian family only, set to false to disable pidfile)
 * $max_memory = false
 * $item_size = false
 * $lock_memory = false (WARNING: good if used intelligently, google for -k key)

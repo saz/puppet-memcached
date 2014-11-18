@@ -17,6 +17,9 @@
     },
     {
       "operatingsystem": "Ubuntu"
+    },
+    {
+      "operatingsystem": "Windows"
     }
   ],
   "requirements": [

@@ -4,7 +4,7 @@
 #
 class memcached (
   $package_ensure  = 'present',
-  $logfile         = '/var/log/memcached.log',
+  $logfile         = $::memcached::params::logfile,
   $manage_firewall = false,
   $max_memory      = false,
   $item_size       = false,
@@ -20,7 +20,9 @@ class memcached (
   $processorcount  = $::processorcount,
   $service_restart = true,
   $auto_removal    = false,
-  $use_sasl        = false
+  $use_sasl        = false,
+  $use_registry    = $::memcached::params::use_registry,
+  $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath'
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -41,7 +43,8 @@ class memcached (
   }
 
   package { $memcached::params::package_name:
-    ensure => $package_ensure,
+    ensure   => $package_ensure,
+    provider => $memcached::params::package_provider
   }
 
   if $install_dev {
@@ -71,13 +74,15 @@ class memcached (
     $service_notify_real = undef
   }
 
-  file { $memcached::params::config_file:
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template($memcached::params::config_tmpl),
-    require => Package[$memcached::params::package_name],
-    notify  => $service_notify_real,
+  if ( $memcached::params::config_file ) {
+    file { $memcached::params::config_file:
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template($memcached::params::config_tmpl),
+      require => Package[$memcached::params::package_name],
+      notify  => $service_notify_real,
+    }
   }
 
   service { $memcached::params::service_name:
@@ -85,5 +90,14 @@ class memcached (
     enable     => $service_enable,
     hasrestart => true,
     hasstatus  => $memcached::params::service_hasstatus,
+  }
+
+  if $use_registry {
+    registry_value{ $registry_key:
+      ensure => 'present',
+      type   => 'string',
+      data   => template($memcached::params::config_tmpl),
+      notify => Service[$memcached::params::service_name]
+    }
   }
 }

@@ -45,6 +45,11 @@ logfile <%= @logfile -%>
 # Run daemon as user
 -u <%= @user %>
 
+<% if @large_mem_pages -%>
+# Try to use large memory pages (if available)
+-L
+<% end -%>
+
 # Limit the number of simultaneous incoming connections.
 -c <%= @max_connections %>
 

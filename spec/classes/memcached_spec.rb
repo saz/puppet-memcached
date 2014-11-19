@@ -60,7 +60,8 @@ describe 'memcached' do
       :max_connections => '8192',
       :install_dev     => false,
       :processorcount  => 1,
-      :use_sasl        => false
+      :use_sasl        => false,
+      :large_mem_pages => false,
     }
   end
 
@@ -78,7 +79,8 @@ describe 'memcached' do
       :max_connections => '8193',
       :verbosity       => 'vvv',
       :processorcount  => 3,
-      :use_sasl        => true
+      :use_sasl        => true,
+      :large_mem_pages => true,
     },
     {
       :package_ensure  => 'present',
@@ -188,6 +190,9 @@ describe 'memcached' do
             end
             if(param_hash[:use_sasl])
               expected_lines.push("-S")
+            end
+            if(param_hash[:large_mem_pages])
+              expected_lines.push("-L")
             end
             (content.split("\n") & expected_lines).should =~ expected_lines
           end

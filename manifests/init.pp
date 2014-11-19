@@ -20,7 +20,8 @@ class memcached (
   $processorcount  = $::processorcount,
   $service_restart = true,
   $auto_removal    = false,
-  $use_sasl        = false
+  $use_sasl        = false,
+  $large_mem_pages = false,
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary

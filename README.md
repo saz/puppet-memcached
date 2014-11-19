@@ -48,3 +48,4 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 * $processorcount = $::processorcount
 * $service_restart = true (restart service after configuration changes, false to prevent restarts)
 * $use_sasl = false (start memcached with SASL support)
+* $large_mem_pages = false (try to use large memory pages)

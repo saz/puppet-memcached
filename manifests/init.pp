@@ -5,6 +5,7 @@
 class memcached (
   $package_ensure  = 'present',
   $logfile         = '/var/log/memcached.log',
+  $pidfile         = '/var/run/memcached.pid',
   $manage_firewall = false,
   $max_memory      = false,
   $item_size       = false,

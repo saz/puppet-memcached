@@ -97,6 +97,12 @@ describe 'memcached' do
       :processorcount  => 1
     },
     {
+      :pidfile         => false,
+    },
+    {
+      :pidfile         => '/var/log/memcached.pid',
+    },
+    {
       :package_ensure  => 'absent',
       :install_dev     => true
     }
@@ -184,6 +190,9 @@ describe 'memcached' do
             end
             if(param_hash[:lock_memory])
               expected_lines.push("-k")
+            end
+            if(param_hash[:pidfile])
+              expected_lines.push("-P #{param_hash[:pidfile]}")
             end
             if(param_hash[:verbosity])
               expected_lines.push("-vvv")

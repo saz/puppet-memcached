@@ -4,8 +4,6 @@
 #
 class memcached (
   $package_ensure  = 'present',
-  $logfile         = $::memcached::params::logfile,
-  $pidfile         = '/var/run/memcached.pid',
   $manage_firewall = false,
   $max_memory      = false,
   $item_size       = false,
@@ -24,17 +22,10 @@ class memcached (
   $use_sasl        = false,
   $use_registry    = $::memcached::params::use_registry,
   $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
-  $large_mem_pages = false
+  $large_mem_pages = false,
+  $default_instance = true,
+  $instance_configs = hiera_hash('memcached::instance_configs', undef),
 ) inherits memcached::params {
-
-  # validate type and convert string to boolean if necessary
-  if is_string($manage_firewall) {
-    $manage_firewall_bool = str2bool($manage_firewall)
-  } else {
-    $manage_firewall_bool = $manage_firewall
-  }
-  validate_bool($manage_firewall_bool)
-  validate_bool($service_restart)
 
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'
@@ -44,54 +35,45 @@ class memcached (
     $service_enable = true
   }
 
-  package { $memcached::params::package_name:
-    ensure   => $package_ensure,
-    provider => $memcached::params::package_provider
+  class { '::memcached::package':
+    package_ensure => $package_ensure,
+    install_dev    => $install_dev,
   }
 
-  if $install_dev {
-    package { $memcached::params::dev_package_name:
-      ensure  => $package_ensure,
-      require => Package[$memcached::params::package_name]
-    }
+  $default_configs = {
+    'memcached' => {
+      manage_firewall => $manage_firewall,
+      max_memory      => $max_memory,
+      item_size       => $item_size,
+      lock_memory     => $lock_memory,
+      listen_ip       => $listen_ip,
+      tcp_port        => $tcp_port,
+      udp_port        => $udp_port,
+      max_connections => $max_connections,
+      verbosity       => $verbosity,
+      unix_socket     => $unix_socket,
+      processorcount  => $processorcount,
+      use_sasl        => $use_sasl,
+      large_mem_pages => $large_mem_pages,
+      service_ensure  => $service_ensure,
+      service_enable  => $service_enable,
+    },
   }
 
-  if $manage_firewall_bool == true {
-    firewall { "100_tcp_${tcp_port}_for_memcached":
-      port   => $tcp_port,
-      proto  => 'tcp',
-      action => 'accept',
-    }
-
-    firewall { "100_udp_${udp_port}_for_memcached":
-      port   => $udp_port,
-      proto  => 'udp',
-      action => 'accept',
-    }
+  if $default_instance and is_hash($instance_configs) {
+    validate_hash($instance_configs)
+    $final_configs = merge($default_configs, $instance_configs)
+  }
+  elsif $default_instance {
+    $final_configs = $default_configs
+  }
+  elsif is_hash($instance_configs) {
+    validate_hash($instance_configs)
+    $final_configs = $instance_configs
   }
 
-  if $service_restart {
-    $service_notify_real = Service[$memcached::params::service_name]
-  } else {
-    $service_notify_real = undef
-  }
-
-  if ( $memcached::params::config_file ) {
-    file { $memcached::params::config_file:
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template($memcached::params::config_tmpl),
-      require => Package[$memcached::params::package_name],
-      notify  => $service_notify_real,
-    }
-  }
-
-  service { $memcached::params::service_name:
-    ensure     => $service_ensure,
-    enable     => $service_enable,
-    hasrestart => true,
-    hasstatus  => $memcached::params::service_hasstatus,
+  if ! is_hash($final_configs) {
+    fail('No configuration provided to the Memcached class')
   }
 
   if $use_registry {
@@ -102,4 +84,7 @@ class memcached (
       notify => Service[$memcached::params::service_name]
     }
   }
+
+  create_resources(memcached::instance, $final_configs)
+
 }

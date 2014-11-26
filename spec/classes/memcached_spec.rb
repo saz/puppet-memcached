@@ -49,14 +49,12 @@ describe 'memcached' do
   let :default_params do
     {
       :package_ensure  => 'present',
-      :logfile         => '/var/log/memcached.log',
       :max_memory      => false,
       :item_size       => false,
       :lock_memory     => false,
       :listen_ip       => '0.0.0.0',
       :tcp_port        => '11211',
       :udp_port        => '11211',
-      :user            => 'nobody',
       :max_connections => '8192',
       :install_dev     => false,
       :processorcount  => 1,
@@ -68,14 +66,12 @@ describe 'memcached' do
   [ {},
     {
       :package_ensure  => 'latest',
-      :logfile         => '/var/log/memcached.log',
       :max_memory      => '2',
       :item_size       => false,
       :lock_memory     => true,
       :listen_ip       => '127.0.0.1',
       :tcp_port        => '11212',
       :udp_port        => '11213',
-      :user            => 'somebdy',
       :max_connections => '8193',
       :verbosity       => 'vvv',
       :processorcount  => 3,
@@ -84,23 +80,15 @@ describe 'memcached' do
     },
     {
       :package_ensure  => 'present',
-      :logfile         => '/var/log/memcached.log',
       :max_memory      => '20%',
       :lock_memory     => false,
       :listen_ip       => '127.0.0.1',
       :tcp_port        => '11212',
       :udp_port        => '11213',
-      :user            => 'somebdy',
       :max_connections => '8193',
       :verbosity       => 'vvv',
       :install_dev     => true,
       :processorcount  => 1
-    },
-    {
-      :pidfile         => false,
-    },
-    {
-      :pidfile         => '/var/log/memcached.pid',
     },
     {
       :package_ensure  => 'absent',
@@ -142,7 +130,9 @@ describe 'memcached' do
             end
           }
 
-          it { should contain_file("/etc/memcached.conf").with(
+          it { should contain_memcached__instance("memcached") }
+
+          it { should contain_file("/etc/memcached_#{param_hash[:tcp_port]}.conf").with(
             'owner'   => 'root',
             'group'   => 'root'
           )}
@@ -167,15 +157,13 @@ describe 'memcached' do
             content = param_value(
               subject,
               'file',
-              '/etc/memcached.conf',
+              "/etc/memcached_#{param_hash[:tcp_port]}.conf",
               'content'
             )
             expected_lines = [
-              "logfile #{param_hash[:logfile]}",
               "-l #{param_hash[:listen_ip]}",
               "-p #{param_hash[:tcp_port]}",
               "-U #{param_hash[:udp_port]}",
-              "-u #{param_hash[:user]}",
               "-c #{param_hash[:max_connections]}",
               "-t #{param_hash[:processorcount]}"
             ]
@@ -190,9 +178,6 @@ describe 'memcached' do
             end
             if(param_hash[:lock_memory])
               expected_lines.push("-k")
-            end
-            if(param_hash[:pidfile])
-              expected_lines.push("-P #{param_hash[:pidfile]}")
             end
             if(param_hash[:verbosity])
               expected_lines.push("-vvv")

@@ -23,6 +23,7 @@ class memcached (
   $auto_removal    = false,
   $use_sasl        = false,
   $large_mem_pages = false,
+  $object_size     = undef
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary

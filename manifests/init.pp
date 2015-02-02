@@ -5,6 +5,7 @@
 class memcached (
   $package_ensure  = 'present',
   $logfile         = $::memcached::params::logfile,
+  $pidfile         = '/var/run/memcached.pid',
   $manage_firewall = false,
   $max_memory      = false,
   $item_size       = false,
@@ -22,7 +23,8 @@ class memcached (
   $auto_removal    = false,
   $use_sasl        = false,
   $use_registry    = $::memcached::params::use_registry,
-  $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath'
+  $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
+  $large_mem_pages = false
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary

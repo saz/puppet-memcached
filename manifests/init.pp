@@ -2,9 +2,15 @@
 #
 # Manage memcached
 #
+# == Parameters
+# [* syslog *]
+# Boolean.
+# If true will pipe output to /bin/logger, sends to syslog.
+#
 class memcached (
   $package_ensure  = 'present',
   $logfile         = '/var/log/memcached.log',
+  $syslog          = false,
   $pidfile         = '/var/run/memcached.pid',
   $manage_firewall = false,
   $max_memory      = false,
@@ -33,6 +39,14 @@ class memcached (
   }
   validate_bool($manage_firewall_bool)
   validate_bool($service_restart)
+
+  validate_bool($syslog)
+
+  # Logging to syslog and file are mutually exclusive
+  # Fail if both options are defined
+  if $syslog and $logfile {
+    fail 'Define either syslog or logfile as logging destinations but not both.'
+  }
 
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'

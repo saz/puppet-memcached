@@ -16,7 +16,12 @@ if @item_size
   result << '-I ' + @item_size.to_s
 end
 result << '-t ' + @processorcount
-if @logfile
+
+# log to syslog via logger
+if @syslog && @logfile.empty?
+	result << '2>&1 |/bin/logger &'
+# log to log file
+elsif !@logfile.empty? && !@syslog
   result << '>> ' + @logfile + ' 2>&1'
 end
 -%>

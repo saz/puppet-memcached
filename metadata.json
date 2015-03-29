@@ -33,7 +33,7 @@
     }
   ],
   "name": "saz-memcached",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "author": "saz",
   "summary": "UNKNOWN",
   "license": "Apache License, Version 2.0",

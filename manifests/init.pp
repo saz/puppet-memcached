@@ -6,6 +6,7 @@ class memcached (
   $package_ensure  = 'present',
   $logfile         = $::memcached::params::logfile,
   $pidfile         = '/var/run/memcached.pid',
+  $lockfile        = '/var/lock/subsys/memcached',
   $manage_firewall = false,
   $max_memory      = false,
   $item_size       = false,

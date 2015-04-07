@@ -79,8 +79,8 @@ class memcached (
 
   if ( $memcached::params::config_file ) {
     file { $memcached::params::config_file:
-      owner   => 'root',
-      group   => 'root',
+      owner   => 'memcached',
+      group   => 'memcached',
       mode    => '0644',
       content => template($memcached::params::config_tmpl),
       require => Package[$memcached::params::package_name],

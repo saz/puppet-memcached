@@ -143,8 +143,8 @@ describe 'memcached' do
           }
 
           it { should contain_file("/etc/memcached.conf").with(
-            'owner'   => 'root',
-            'group'   => 'root'
+            'owner'   => 'memcached',
+            'group'   => 'memcached'
           )}
 
           it { 

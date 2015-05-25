@@ -34,8 +34,11 @@ logfile <%= @logfile -%>
 # UNIX socket path to listen on
 -s <%= @unix_socket %>
 <% else -%>
+
+<% if @listen_ip != '' -%>
 # IP to listen on
 -l <%= @listen_ip %>
+<% end -%>
 
 # TCP port to listen on
 -p <%= @tcp_port %>

@@ -48,7 +48,7 @@ class memcached (
 
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined
-  if $syslog and str2bool("$logfile") {
+  if $syslog and str2bool($logfile) {
     fail 'Define either syslog or logfile as logging destinations but not both.'
   }
 

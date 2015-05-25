@@ -97,6 +97,9 @@ describe 'memcached' do
       :processorcount  => 1
     },
     {
+      :listen_ip       => '',
+    },
+    {
       :pidfile         => false,
     },
     {
@@ -177,7 +180,6 @@ describe 'memcached' do
             )
             expected_lines = [
               "logfile #{param_hash[:logfile]}",
-              "-l #{param_hash[:listen_ip]}",
               "-p #{param_hash[:tcp_port]}",
               "-U #{param_hash[:udp_port]}",
               "-u #{param_hash[:user]}",
@@ -192,6 +194,9 @@ describe 'memcached' do
               end
             else
               expected_lines.push("-m 950")
+            end
+            if(param_hash[:listen_ip] != '')
+              expected_lines.push("-l #{param_hash[:listen_ip]}")
             end
             if(param_hash[:lock_memory])
               expected_lines.push("-k")

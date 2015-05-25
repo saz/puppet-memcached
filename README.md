@@ -29,11 +29,38 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
     }
 ```
 
+### Run multiple instances
+
+Instantiating the class gets you a default instance of memcached. This instance is fully configurable.
+```ruby
+    class { 'memcached': }
+```
+You can configure additional instances of memcached with hiera data.
+```ruby
+memcached::instance_configs:
+  'memcached_11222':
+    tcp_port: 11222
+    udp_port: 11222
+    max_memory: '12%'
+```
+If you choose to configure all instances via hiera data instantiate the class like this.
+```ruby
+    class { 'memcached':
+      default_instance => false
+    }
+```
+Or if you want to declare the instances in a manifest.
+```ruby
+ memcached::instance { 'memcached_11222':
+   tcp_port   => 11222,
+   udp_port   => 11222,
+   max_memory => '12%',
+ }
+```
+
 ### Other class parameters
 
 * $package_ensure = 'present'
-* $logfile = '/var/log/memcached.log'
-* $pidfile = '/var/run/memcached.pid' (Debian family only, set to false to disable pidfile)
 * $max_memory = false
 * $item_size = false
 * $lock_memory = false (WARNING: good if used intelligently, google for -k key)

@@ -21,10 +21,19 @@ define memcached::instance (
   $use_sasl         = false,
   $large_mem_pages  = false,
   $service_ensure   = 'running',
-  $service_enable   = true,
+  $service_enable   = true
 ) {
 
   include ::memcached::params
+
+  # validate type and convert string to boolean if necessary
+  if is_string($manage_firewall) {
+    $manage_firewall_bool = str2bool($manage_firewall)
+  } else {
+    $manage_firewall_bool = $manage_firewall
+  }
+  validate_bool($manage_firewall_bool)
+  validate_bool($service_restart)
 
   # This is needed only if instances are exclusively defined rather than using the base class
   if ! defined(Class['::memcached::package']) {
@@ -36,19 +45,6 @@ define memcached::instance (
 
   $user    = $memcached::params::user
   $pidfile = "/var/run/memcached_${tcp_port}.pid"
-
-  if $::osfamily != 'Windows' {
-    $logfile = "/var/log/memcached_${tcp_port}.log"
-  }
-
-  # validate type and convert string to boolean if necessary
-  if is_string($manage_firewall) {
-    $manage_firewall_bool = str2bool($manage_firewall)
-  } else {
-    $manage_firewall_bool = $manage_firewall
-  }
-  validate_bool($manage_firewall_bool)
-  validate_bool($service_restart)
 
   if $manage_firewall_bool == true {
     firewall { "100_tcp_${tcp_port}_for_memcached":
@@ -67,15 +63,19 @@ define memcached::instance (
   case $::osfamily {
     'Debian': {
       $config_file  = "/etc/memcached_${tcp_port}.conf"
+      $logfile = "/var/log/memcached_${tcp_port}.log"
       $service_name = 'memcached'
+      $init_script = false
       # We don't manage the init script for Debian
     }
     'Windows': {
       $config_file = undef
       $service_name = 'memcached'
+      $init_script = false
     }
     default: {
       $config_file  = "/etc/sysconfig/memcached_${tcp_port}"
+      $logfile = "/var/log/memcached_${tcp_port}.log"
       $service_name = "memcached_${tcp_port}"
       $init_script  = "/etc/init.d/memcached_${tcp_port}"
     }
@@ -98,7 +98,7 @@ define memcached::instance (
     }
   }
 
-  if $::osfamily != 'Debian' {
+  if $init_script {
     file { $init_script:
       owner   => 'root',
       group   => 'root',

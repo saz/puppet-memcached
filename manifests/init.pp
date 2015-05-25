@@ -24,7 +24,8 @@ class memcached (
   $use_sasl        = false,
   $use_registry    = $::memcached::params::use_registry,
   $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
-  $large_mem_pages = false
+  $large_mem_pages = false,
+  $object_size     = undef
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary

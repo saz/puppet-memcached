@@ -4,6 +4,7 @@
 #
 class memcached (
   $package_ensure  = 'present',
+  $service_manage  = true,
   $logfile         = $::memcached::params::logfile,
   $pidfile         = '/var/run/memcached.pid',
   $manage_firewall = false,
@@ -35,6 +36,7 @@ class memcached (
   }
   validate_bool($manage_firewall_bool)
   validate_bool($service_restart)
+  validate_bool($service_manage)
 
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'
@@ -70,7 +72,7 @@ class memcached (
     }
   }
 
-  if $service_restart {
+  if $service_restart and $service_manage {
     $service_notify_real = Service[$memcached::params::service_name]
   } else {
     $service_notify_real = undef
@@ -87,11 +89,13 @@ class memcached (
     }
   }
 
-  service { $memcached::params::service_name:
-    ensure     => $service_ensure,
-    enable     => $service_enable,
-    hasrestart => true,
-    hasstatus  => $memcached::params::service_hasstatus,
+  if $service_manage {
+    service { $memcached::params::service_name:
+      ensure     => $service_ensure,
+      enable     => $service_enable,
+      hasrestart => true,
+      hasstatus  => $memcached::params::service_hasstatus,
+    }
   }
 
   if $use_registry {
@@ -99,7 +103,7 @@ class memcached (
       ensure => 'present',
       type   => 'string',
       data   => template($memcached::params::config_tmpl),
-      notify => Service[$memcached::params::service_name]
+      notify => $service_notify_real,
     }
   }
 }

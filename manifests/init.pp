@@ -3,28 +3,28 @@
 # Manage memcached
 #
 class memcached (
-  $package_ensure       = 'present',
-  $manage_firewall      = false,
-  $max_memory           = false,
-  $item_size            = false,
-  $lock_memory          = false,
-  $listen_ip            = '0.0.0.0',
-  $tcp_port             = 11211,
-  $udp_port             = 11211,
-  $user                 = $::memcached::params::user,
-  $max_connections      = '8192',
-  $verbosity            = undef,
-  $unix_socket          = undef,
-  $install_dev          = false,
-  $processorcount       = $::processorcount,
-  $service_restart      = true,
-  $auto_removal         = false,
-  $use_sasl             = false,
-  $use_registry         = $::memcached::params::use_registry,
-  $registry_key         = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
-  $large_mem_pages      = false,
-  $default_instance     = true,
-  $instance_configs     = hiera_hash('memcached::instance_configs', {})
+  $package_ensure  = 'present',
+  $manage_firewall = false,
+  $max_memory      = false,
+  $item_size       = false,
+  $lock_memory     = false,
+  $listen_ip       = '0.0.0.0',
+  $tcp_port        = 11211,
+  $udp_port        = 11211,
+  $user            = $::memcached::params::user,
+  $max_connections = '8192',
+  $verbosity       = undef,
+  $unix_socket     = undef,
+  $install_dev     = false,
+  $processorcount  = $::processorcount,
+  $service_restart = true,
+  $auto_removal    = false,
+  $use_sasl        = false,
+  $use_registry    = $::memcached::params::use_registry,
+  $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
+  $large_mem_pages = false,
+  $default_instance = true,
+  $instance_configs = hiera_hash('memcached::instance_configs', undef),
 ) inherits memcached::params {
 
   if $package_ensure == 'absent' {
@@ -60,11 +60,15 @@ class memcached (
     },
   }
 
-  validate_hash($instance_configs)
-
-  if $default_instance {
+  if $default_instance and is_hash($instance_configs) {
+    validate_hash($instance_configs)
     $final_configs = merge($default_configs, $instance_configs)
-  } else {
+  }
+  elsif $default_instance {
+    $final_configs = $default_configs
+  }
+  elsif is_hash($instance_configs) {
+    validate_hash($instance_configs)
     $final_configs = $instance_configs
   }
 
@@ -82,4 +86,5 @@ class memcached (
   }
 
   create_resources(memcached::instance, $final_configs)
+
 }

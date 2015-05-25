@@ -105,6 +105,9 @@ describe 'memcached' do
     {
       :package_ensure  => 'absent',
       :install_dev     => true
+    },
+    {
+      :service_manage => false
     }
   ].each do |param_set|
     describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
@@ -148,7 +151,9 @@ describe 'memcached' do
           )}
 
           it { 
-            if param_hash[:package_ensure] == 'absent'
+            if param_hash[:service_manage] == false
+              should_not contain_service('memcached')
+            elsif param_hash[:package_ensure] == 'absent'
               should contain_service("memcached").with(
                 'ensure'     => 'stopped',
                 'enable'     => false

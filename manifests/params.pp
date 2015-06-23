@@ -46,7 +46,7 @@ class memcached::params {
       $package_provider  = undef
       $service_name      = 'memcached'
       $service_hasstatus = false
-      $dev_package_name  = undef
+      $dev_package_name  = 'libmemcached'
       $config_file       = undef
       $config_tmpl       = "${module_name}/memcached_svcprop.erb"
       $user              = 'nobody'

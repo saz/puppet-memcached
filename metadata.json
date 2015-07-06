@@ -33,7 +33,7 @@
     }
   ],
   "name": "saz-memcached",
-  "version": "2.8.1",
+  "version": "2.8.1.1",
   "author": "saz",
   "summary": "Manage memcached via Puppet",
   "license": "Apache License, Version 2.0",

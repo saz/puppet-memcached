@@ -55,3 +55,7 @@ MEMCACHED_USER="<%= @user %>"
 #
 MEMCACHED_GROUP="<%= @user %>"
 <%- end -%>
+<%- if @lock_memory -%>
+if [[ $(whoami) != "root" ]]; then echo "Must be root to set ulimit higher!"; exit 1; fi
+ulimit -l <%= scope.function_memcached_max_memory([@max_memory]) * 1024 %>
+<%- end -%>

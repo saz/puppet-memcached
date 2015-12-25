@@ -24,6 +24,9 @@ if @max_connections
 end
 if @logfile
   result << '>> ' + @logfile + ' 2>&1'
+end
+if @unix_socket
+  result << '-s ' + @unix_socket
 end -%>
 memcached_enable="YES"
 memcached_flags="-d -u nobody -P /var/run/memcached/memcached.pid <%= result.join(' ') %>"

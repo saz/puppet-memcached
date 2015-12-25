@@ -52,6 +52,15 @@ class memcached (
     fail 'Define either syslog or logfile as logging destinations but not both.'
   }
 
+  # Make sure logfile exist with correct ownership
+  if $logfile {
+         file { "memcached_${logfile}":
+                name    => $logfile,
+                owner   => "$user",
+                ensure  => file,
+        }
+  }
+
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'
     $service_enable = false
@@ -95,7 +104,6 @@ class memcached (
   if ( $memcached::params::config_file ) {
     file { $memcached::params::config_file:
       owner   => 'root',
-      group   => 'root',
       mode    => '0644',
       content => template($memcached::params::config_tmpl),
       require => Package[$memcached::params::package_name],

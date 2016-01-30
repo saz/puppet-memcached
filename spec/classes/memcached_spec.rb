@@ -226,6 +226,51 @@ describe 'memcached' do
       end
     end
   end
+
+  context 'On Solaris' do
+    let :facts do
+      {
+        :osfamily => 'Solaris',
+        :memorysize => '1000 MB',
+        :processorcount => '1',
+      }
+    end
+
+    describe 'when using default class parameters' do
+      let :param_hash do
+        default_params
+      end
+
+      let :params do
+        {}
+      end
+
+      it { should contain_class("memcached::params") }
+
+      it { should contain_package("memcached").with_ensure('present') }
+
+      it { should_not contain_firewall('100_tcp_11211_for_memcached') }
+      it { should_not contain_firewall('100_udp_11211_for_memcached') }
+
+      it {
+        should contain_service("memcached").with(
+           'ensure'     => 'running',
+           'enable'     => true,
+           'hasrestart' => true,
+           'hasstatus'  => false
+        )
+      }
+
+      it {
+        should contain_svcprop("memcached/options").with(
+          'fmri'     => 'memcached:default',
+          'property' => 'memcached/options',
+          'value'    => '"-m" "950" "-l" "0.0.0.0" "-p" "11211" "-U" "11211" "-u" "nobody" "-c" "8192" "-t" "1"',
+          'notify'   => 'Service[memcached]'
+        )
+      }
+    end
+  end
 end
 
 # vim: expandtab shiftwidth=2 softtabstop=2

@@ -1,0 +1,66 @@
+<%-
+result = []
+
+if @verbosity
+  # Verbosity
+  result << '"-' + @verbosity.to_s + '"'
+end
+
+# Use <num> MB memory max to use for object storage.
+Puppet::Parser::Functions.function('memcached_max_memory')
+result << '"-m" "' + scope.function_memcached_max_memory([@max_memory]).to_s + '"'
+
+if @lock_memory
+  # Lock down all paged memory.  There is a limit on how much memory you may lock.
+  result << '"-k"'
+end
+
+if @use_sasl
+  # Start with SASL support
+  result << '"-S"'
+end
+
+if @unix_socket
+  # UNIX socket path to listen on
+  result << '"-s" "' + @unix_socket + '"'
+else
+  if @listen_ip
+    # IP to listen on
+    result << '"-l" "' + @listen_ip + '"'
+  end
+
+  # TCP port to listen on
+  if @tcp_port
+    result << '"-p" "' + @tcp_port.to_s + '"'
+  end
+
+  # UDP port to listen on
+  if @udp_port
+    result << '"-U" "' + @udp_port.to_s + '"'
+  end
+end
+
+# Run daemon as user
+result << '"-u" "' + @user + '"'
+
+if @large_mem_pages
+  # Try to use large memory pages (if available)
+  result << '"-L"'
+end
+
+# Limit the number of simultaneous incoming connections.
+result << '"-c" "' + @max_connections.to_s + '"'
+
+# Number of threads to use to process incoming requests.
+result << '"-t" "' + @processorcount.to_s + '"'
+
+if @item_size
+  # Override  the  default size of each slab page
+  result << '"-I" "' + @item_size.to_s + '"'
+end
+
+if @auto_removal
+  # Disable automatic removal of items from the cache when out of memory
+  result << '"-M"'
+end -%>
+<%= result.join(' ') %>

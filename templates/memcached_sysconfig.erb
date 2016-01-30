@@ -58,3 +58,16 @@ MEMCACHED_USER="<%= @user %>"
 #
 MEMCACHED_GROUP="<%= @user %>"
 <%- end -%>
+<%- if @lock_memory -%>
+if [[ $(whoami) != "root" ]]; then echo "Must be root to manage memcached!"; exit 1; fi
+## ulimit = base process size + per thread size + cache space
+## ulimit = 92000 + (76000 * threads) + (cachesize * 1024)
+## ulimit = 92000 + (76000 * <%= @processorcount.to_i %>) + (<%= scope.function_memcached_max_memory([@max_memory]) %> * 1024)
+ulimit -l <%= 92000 + (76000 * @processorcount.to_i) + (scope.function_memcached_max_memory([@max_memory]) * 1024) %>
+<%- end -%>
+<%- if @syslog -%>
+logger "Running: service memcached $1"
+<%- end -%>
+<%- if !@logfile.empty? -%>
+echo "$(date +"%Y-%m-%d %H:%M:%S") Running: service memcached $1" >> "<%= @logfile %>"
+<%- end -%>

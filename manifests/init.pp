@@ -54,11 +54,11 @@ class memcached (
 
   # Make sure logfile exist with correct ownership
   if $logfile {
-         file { "memcached_${logfile}":
-                name    => $logfile,
-                owner   => "$user",
-                ensure  => file,
-        }
+    file { "memcached_${logfile}":
+      name    => $logfile,
+      owner   => "$user",
+      ensure  => file,
+    }
   }
 
   if $package_ensure == 'absent' {

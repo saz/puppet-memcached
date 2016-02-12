@@ -18,9 +18,9 @@ end
 if @item_size
   result << '-I ' + @item_size.to_s
 end
-result << '-t ' + @processorcount
+result << '-t ' + @processorcount.to_s
 if @max_connections 
-  result << '-c ' + @max_connections
+  result << '-c ' + @max_connections.to_s
 end
 if @logfile
   result << '>> ' + @logfile + ' 2>&1'

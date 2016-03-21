@@ -54,11 +54,16 @@ result << '"-c" "' + @max_connections.to_s + '"'
 # Number of threads to use to process incoming requests.
 result << '"-t" "' + @processorcount.to_s + '"'
 
-if @item_size
+if @max_item_size
   # Override  the  default size of each slab page
-  result << '"-I" "' + @item_size.to_s + '"'
+  result << '"-I" "' + @max_item_size.to_s + '"'
 end
-
+if @min_item_size
+  result << '"-n" "' + @min_item_size.to_s + '"'
+end
+if @factor
+  result << '"-f" "' + @factor.to_s + '"'
+end
 if @auto_removal
   # Disable automatic removal of items from the cache when out of memory
   result << '"-M"'

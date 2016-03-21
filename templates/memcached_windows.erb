@@ -15,8 +15,14 @@ end
 if @udp_port
   result << '-U ' + @udp_port.to_s
 end
-if @item_size
-  result << '-I ' + @item_size.to_s
+if @max_item_size
+  result << '-I ' + @max_item_size.to_s
+end
+if @min_item_size
+  result << '-n ' + @min_item_size.to_s
+end
+if @factor
+  result << '-f ' + @factor.to_s
 end
 result << '-t ' + @processorcount
 if @max_connections 

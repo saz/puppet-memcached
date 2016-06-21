@@ -61,7 +61,7 @@ describe 'memcached' do
       :install_dev     => false,
       :processorcount  => 1,
       :use_sasl        => false,
-      :large_mem_pages => false,
+      :large_mem_pages => false
     }
   end
 
@@ -81,6 +81,7 @@ describe 'memcached' do
       :processorcount  => 3,
       :use_sasl        => true,
       :large_mem_pages => true,
+      :extended_opts   => ['lru_crawler','lru_maintainer']
     },
     {
       :package_ensure  => 'present',
@@ -94,7 +95,8 @@ describe 'memcached' do
       :max_connections => '8193',
       :verbosity       => 'vvv',
       :install_dev     => true,
-      :processorcount  => 1
+      :processorcount  => 1,
+      :extended_opts   => ['lru_crawler','lru_maintainer']
     },
     {
       :listen_ip       => '',
@@ -212,6 +214,9 @@ describe 'memcached' do
             end
             if(param_hash[:large_mem_pages])
               expected_lines.push("-L")
+            end
+            if(param_hash[:extended_opts])
+              expected_lines.push("-o lru_crawler,lru_maintainer")
             end
             (content.split("\n") & expected_lines).should =~ expected_lines
           end

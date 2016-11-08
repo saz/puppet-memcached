@@ -65,13 +65,13 @@ class memcached (
 
   package { $memcached::params::package_name:
     ensure   => $package_ensure,
-    provider => $memcached::params::package_provider
+    provider => $memcached::params::package_provider,
   }
 
   if $install_dev {
     package { $memcached::params::dev_package_name:
       ensure  => $package_ensure,
-      require => Package[$memcached::params::package_name]
+      require => Package[$memcached::params::package_name],
     }
   }
 
@@ -129,7 +129,7 @@ class memcached (
       fmri     => $svcprop_fmri,
       property => $svcprop_key,
       value    => template($memcached::params::config_tmpl),
-      notify   => $service_notify_real
+      notify   => $service_notify_real,
     }
   }
 }

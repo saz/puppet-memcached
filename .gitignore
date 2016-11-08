@@ -1,5 +1,36 @@
-pkg/
-*.swp
-.forge-releng/
-Gemfile.lock
+# Default .gitignore for Ruby
+*.gem
+*.rbc
+.bundle
+.config
+coverage
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
 vendor/
+
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+
+# Vim
+*.swp
+
+# Eclipse
+.project
+
+# OS X
+.DS_Store
+
+# Puppet
+coverage/
+spec/fixtures/manifests/*
+spec/fixtures/modules/*
+Gemfile.lock
+.forge-releng/

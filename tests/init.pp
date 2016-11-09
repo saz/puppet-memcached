@@ -1,1 +1,1 @@
-include memcached
+include ::memcached

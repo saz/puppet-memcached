@@ -135,6 +135,9 @@ describe 'memcached' do
 
         describe "on supported osfamily: #{osfamily}" do
 
+          it { should compile.with_all_deps }
+          it { should contain_class('memcached')}
+
           it { should contain_class("memcached::params") }
 
           it { should contain_package("memcached").with_ensure(param_hash[:package_ensure]) }
@@ -153,7 +156,7 @@ describe 'memcached' do
             'group'   => 'root'
           )}
 
-          it { 
+          it {
             if param_hash[:service_manage] == false
               should_not contain_service('memcached')
             elsif param_hash[:package_ensure] == 'absent'
@@ -170,58 +173,6 @@ describe 'memcached' do
               )
             end
           }
-
-          it 'should compile the template based on the class parameters' do
-            content = param_value(
-              subject,
-              'file',
-              '/etc/memcached.conf',
-              'content'
-            )
-            expected_lines = [
-              "logfile #{param_hash[:logfile]}",
-              "-p #{param_hash[:tcp_port]}",
-              "-U #{param_hash[:udp_port]}",
-              "-u #{param_hash[:user]}",
-              "-c #{param_hash[:max_connections]}",
-              "-t #{param_hash[:processorcount]}"
-            ]
-            if(param_hash[:max_memory])
-              if(param_hash[:max_memory].end_with?('%'))
-                expected_lines.push("-m 200")
-              else
-                expected_lines.push("-m #{param_hash[:max_memory]}")
-              end
-            else
-              expected_lines.push("-m 950")
-            end
-            if(param_hash[:listen_ip] != '')
-              expected_lines.push("-l #{param_hash[:listen_ip]}")
-            end
-            if(param_hash[:lock_memory])
-              expected_lines.push("-k")
-            end
-            if(param_hash[:pidfile])
-              expected_lines.push("-P #{param_hash[:pidfile]}")
-            end
-            if(param_hash[:verbosity])
-              expected_lines.push("-vvv")
-            end
-            if(param_hash[:use_sasl])
-              expected_lines.push("-S")
-            end
-            if(param_hash[:large_mem_pages])
-              expected_lines.push("-L")
-            end
-            (content.split("\n") & expected_lines).should =~ expected_lines
-          end
-        end
-      end
-      ['Redhat'].each do |osfamily|
-        describe 'on supported platform' do
-          it 'should fail' do
-
-          end
         end
       end
     end

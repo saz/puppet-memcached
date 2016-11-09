@@ -1,12 +1,12 @@
 fixtures:
   repositories:
-    'firewall':
+    firewall:
       repo: 'git://github.com/puppetlabs/puppetlabs-firewall.git'
       ref: '0.1.0'
-    'stdlib':
+    stdlib:
       repo: 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
-      ref: '3.2.0'
-    'svcprop':
+      ref: '4.6.0'
+    svcprop:
       repo: 'https://github.com/bolthole/puppet-svcprop.git'
       ref: 'e60b1abddb8b8861408e0eccf8c989737d112a60'
   symlinks:

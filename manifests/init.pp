@@ -34,7 +34,8 @@ class memcached (
   $large_mem_pages = false,
   $use_svcprop     = $::memcached::params::use_svcprop,
   $svcprop_fmri    = 'memcached:default',
-  $svcprop_key     = 'memcached/options'
+  $svcprop_key     = 'memcached/options',
+  $extended_options = undef
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary

@@ -54,6 +54,19 @@ class memcached::params {
       $use_registry      = false
       $use_svcprop       = true
     }
+    'FreeBSD': {
+      $package_name      = 'memcached'
+      $package_provider  = undef
+      $service_name      = 'memcached'
+      $service_hasstatus = false
+      $dev_package_name  = 'libmemcached'
+      $config_file       = undef
+      $config_tmpl       = "${module_name}/memcached_svcprop.erb"
+      $user              = 'nobody'
+      $logfile           = '/var/log/memcached.log'
+      $use_registry      = false
+      $use_svcprop       = false
+    }
     default: {
       case $::operatingsystem {
         'Amazon': {

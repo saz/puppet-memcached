@@ -61,7 +61,7 @@ describe 'memcached' do
       :install_dev     => false,
       :processorcount  => 1,
       :use_sasl        => false,
-      :large_mem_pages => false,
+      :large_mem_pages => false
     }
   end
 
@@ -81,6 +81,7 @@ describe 'memcached' do
       :processorcount  => 3,
       :use_sasl        => true,
       :large_mem_pages => true,
+      :extended_opts   => ['lru_crawler','lru_maintainer']
     },
     {
       :package_ensure  => 'present',
@@ -94,7 +95,8 @@ describe 'memcached' do
       :max_connections => '8193',
       :verbosity       => 'vvv',
       :install_dev     => true,
-      :processorcount  => 1
+      :processorcount  => 1,
+      :extended_opts   => ['lru_crawler','lru_maintainer']
     },
     {
       :listen_ip       => '',
@@ -173,6 +175,61 @@ describe 'memcached' do
               )
             end
           }
+
+          it 'should compile the template based on the class parameters' do
+            content = param_value(
+              catalogue,
+              'file',
+              '/etc/memcached.conf',
+              'content'
+            )
+            expected_lines = [
+              "logfile #{param_hash[:logfile]}",
+              "-p #{param_hash[:tcp_port]}",
+              "-U #{param_hash[:udp_port]}",
+              "-u #{param_hash[:user]}",
+              "-c #{param_hash[:max_connections]}",
+              "-t #{param_hash[:processorcount]}"
+            ]
+            if(param_hash[:max_memory])
+              if(param_hash[:max_memory].end_with?('%'))
+                expected_lines.push("-m 200")
+              else
+                expected_lines.push("-m #{param_hash[:max_memory]}")
+              end
+            else
+              expected_lines.push("-m 950")
+            end
+            if(param_hash[:listen_ip] != '')
+              expected_lines.push("-l #{param_hash[:listen_ip]}")
+            end
+            if(param_hash[:lock_memory])
+              expected_lines.push("-k")
+            end
+            if(param_hash[:pidfile])
+              expected_lines.push("-P #{param_hash[:pidfile]}")
+            end
+            if(param_hash[:verbosity])
+              expected_lines.push("-vvv")
+            end
+            if(param_hash[:use_sasl])
+              expected_lines.push("-S")
+            end
+            if(param_hash[:large_mem_pages])
+              expected_lines.push("-L")
+            end
+            if(param_hash[:extended_opts])
+              expected_lines.push("-o lru_crawler,lru_maintainer")
+            end
+            (content.split("\n") & expected_lines).should =~ expected_lines
+          end
+        end
+      end
+      ['Redhat'].each do |osfamily|
+        describe 'on supported platform' do
+          it 'should fail' do
+
+          end
         end
       end
     end

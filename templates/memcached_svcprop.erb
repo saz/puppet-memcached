@@ -62,5 +62,9 @@ end
 if @auto_removal
   # Disable automatic removal of items from the cache when out of memory
   result << '"-M"'
+end
+
+if @extended_opts
+  result << '"-o" "' + @extended_opts.join(',') + '"'
 end -%>
 <%= result.join(' ') %>

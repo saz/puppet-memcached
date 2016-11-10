@@ -18,6 +18,9 @@ end
 if @item_size
   result << '-I ' + @item_size.to_s
 end
+if @extended_opts
+  result << '-o ' + @extended_opts.join(',')
+end 
 result << '-t ' + @processorcount.to_s
 
 # log to syslog via logger

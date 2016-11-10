@@ -22,6 +22,9 @@ result << '-t ' + @processorcount
 if @max_connections 
   result << '-c ' + @max_connections
 end
+if @extended_opts
+  result << '-o ' + @extended_opts.join(',')
+end
 if @logfile
   result << '>> ' + @logfile + ' 2>&1'
 end -%>

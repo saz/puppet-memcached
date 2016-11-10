@@ -70,3 +70,7 @@ logfile <%= @logfile -%>
 # Disable automatic removal of items from the cache when out of memory
 -M
 <% end -%>
+
+<% if @extended_opts -%>
+-o <%= @extended_opts.join(',') -%>
+<% end -%>

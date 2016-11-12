@@ -60,8 +60,8 @@ class memcached::params {
       $service_name      = 'memcached'
       $service_hasstatus = false
       $dev_package_name  = 'libmemcached'
-      $config_file       = undef
-      $config_tmpl       = "${module_name}/memcached_svcprop.erb"
+      $config_file       = '/etc/rc.conf.d/memcached'
+      $config_tmpl       = "${module_name}/memcached_freebsd_rcconf.erb"
       $user              = 'nobody'
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false

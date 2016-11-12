@@ -1,0 +1,52 @@
+### MANAGED BY PUPPET
+### DO NOT EDIT
+
+<%-
+enabled = "YES"
+if !@service_manage
+  enabled = "NO"
+end
+
+flags = []
+# required flags
+flags << "-d -u #{@user} -P #{@pidfile} -t #{@processorcount}"
+
+# optional flags
+if @item_size
+  flags << "-I #{@item_size.to_s}"
+end
+
+if @listen_ip
+  flags << "-l #{@listen_ip}"
+end
+
+if @lock_memory
+  flags << "-k"
+end
+
+if @max_connections
+  flags << "-c #{@max_connections}"
+end
+
+#TODO: wtf do we do with this?
+#if @logfile
+#end
+
+if @tcp_port
+  flags << "-p #{@tcp_port.to_s}"
+end
+
+if @udp_port
+  flags << "-U #{@udp_port.to_s}"
+end
+
+if @unix_socket
+  flags << "-s #{@unix_socket}"
+end
+
+if @verbosity
+  flags << "-#{@verbosity.to_s}"
+end
+-%>
+memcached_enable="<%= enabled %>"
+memcached_flags="<%= flags.join(" ") %>"

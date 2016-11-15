@@ -61,7 +61,8 @@ describe 'memcached' do
       :install_dev     => false,
       :processorcount  => 1,
       :use_sasl        => false,
-      :large_mem_pages => false
+      :large_mem_pages => false,
+      :pidfile         => '/var/run/memcached.pid',
     }
   end
 
@@ -285,17 +286,13 @@ describe 'memcached' do
       {
         :osfamily => 'FreeBSD',
         :memorysize => '1000 MB',
-        :processorcount => '1',
+        :processorcount => '2',
       }
     end
 
     describe 'when using default class parameters' do
-      let :param_hash do
-        default_params
-      end
-
       let :params do
-        {}
+        default_params
       end
 
       it { should contain_class("memcached::params") }
@@ -315,6 +312,12 @@ describe 'memcached' do
       }
 
       it {
+        should contain_file("/etc/rc.conf.d/memcached").with_content(
+          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 1 -l 0.0.0.0 -c 8192 -p 11211 -U 11211\"\n"
+        )
+      }
+
+      it {
         should_not contain_svcprop("memcached/options").with(
           'fmri'     => 'memcached:default',
           'property' => 'memcached/options',
@@ -323,7 +326,31 @@ describe 'memcached' do
         )
       }
     end
+
+    describe 'when using custom class parameters' do
+      let :custom_params do {
+        'listen_ip' => '127.0.0.1',
+        'tcp_port'  => '9999',
+        'udp_port'  => '9999',
+        }
+      end
+
+      let :param_hash do
+        default_params.merge(custom_params)
+      end
+
+      let :params do
+        custom_params
+      end
+
+
+      # TODO: figure out how to check the file contents
+      it {
+        should contain_file("/etc/rc.conf.d/memcached").with_content(
+          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 2 -l 127.0.0.1 -c 8192 -p 9999 -U 9999\"\n"
+        )
+      }
+    end
   end
 end
-
 # vim: expandtab shiftwidth=2 softtabstop=2

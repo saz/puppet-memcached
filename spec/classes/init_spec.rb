@@ -52,7 +52,7 @@ describe 'memcached' do
       max_item_size: false,
       min_item_size: false,
       lock_memory: false,
-      listen_ip: '0.0.0.0',
+      listen_ip: '127.0.0.1',
       tcp_port: '11211',
       udp_port: '11211',
       user: 'nobody',
@@ -263,7 +263,7 @@ describe 'memcached' do
         is_expected.to contain_svcprop('memcached/options').with(
           'fmri'     => 'memcached:default',
           'property' => 'memcached/options',
-          'value'    => '"-m" "950" "-l" "0.0.0.0" "-p" "11211" "-U" "11211" "-u" "nobody" "-c" "8192" "-t" "1"',
+          'value'    => "\"-m\" \"950\" \"-l\" \"127.0.0.1\" \"-p\" \"11211\" \"-U\" \"11211\" \"-u\" \"nobody\" \"-c\" \"8192\" \"-t\" \"1\"\n",
           'notify'   => 'Service[memcached]'
         )
       end
@@ -302,7 +302,7 @@ describe 'memcached' do
 
       it do
         is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
-          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 1 -l 0.0.0.0 -c 8192 -p 11211 -U 11211\"\n"
+          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 1 -l 127.0.0.1 -c 8192 -p 11211 -U 11211\"\n"
         )
       end
 
@@ -310,7 +310,7 @@ describe 'memcached' do
         is_expected.not_to contain_svcprop('memcached/options').with(
           'fmri'     => 'memcached:default',
           'property' => 'memcached/options',
-          'value'    => '"-m" "950" "-l" "0.0.0.0" "-p" "11211" "-U" "11211" "-u" "nobody" "-c" "8192" "-t" "1"',
+          'value'    => '"-m" "950" "-l" "127.0.0.1" "-p" "11211" "-U" "11211" "-u" "nobody" "-c" "8192" "-t" "1"',
           'notify'   => 'Service[memcached]'
         )
       end

@@ -7,6 +7,13 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 
 ## How to use
 
+```
+Starting with version 3.0.0, memcached will be listening on 127.0.0.1 only.
+This should make setups more secure (e.g. if there are no firewall rules are in place.
+
+To change this behavior, you need to set listen_ip to '0.0.0.0'.
+```
+
 ### Use roughly 90% of memory
 
 ```ruby
@@ -39,7 +46,7 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 * $min_item_size = false
 * $factor = false
 * $lock_memory = false (WARNING: good if used intelligently, google for -k key)
-* $listen_ip = '0.0.0.0'
+* $listen_ip = '127.0.0.1'
 * $tcp_port = 11211
 * $udp_port = 11211
 * $manage_firewall = false

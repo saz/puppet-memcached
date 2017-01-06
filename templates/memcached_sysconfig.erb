@@ -15,8 +15,14 @@ end
 if @unix_socket
   result << '-s ' + @unix_socket.to_s + ' -a 0755 '
 end
-if @item_size
-  result << '-I ' + @item_size.to_s
+if @max_item_size
+  result << '-I ' + @max_item_size.to_s
+end
+if @min_item_size
+  result << '-n ' + @min_item_size.to_s
+end
+if @factor
+  result << '-f ' + @factor.to_s
 end
 if @extended_opts
   result << '-o ' + @extended_opts.join(',')

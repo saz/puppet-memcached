@@ -15,7 +15,9 @@ class memcached (
   $pidfile         = '/var/run/memcached.pid',
   $manage_firewall = false,
   $max_memory      = false,
-  $item_size       = false,
+  $max_item_size   = false,
+  $min_item_size   = false,
+  $factor          = false,
   $lock_memory     = false,
   $listen_ip       = '0.0.0.0',
   $tcp_port        = '11211',
@@ -35,7 +37,8 @@ class memcached (
   $use_svcprop     = $::memcached::params::use_svcprop,
   $svcprop_fmri    = 'memcached:default',
   $svcprop_key     = 'memcached/options',
-  $extended_opts   = undef
+  $extended_opts   = undef,
+  $config_tmpl     = $::memcached::params::config_tmpl
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -101,7 +104,7 @@ class memcached (
       owner   => 'root',
       group   => 0,
       mode    => '0644',
-      content => template($memcached::params::config_tmpl),
+      content => template($config_tmpl),
       require => Package[$memcached::params::package_name],
       notify  => $service_notify_real,
     }
@@ -120,7 +123,7 @@ class memcached (
     registry_value{ $registry_key:
       ensure => 'present',
       type   => 'string',
-      data   => template($memcached::params::config_tmpl),
+      data   => template($config_tmpl),
       notify => $service_notify_real,
     }
   }

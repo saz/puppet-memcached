@@ -35,7 +35,9 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 * $logfile = '/var/log/memcached.log'
 * $pidfile = '/var/run/memcached.pid' (Debian family only, set to false to disable pidfile)
 * $max_memory = false
-* $item_size = false
+* $max_item_size = false
+* $min_item_size = false
+* $factor = false
 * $lock_memory = false (WARNING: good if used intelligently, google for -k key)
 * $listen_ip = '0.0.0.0'
 * $tcp_port = 11211

@@ -14,6 +14,13 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = false
+      if $::service_provider == 'systemd' {
+        $systemd           = true
+        $systemd_conf_path = '/etc/systemd/system/memcached.service'
+      } else {
+        $systemd           = false
+        $systemd_conf_path = undef
+      }
     }
     /RedHat|Suse/: {
       $package_name      = 'memcached'
@@ -27,6 +34,13 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = false
+      if $::service_provider == 'systemd' {
+        $systemd           = true
+        $systemd_conf_path = '/usr/lib/systemd/system/memcached.service'
+      } else {
+        $systemd           = false
+        $systemd_conf_path = undef
+      }
     }
     /windows/: {
       $package_name      = 'memcached'
@@ -40,6 +54,8 @@ class memcached::params {
       $logfile           = undef
       $use_registry      = true
       $use_svcprop       = false
+      $systemd           = false
+      $systemd_conf_path = undef
     }
     'Solaris': {
       $package_name      = 'memcached'
@@ -53,6 +69,8 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = true
+      $systemd           = false
+      $systemd_conf_path = undef
     }
     'FreeBSD': {
       $package_name      = 'memcached'
@@ -66,6 +84,8 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = false
+      $systemd           = false
+      $systemd_conf_path = undef
     }
     default: {
       case $::operatingsystem {
@@ -81,6 +101,8 @@ class memcached::params {
           $logfile           = '/var/log/memcached.log'
           $use_registry      = false
           $use_svcprop       = false
+          $systemd           = false
+          $systemd_conf_path = undef
         }
         default: {
           fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")

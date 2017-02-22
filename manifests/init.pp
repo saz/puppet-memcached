@@ -122,20 +122,26 @@ class memcached (
     }
   }
 
-  if $auto_restart and $memcached::params::systemd_conf_path != undef {
+  if $memcached::params::systemd_conf_path != undef {
     include ::memcached::systemd
 
-    file { $memcached::params::systemd_conf_path:
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-    }
+    if $auto_restart {
+      file { $memcached::params::systemd_conf_path:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
 
-    file { "${memcached::params::systemd_conf_path}/restart.conf":
-      ensure  => 'file',
-      content => "[Service]\nRestart=on-abnormal",
-      notify  => Exec['Reload systemd'],
+      file { "${memcached::params::systemd_conf_path}/restart.conf":
+        ensure  => 'file',
+        content => "[Service]\nRestart=on-abnormal",
+        notify  => Exec['Reload systemd'],
+      }
+    }else{
+      file { "${memcached::params::systemd_conf_path}/restart.conf":
+        ensure => 'absent',
+      }
     }
   }
 

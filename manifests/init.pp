@@ -136,12 +136,12 @@ class memcached (
       file { "${memcached::params::systemd_conf_path}/restart.conf":
         ensure  => 'file',
         content => "[Service]\nRestart=on-abnormal",
-        notify  => Exec['Reload systemd'],
+        notify  => Exec['systemctl-daemon-reload'],
       }
     }else{
       file { "${memcached::params::systemd_conf_path}/restart.conf":
         ensure => 'absent',
-        notify => Exec['Reload systemd'],
+        notify => Exec['systemctl-daemon-reload'],
       }
     }
   }

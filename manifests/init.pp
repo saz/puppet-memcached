@@ -141,6 +141,7 @@ class memcached (
     }else{
       file { "${memcached::params::systemd_conf_path}/restart.conf":
         ensure => 'absent',
+        notify => Exec['Reload systemd'],
       }
     }
   }

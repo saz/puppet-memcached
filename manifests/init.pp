@@ -39,7 +39,7 @@ class memcached (
   $svcprop_key     = 'memcached/options',
   $extended_opts   = undef,
   $config_tmpl     = $::memcached::params::config_tmpl,
-  $auto_restart    = false
+  $auto_restart    = $::memcached::params::auto_restart
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -122,7 +122,7 @@ class memcached (
     }
   }
 
-  if $auto_restart and $memcached::params::systemd {
+  if $auto_restart and $memcached::params::systemd_conf_path != undef {
     include ::memcached::systemd
 
     file { $memcached::params::systemd_conf_path:

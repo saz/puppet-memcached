@@ -14,11 +14,10 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = false
+      $auto_restart      = false
       if $::service_provider == 'systemd' {
-        $systemd           = true
         $systemd_conf_path = '/etc/systemd/system/memcached.service'
       } else {
-        $systemd           = false
         $systemd_conf_path = undef
       }
     }
@@ -34,11 +33,10 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = false
+      $auto_restart      = false
       if $::service_provider == 'systemd' {
-        $systemd           = true
         $systemd_conf_path = '/usr/lib/systemd/system/memcached.service'
       } else {
-        $systemd           = false
         $systemd_conf_path = undef
       }
     }
@@ -54,7 +52,7 @@ class memcached::params {
       $logfile           = undef
       $use_registry      = true
       $use_svcprop       = false
-      $systemd           = false
+      $auto_restart      = false
       $systemd_conf_path = undef
     }
     'Solaris': {
@@ -69,7 +67,7 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = true
-      $systemd           = false
+      $auto_restart      = false
       $systemd_conf_path = undef
     }
     'FreeBSD': {
@@ -84,7 +82,7 @@ class memcached::params {
       $logfile           = '/var/log/memcached.log'
       $use_registry      = false
       $use_svcprop       = false
-      $systemd           = false
+      $auto_restart      = false
       $systemd_conf_path = undef
     }
     default: {
@@ -101,7 +99,7 @@ class memcached::params {
           $logfile           = '/var/log/memcached.log'
           $use_registry      = false
           $use_svcprop       = false
-          $systemd           = false
+          $auto_restart      = false
           $systemd_conf_path = undef
         }
         default: {

@@ -15,7 +15,9 @@ class memcached::params {
       $use_registry      = false
       $use_svcprop       = false
       $auto_restart      = false
-      if $::service_provider == 'systemd' {
+      if $::service_provider == 'systemd' or
+          ($::operatingsystem == 'Ubuntu' and
+          versioncmp($::operatingsystemmajrelease, '15.10') > 0) {
         $systemd_conf_path = '/etc/systemd/system/memcached.service.d'
       } else {
         $systemd_conf_path = undef

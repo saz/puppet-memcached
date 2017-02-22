@@ -16,7 +16,7 @@ class memcached::params {
       $use_svcprop       = false
       $auto_restart      = false
       if $::service_provider == 'systemd' {
-        $systemd_conf_path = '/etc/systemd/system/memcached.service'
+        $systemd_conf_path = '/etc/systemd/system/memcached.service.d'
       } else {
         $systemd_conf_path = undef
       }
@@ -35,7 +35,7 @@ class memcached::params {
       $use_svcprop       = false
       $auto_restart      = false
       if $::service_provider == 'systemd' {
-        $systemd_conf_path = '/usr/lib/systemd/system/memcached.service'
+        $systemd_conf_path = '/usr/lib/systemd/system/memcached.service.d'
       } else {
         $systemd_conf_path = undef
       }

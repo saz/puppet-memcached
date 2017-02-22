@@ -38,7 +38,8 @@ class memcached (
   $svcprop_fmri    = 'memcached:default',
   $svcprop_key     = 'memcached/options',
   $extended_opts   = undef,
-  $config_tmpl     = $::memcached::params::config_tmpl
+  $config_tmpl     = $::memcached::params::config_tmpl,
+  $auto_restart    = false
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -52,6 +53,8 @@ class memcached (
   validate_bool($service_manage)
 
   validate_bool($syslog)
+
+  validate_bool($auto_restart)
 
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined
@@ -116,6 +119,23 @@ class memcached (
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => $memcached::params::service_hasstatus,
+    }
+  }
+
+  if $auto_restart and $memcached::params::systemd {
+    include ::memcached::systemd
+
+    file { $memcached::params::systemd_conf_path:
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+
+    file { "${memcached::params::systemd_conf_path}/restart.conf":
+      ensure  => 'file',
+      content => "[Service]\nRestart=on-abnormal",
+      notify  => Exec['Reload systemd'],
     }
   }
 

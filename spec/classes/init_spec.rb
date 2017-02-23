@@ -6,7 +6,9 @@ describe 'memcached' do
         let(:facts) do
           { osfamily: osfam,
             memorysize: '1000 MB',
-            processorcount: '1' }
+            processorcount: '1',
+            service_provider: 'unknown',
+            operatingsystem: osfam}
         end
 
         ['true', true].each do |value|
@@ -129,7 +131,9 @@ describe 'memcached' do
           {
             osfamily: osfamily,
             memorysize: '1000 MB',
-            processorcount: '1'
+            processorcount: '1',
+            service_provider: 'unknown',
+            operatingsystem: osfamily
           }
         end
 
@@ -230,7 +234,9 @@ describe 'memcached' do
       {
         osfamily: 'Solaris',
         memorysize: '1000 MB',
-        processorcount: '1'
+        processorcount: '1',
+        service_provider: 'unknown',
+        operatingsystem: 'Solaris'
       }
     end
 
@@ -275,7 +281,9 @@ describe 'memcached' do
       {
         osfamily: 'FreeBSD',
         memorysize: '1000 MB',
-        processorcount: '2'
+        processorcount: '2',
+        service_provider: 'unknown',
+        operatingsystem: 'FreeBSD'
       }
     end
 

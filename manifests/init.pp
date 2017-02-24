@@ -39,7 +39,8 @@ class memcached (
   $svcprop_key     = 'memcached/options',
   $extended_opts   = undef,
   $config_tmpl     = $::memcached::params::config_tmpl,
-  $auto_restart    = $::memcached::params::auto_restart
+  $auto_restart    = $::memcached::params::auto_restart,
+  $systemd_conf_path = $::memcached::params::systemd_conf_path
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -122,24 +123,24 @@ class memcached (
     }
   }
 
-  if $memcached::params::systemd_conf_path != undef {
+  if $systemd_conf_path != undef {
     include ::memcached::systemd
 
     if $auto_restart {
-      file { $memcached::params::systemd_conf_path:
+      file { $systemd_conf_path:
         ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
       }
 
-      file { "${memcached::params::systemd_conf_path}/restart.conf":
+      file { "${systemd_conf_path}/restart.conf":
         ensure  => 'file',
         content => "[Service]\nRestart=on-abnormal",
         notify  => Exec['systemctl-daemon-reload'],
       }
     }else{
-      file { "${memcached::params::systemd_conf_path}/restart.conf":
+      file { "${systemd_conf_path}/restart.conf":
         ensure => 'absent',
         notify => Exec['systemctl-daemon-reload'],
       }

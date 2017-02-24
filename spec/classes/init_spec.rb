@@ -62,7 +62,9 @@ describe 'memcached' do
       processorcount: 1,
       use_sasl: false,
       large_mem_pages: false,
-      pidfile: '/var/run/memcached.pid'
+      pidfile: '/var/run/memcached.pid',
+      auto_restart: false,
+      systemd_conf_path: false
     }
   end
 
@@ -115,7 +117,12 @@ describe 'memcached' do
    },
    {
      service_manage: false
-   }].each do |param_set|
+   },
+   {
+     systemd_conf_path: '/etc/systemd/system/memcached.service.d',
+     auto_restart: true
+   }
+].each do |param_set|
     describe "when #{param_set == {} ? 'using default' : 'specifying'} class parameters" do
       let :param_hash do
         default_params.merge(param_set)
@@ -216,6 +223,18 @@ describe 'memcached' do
             end
             (content.split("\n") & expected_lines).should =~ expected_lines
           end
+
+          it 'uses systemd class and writes file when auto_restart is configured' do
+            if params[:auto_restart] == true and params[:systemd_conf_path] == '/etc/systemd/system/memcached.service.d'
+                is_expected.to contain_class('memcached::systemd')
+                is_expected.to contain_file('/etc/systemd/system/memcached.service.d/restart.conf')
+              else
+                is_expected.not_to contain_class('memcached::systemd')
+                is_expected.not_to contain_file('/etc/systemd/system/memcached.service.d/restart.conf')
+              end
+              is_expected.not_to contain_file('/usr/lib/systemd/system/memcached.service.d/restart.conf')
+          end
+
         end
       end
       ['Redhat'].each do |_osfamily|

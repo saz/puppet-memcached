@@ -8,50 +8,38 @@
 # If true will pipe output to /bin/logger, sends to syslog.
 #
 class memcached (
-  $package_ensure  = 'present',
-  $service_manage  = true,
-  $logfile         = $::memcached::params::logfile,
-  $syslog          = false,
-  $pidfile         = '/var/run/memcached.pid',
-  $manage_firewall = false,
-  $max_memory      = '95%',
-  $max_item_size   = false,
-  $min_item_size   = false,
-  $factor          = false,
-  $lock_memory     = false,
-  $listen_ip       = '127.0.0.1',
-  $tcp_port        = '11211',
-  $udp_port        = '11211',
-  $user            = $::memcached::params::user,
-  $max_connections = '8192',
-  $verbosity       = undef,
-  $unix_socket     = undef,
-  $install_dev     = false,
-  $processorcount  = $::processorcount,
-  $service_restart = true,
-  $auto_removal    = false,
-  $use_sasl        = false,
-  $use_registry    = $::memcached::params::use_registry,
-  $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
-  $large_mem_pages = false,
-  $use_svcprop     = $::memcached::params::use_svcprop,
-  $svcprop_fmri    = 'memcached:default',
-  $svcprop_key     = 'memcached/options',
-  $extended_opts   = undef,
-  $config_tmpl     = $::memcached::params::config_tmpl
+  $package_ensure          = 'present',
+  Boolean $service_manage  = true,
+  $logfile                 = $::memcached::params::logfile,
+  Boolean $syslog          = false,
+  $pidfile                 = '/var/run/memcached.pid',
+  Boolean $manage_firewall = false,
+  $max_memory              = '95%',
+  $max_item_size           = false,
+  $min_item_size           = false,
+  $factor                  = false,
+  $lock_memory             = false,
+  $listen_ip               = '127.0.0.1',
+  $tcp_port                = '11211',
+  $udp_port                = '11211',
+  $user                    = $::memcached::params::user,
+  $max_connections         = '8192',
+  $verbosity               = undef,
+  $unix_socket             = undef,
+  $install_dev             = false,
+  $processorcount          = $::processorcount,
+  Boolean $service_restart = true,
+  $auto_removal            = false,
+  $use_sasl                = false,
+  $use_registry            = $::memcached::params::use_registry,
+  $registry_key            = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
+  $large_mem_pages         = false,
+  $use_svcprop             = $::memcached::params::use_svcprop,
+  $svcprop_fmri            = 'memcached:default',
+  $svcprop_key             = 'memcached/options',
+  $extended_opts           = undef,
+  $config_tmpl             = $::memcached::params::config_tmpl
 ) inherits memcached::params {
-
-  # validate type and convert string to boolean if necessary
-  if is_string($manage_firewall) {
-    $manage_firewall_bool = str2bool($manage_firewall)
-  } else {
-    $manage_firewall_bool = $manage_firewall
-  }
-  validate_bool($manage_firewall_bool)
-  validate_bool($service_restart)
-  validate_bool($service_manage)
-
-  validate_bool($syslog)
 
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined

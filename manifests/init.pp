@@ -8,37 +8,37 @@
 # If true will pipe output to /bin/logger, sends to syslog.
 #
 class memcached (
-  $package_ensure          = 'present',
-  Boolean $service_manage  = true,
-  $logfile                 = $::memcached::params::logfile,
-  Boolean $syslog          = false,
-  $pidfile                 = '/var/run/memcached.pid',
-  Boolean $manage_firewall = false,
-  $max_memory              = '95%',
-  $max_item_size           = false,
-  $min_item_size           = false,
-  $factor                  = false,
-  $lock_memory             = false,
-  $listen_ip               = '127.0.0.1',
-  $tcp_port                = '11211',
-  $udp_port                = '11211',
-  $user                    = $::memcached::params::user,
-  $max_connections         = '8192',
-  $verbosity               = undef,
-  $unix_socket             = undef,
-  $install_dev             = false,
-  $processorcount          = $::processorcount,
-  Boolean $service_restart = true,
-  $auto_removal            = false,
-  $use_sasl                = false,
-  $use_registry            = $::memcached::params::use_registry,
-  $registry_key            = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
-  $large_mem_pages         = false,
-  $use_svcprop             = $::memcached::params::use_svcprop,
-  $svcprop_fmri            = 'memcached:default',
-  $svcprop_key             = 'memcached/options',
-  $extended_opts           = undef,
-  $config_tmpl             = $::memcached::params::config_tmpl
+  Enum['present', 'latest', 'absent'] $package_ensure = 'present',
+  Boolean $service_manage                             = true,
+  Optional[Stdlib::Absolutepath] $logfile             = $::memcached::params::logfile,
+  Boolean $syslog                                     = false,
+  Optional[Stdlib::Absolutepath] $pidfile             = '/var/run/memcached.pid',
+  Boolean $manage_firewall                            = false,
+  $max_memory                                         = '95%',
+  Optional[Variant[Integer, String]] $max_item_size   = undef,
+  Optional[Variant[Integer, String]] $min_item_size   = undef,
+  Boolean $factor                                     = false,
+  Boolean $lock_memory                                = false,
+  Optional[Stdlib::Compat::Ip_address] $listen_ip     = '127.0.0.1',
+  Integer $tcp_port                                   = 11211,
+  Integer $udp_port                                   = 11211,
+  String $user                                        = $::memcached::params::user,
+  Integer $max_connections                            = 8192,
+  Optional[String] $verbosity                         = undef,
+  Optional[String] $unix_socket                       = undef,
+  Boolean $install_dev                                = false,
+  Variant[String,Integer] $processorcount             = $::processorcount,
+  Boolean $service_restart                            = true,
+  Boolean $auto_removal                               = false,
+  Boolean $use_sasl                                   = false,
+  Boolean $use_registry                               = $::memcached::params::use_registry,
+  String $registry_key                                = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
+  Boolean $large_mem_pages                            = false,
+  Boolean $use_svcprop                                = $::memcached::params::use_svcprop,
+  String $svcprop_fmri                                = 'memcached:default',
+  String $svcprop_key                                 = 'memcached/options',
+  Optional[Array[String]] $extended_opts              = undef,
+  String $config_tmpl                                 = $::memcached::params::config_tmpl
 ) inherits memcached::params {
 
   # Logging to syslog and file are mutually exclusive
@@ -67,7 +67,7 @@ class memcached (
     }
   }
 
-  if $manage_firewall_bool == true {
+  if $manage_firewall {
     firewall { "100_tcp_${tcp_port}_for_memcached":
       dport  => $tcp_port,
       proto  => 'tcp',

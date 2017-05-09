@@ -14,6 +14,7 @@ RSpec.configure do |config|
     environment: 'rp_env',
     memsize: '1000',
     processorcount: 1,
-    osfamily: 'RedHat'
+    osfamily: 'RedHat',
+    service_provider: 'unknown'
   }
 end

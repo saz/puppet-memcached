@@ -59,3 +59,5 @@ To change this behavior, you need to set listen_ip to '0.0.0.0'.
 * $service_restart = true (restart service after configuration changes, false to prevent restarts)
 * $use_sasl = false (start memcached with SASL support)
 * $large_mem_pages = false (try to use large memory pages)
+* $auto_restart = false (when `systemd` is available, use it to restart the daemon on abnormal exits)
+* $systemd_conf_path = _see params.pp_ (where to dump the systemd service file for `$auto_restart`)

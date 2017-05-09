@@ -8,37 +8,39 @@
 # If true will pipe output to /bin/logger, sends to syslog.
 #
 class memcached (
-  $package_ensure  = 'present',
-  $service_manage  = true,
-  $logfile         = $::memcached::params::logfile,
-  $syslog          = false,
-  $pidfile         = '/var/run/memcached.pid',
-  $manage_firewall = false,
-  $max_memory      = false,
-  $max_item_size   = false,
-  $min_item_size   = false,
-  $factor          = false,
-  $lock_memory     = false,
-  $listen_ip       = '127.0.0.1',
-  $tcp_port        = '11211',
-  $udp_port        = '11211',
-  $user            = $::memcached::params::user,
-  $max_connections = '8192',
-  $verbosity       = undef,
-  $unix_socket     = undef,
-  $install_dev     = false,
-  $processorcount  = $::processorcount,
-  $service_restart = true,
-  $auto_removal    = false,
-  $use_sasl        = false,
-  $use_registry    = $::memcached::params::use_registry,
-  $registry_key    = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
-  $large_mem_pages = false,
-  $use_svcprop     = $::memcached::params::use_svcprop,
-  $svcprop_fmri    = 'memcached:default',
-  $svcprop_key     = 'memcached/options',
-  $extended_opts   = undef,
-  $config_tmpl     = $::memcached::params::config_tmpl
+  $package_ensure    = 'present',
+  $service_manage    = true,
+  $logfile           = $::memcached::params::logfile,
+  $syslog            = false,
+  $pidfile           = '/var/run/memcached.pid',
+  $manage_firewall   = false,
+  $max_memory        = false,
+  $max_item_size     = false,
+  $min_item_size     = false,
+  $factor            = false,
+  $lock_memory       = false,
+  $listen_ip         = '127.0.0.1',
+  $tcp_port          = '11211',
+  $udp_port          = '11211',
+  $user              = $::memcached::params::user,
+  $max_connections   = '8192',
+  $verbosity         = undef,
+  $unix_socket       = undef,
+  $install_dev       = false,
+  $processorcount    = $::processorcount,
+  $service_restart   = true,
+  $auto_removal      = false,
+  $use_sasl          = false,
+  $use_registry      = $::memcached::params::use_registry,
+  $registry_key      = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
+  $large_mem_pages   = false,
+  $use_svcprop       = $::memcached::params::use_svcprop,
+  $svcprop_fmri      = 'memcached:default',
+  $svcprop_key       = 'memcached/options',
+  $extended_opts     = undef,
+  $config_tmpl       = $::memcached::params::config_tmpl,
+  $auto_restart      = $::memcached::params::auto_restart,
+  $systemd_conf_path = $::memcached::params::systemd_conf_path
 ) inherits memcached::params {
 
   # validate type and convert string to boolean if necessary
@@ -52,6 +54,8 @@ class memcached (
   validate_bool($service_manage)
 
   validate_bool($syslog)
+
+  validate_bool($auto_restart)
 
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined
@@ -116,6 +120,30 @@ class memcached (
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => $memcached::params::service_hasstatus,
+    }
+  }
+
+  if $systemd_conf_path != undef {
+    include ::memcached::systemd
+
+    if $auto_restart {
+      file { $systemd_conf_path:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
+
+      file { "${systemd_conf_path}/restart.conf":
+        ensure  => 'file',
+        content => "[Service]\nRestart=on-abnormal",
+        notify  => Exec['systemctl-daemon-reload'],
+      }
+    }else{
+      file { "${systemd_conf_path}/restart.conf":
+        ensure => 'absent',
+        notify => Exec['systemctl-daemon-reload'],
+      }
     }
   }
 

@@ -14,7 +14,7 @@ class memcached (
   $syslog          = false,
   $pidfile         = '/var/run/memcached.pid',
   $manage_firewall = false,
-  $max_memory      = false,
+  $max_memory      = '95%',
   $max_item_size   = false,
   $min_item_size   = false,
   $factor          = false,

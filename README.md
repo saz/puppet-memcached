@@ -5,6 +5,13 @@ Manage memcached via Puppet
 ## Show some love
 If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiNqA3KY2j9
 
+## ATTENTION START!
+
+## No Puppet 3 support starting with release 4.0
+Starting with version 4 of this module, this module might not work with Puppet 3 anymore!
+
+## ATTENTION END!
+
 ## How to use
 
 ```

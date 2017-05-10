@@ -19,12 +19,12 @@ PuppetLint.configuration.send('disable_class_inherits_from_params_class')
 PuppetLint.configuration.send('disable_documentation')
 PuppetLint.configuration.send('disable_single_quote_string_with_variables')
 
-exclude_paths = %w(
+exclude_paths = %w[
   pkg/**/*
   vendor/**/*
   .vendor/**/*
   spec/**/*
-)
+]
 PuppetLint.configuration.ignore_paths = exclude_paths
 PuppetSyntax.exclude_paths = exclude_paths
 
@@ -38,6 +38,6 @@ task test: [
   :metadata_lint,
   :lint,
   :syntax,
-  :spec,
+  :spec
 ]
 # vim: syntax=ruby

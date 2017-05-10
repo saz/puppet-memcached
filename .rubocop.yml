@@ -2,6 +2,8 @@ require: rubocop-rspec
 AllCops:
   TargetRubyVersion: 1.9
   Include:
+    - '**/Rakefile'
+    - '**/Gemfile'
     - ./**/*.rb
   Exclude:
     - vendor/**/*
@@ -70,7 +72,7 @@ Style/WhileUntilModifier:
 Lint/AmbiguousRegexpLiteral:
   Enabled: true
 
-Lint/Eval:
+Security/Eval:
   Enabled: true
 
 Lint/BlockAlignment:
@@ -494,6 +496,12 @@ Lint/UselessAssignment:
 Style/ClosingParenthesisIndentation:
   Enabled: false
 
+Metrics/BlockLength:                                                                   
+  Enabled: false
+
+Bundler/DuplicatedGem:
+  Enabled: false
+
 # RSpec
 
 # We don't use rspec in this way
@@ -505,4 +513,4 @@ RSpec/ExampleLength:
   Enabled: False
 
 RSpec/NestedGroups:
-    MaxNesting: 4
+  Max: 4

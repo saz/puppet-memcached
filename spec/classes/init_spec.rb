@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe 'memcached' do
   describe 'with manage_firewall parameter' do
-    %w(Debian RedHat).each do |osfam|
+    %w[Debian RedHat].each do |osfam|
       context "on osfamily #{osfam}" do
         let(:facts) do
           { osfamily: osfam,
@@ -32,7 +32,7 @@ describe 'memcached' do
         end
 
         context 'set to an invalid type (array)' do
-          let(:params) { { manage_firewall: %w(invalid type) } }
+          let(:params) { { manage_firewall: %w[invalid type] } }
 
           it do
             expect do
@@ -82,7 +82,7 @@ describe 'memcached' do
      processorcount: 3,
      use_sasl: true,
      large_mem_pages: true,
-     extended_opts: %w(lru_crawler lru_maintainer)
+     extended_opts: %w[lru_crawler lru_maintainer]
    },
    {
      package_ensure: 'present',
@@ -97,7 +97,7 @@ describe 'memcached' do
      verbosity: 'vvv',
      install_dev: true,
      processorcount: 1,
-     extended_opts: %w(lru_crawler lru_maintainer)
+     extended_opts: %w[lru_crawler lru_maintainer]
    },
    {
      listen_ip: ''

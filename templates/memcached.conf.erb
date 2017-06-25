@@ -35,7 +35,7 @@ logfile <%= @logfile -%>
 -s <%= @unix_socket %>
 <% else -%>
 
-<% if @listen_ip != '' -%>
+<% if @listen_ip -%>
 # IP to listen on
 -l <%= @listen_ip %>
 <% end -%>

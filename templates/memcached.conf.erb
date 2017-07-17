@@ -35,7 +35,7 @@ logfile <%= @logfile -%>
 -s <%= @unix_socket %>
 
 # UNIX socket access mask
--a 0755
+-a <%= @unix_socket_mask %>
 <% else -%>
 
 <% if @listen_ip -%>

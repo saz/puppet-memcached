@@ -41,7 +41,7 @@ if @udp_port
 end
 
 if @unix_socket
-  flags << "-s #{@unix_socket}"
+  flags << "-s #{@unix_socket} -a #{@unix_socket_mask}"
 end
 
 if @verbosity

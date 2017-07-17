@@ -23,6 +23,9 @@ end
 if @unix_socket
   # UNIX socket path to listen on
   result << '"-s" "' + @unix_socket + '"'
+
+  # UNIX socket access mask
+  result << '"-a" "' + @unix_socket_mask + '"'
 else
   if @listen_ip
     # IP to listen on

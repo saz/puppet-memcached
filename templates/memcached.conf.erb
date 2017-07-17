@@ -33,6 +33,9 @@ logfile <%= @logfile -%>
 <% if @unix_socket -%>
 # UNIX socket path to listen on
 -s <%= @unix_socket %>
+
+# UNIX socket access mask
+-a 0755
 <% else -%>
 
 <% if @listen_ip -%>

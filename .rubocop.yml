@@ -1,6 +1,6 @@
 require: rubocop-rspec
 AllCops:
-  TargetRubyVersion: 1.9
+  TargetRubyVersion: 2.1
   Include:
     - ./**/*.rb
   Exclude:
@@ -516,5 +516,5 @@ RSpec/DescribeClass:
 RSpec/ExampleLength:
   Enabled: False
 
-RSpec/NestedGroups:                                                                                                                                                                                              
+RSpec/NestedGroups:
   Max: 4

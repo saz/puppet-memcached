@@ -1,5 +1,24 @@
 require 'spec_helper'
 describe 'memcached' do
+
+  let :default_params do
+    {
+      package_ensure: 'present',
+      logfile: '/var/log/memcached.log',
+      lock_memory: false,
+      listen_ip: '127.0.0.1',
+      tcp_port: 11211,
+      udp_port: 11211,
+      user: 'nobody',
+      max_connections: 8192,
+      install_dev: false,
+      processorcount: 1,
+      use_sasl: false,
+      large_mem_pages: false,
+      pidfile: '/var/run/memcached.pid'
+    }
+  end
+
   describe 'with manage_firewall parameter' do
     %w[Debian RedHat].each do |osfam|
       context "on osfamily #{osfam}" do
@@ -38,24 +57,6 @@ describe 'memcached' do
         end
       end
     end
-  end
-
-  let :default_params do
-    {
-      package_ensure: 'present',
-      logfile: '/var/log/memcached.log',
-      lock_memory: false,
-      listen_ip: '127.0.0.1',
-      tcp_port: 11211,
-      udp_port: 11211,
-      user: 'nobody',
-      max_connections: 8192,
-      install_dev: false,
-      processorcount: 1,
-      use_sasl: false,
-      large_mem_pages: false,
-      pidfile: '/var/run/memcached.pid'
-    }
   end
 
   [{},

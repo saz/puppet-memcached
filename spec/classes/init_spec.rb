@@ -1,6 +1,5 @@
 require 'spec_helper'
 describe 'memcached' do
-
   let :default_params do
     {
       package_ensure: 'present',

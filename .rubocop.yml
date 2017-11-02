@@ -163,6 +163,9 @@ Style/ClassAndModuleChildren:
 Style/ClassCheck:
   Enabled: true
 
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
 # Class length is not necessarily an indicator of code quality
 Metrics/ClassLength:
   Enabled: false

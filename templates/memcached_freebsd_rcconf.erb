@@ -47,6 +47,10 @@ end
 if @verbosity
   flags << "-#{@verbosity.to_s}"
 end
+
+if @disable_cachedump
+  flags << '-X'
+end
 -%>
 memcached_enable="<%= enabled %>"
 memcached_flags="<%= flags.join(" ") %>"

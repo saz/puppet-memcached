@@ -54,7 +54,8 @@ describe 'memcached' do
       processorcount: 1,
       use_sasl: false,
       large_mem_pages: false,
-      pidfile: '/var/run/memcached.pid'
+      pidfile: '/var/run/memcached.pid',
+      disable_cachedump: false
     }
   end
 
@@ -88,10 +89,12 @@ describe 'memcached' do
      verbosity: 'vvv',
      install_dev: true,
      processorcount: 1,
-     extended_opts: %w[lru_crawler lru_maintainer]
+     extended_opts: %w[lru_crawler lru_maintainer],
+     disable_cachedump: true
    },
    {
-     pidfile: '/var/log/memcached.pid'
+     pidfile: '/var/log/memcached.pid',
+     disable_cachedump: true
    },
    {
      package_ensure: 'absent',
@@ -194,6 +197,9 @@ describe 'memcached' do
             expected_lines.push('-vvv') if param_hash[:verbosity]
             expected_lines.push('-S') if param_hash[:use_sasl]
             expected_lines.push('-L') if param_hash[:large_mem_pages]
+            if param_hash[:disable_cachedump] == true
+              expected_lines.push('-X')
+            end
             if param_hash[:extended_opts]
               expected_lines.push('-o lru_crawler,lru_maintainer')
             end
@@ -306,7 +312,8 @@ describe 'memcached' do
         {
           'listen_ip' => '127.0.0.1',
           'tcp_port'  => 9999,
-          'udp_port'  => 9999
+          'udp_port'  => 9999,
+          'disable_cachedump' => true
         }
       end
 
@@ -321,10 +328,42 @@ describe 'memcached' do
       # TODO: figure out how to check the file contents
       it do
         is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
-          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 2 -l 127.0.0.1 -c 8192 -p 9999 -U 9999\"\n"
+          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 2 -l 127.0.0.1 -c 8192 -p 9999 -U 9999 -X\"\n"
         )
       end
     end
   end
+  context 'On Redhat' do
+    let :facts do
+      {
+        osfamily: 'RedHat',
+        memorysize: '1000 MB',
+        processorcount: '4'
+      }
+    end
+
+    describe 'when using custom class parameters' do
+      let :custom_params do
+        {
+          'disable_cachedump' => true
+        }
+      end
+
+      let :param_hash do
+        default_params.merge(custom_params)
+      end
+
+      let :params do
+        custom_params
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sysconfig/memcached').with_content(
+          "PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"950\"\nOPTIONS=\"-l 127.0.0.1 -U 11211 -X -t 4 >> /var/log/memcached.log 2>&1\"\n"
+        )
+      end
+    end
+  end
+
 end
 # vim: expandtab shiftwidth=2 softtabstop=2

@@ -7,8 +7,7 @@ if @verbosity
 end
 
 # Use <num> MB memory max to use for object storage.
-Puppet::Parser::Functions.function('memcached_max_memory')
-result << '"-m" "' + scope.function_memcached_max_memory([@max_memory]).to_s + '"'
+result << '"-m" "' + scope.call_function('memcached::max_memory', [@max_memory]).to_s + '"'
 
 if @lock_memory
   # Lock down all paged memory.  There is a limit on how much memory you may lock.

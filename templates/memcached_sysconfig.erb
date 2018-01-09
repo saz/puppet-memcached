@@ -30,10 +30,10 @@ end
 result << '-t ' + @processorcount.to_s
 
 # log to syslog via logger
-if @syslog && @logfile.empty?
+if @syslog && !@logfile
 	result << '2>&1 |/bin/logger &'
 # log to log file
-elsif !@logfile.empty? && !@syslog
+elsif @logfile && !@syslog
   result << '>> ' + @logfile + ' 2>&1'
 end
 -%>

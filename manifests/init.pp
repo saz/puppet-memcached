@@ -26,6 +26,7 @@ class memcached (
   Integer $max_connections                            = 8192,
   Optional[String] $verbosity                         = undef,
   Optional[String] $unix_socket                       = undef,
+  String $unix_socket_mask                            = '0755',
   Boolean $install_dev                                = false,
   Variant[String,Integer] $processorcount             = $::processorcount,
   Boolean $service_restart                            = true,
@@ -38,7 +39,8 @@ class memcached (
   String $svcprop_fmri                                = 'memcached:default',
   String $svcprop_key                                 = 'memcached/options',
   Optional[Array[String]] $extended_opts              = undef,
-  String $config_tmpl                                 = $::memcached::params::config_tmpl
+  String $config_tmpl                                 = $::memcached::params::config_tmpl,
+  Boolean $disable_cachedump                          = false
 ) inherits memcached::params {
 
   # Logging to syslog and file are mutually exclusive

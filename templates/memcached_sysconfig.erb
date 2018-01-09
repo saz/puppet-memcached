@@ -13,7 +13,7 @@ if @udp_port
   result << '-U ' + @udp_port.to_s
 end
 if @unix_socket
-  result << '-s ' + @unix_socket.to_s + ' -a 0755 '
+  result << '-s ' + @unix_socket.to_s + ' -a ' + @unix_socket_mask.to_s
 end
 if @max_item_size
   result << '-I ' + @max_item_size.to_s
@@ -27,13 +27,16 @@ end
 if @extended_opts
   result << '-o ' + @extended_opts.join(',')
 end 
+if @disable_cachedump
+  result << '-X'
+end
 result << '-t ' + @processorcount.to_s
 
 # log to syslog via logger
-if @syslog && @logfile.empty?
+if @syslog && !@logfile
 	result << '2>&1 |/bin/logger &'
 # log to log file
-elsif !@logfile.empty? && !@syslog
+elsif @logfile && !@syslog
   result << '>> ' + @logfile + ' 2>&1'
 end
 -%>

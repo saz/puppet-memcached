@@ -1,7 +1,8 @@
 module Puppet::Parser::Functions
-  newfunction(:memcached_max_memory, :type => :rvalue, :doc => <<-DOC
+<<<<<<< HEAD
+  newfunction(:memcached_max_memory, :type => :rvalue, :doc => <<-ENDHEREDOC
     Calculate max_memory size from fact 'memsize' and passed argument.
-    DOC
+    ENDHEREDOC
   ) do |arguments|
 
     if arguments.size != 1

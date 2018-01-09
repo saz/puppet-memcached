@@ -1,7 +1,7 @@
 module Puppet::Parser::Functions
-  newfunction(:memcached_max_memory, :type => :rvalue, :doc => <<-EOS
+  newfunction(:memcached_max_memory, :type => :rvalue, :doc => <<-DOC
     Calculate max_memory size from fact 'memsize' and passed argument.
-    EOS
+    DOC
   ) do |arguments|
 
     if arguments.size != 1

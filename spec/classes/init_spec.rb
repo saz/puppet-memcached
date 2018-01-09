@@ -9,7 +9,7 @@ describe 'memcached' do
             processorcount: '1' }
         end
 
-        context 'set to true' do
+        context 'with manage_firewall set to true' do
           let(:params) { { manage_firewall: true } }
 
           it { is_expected.to contain_class('memcached') }
@@ -18,7 +18,7 @@ describe 'memcached' do
           it { is_expected.to contain_firewall('100_udp_11211_for_memcached') }
         end
 
-        context 'set to false' do
+        context 'with manage_firewall set to false' do
           let(:params) { { manage_firewall: false } }
 
           it { is_expected.to contain_class('memcached') }
@@ -27,7 +27,7 @@ describe 'memcached' do
           it { is_expected.not_to contain_firewall('100_udp_11211_for_memcached') }
         end
 
-        context 'set to an invalid type (array)' do
+        context 'with manage_firewall set to an invalid type (array)' do
           let(:params) { { manage_firewall: %w[invalid type] } }
 
           it do
@@ -46,8 +46,8 @@ describe 'memcached' do
       logfile: '/var/log/memcached.log',
       lock_memory: false,
       listen_ip: '127.0.0.1',
-      tcp_port: 11211,
-      udp_port: 11211,
+      tcp_port: 11_211,
+      udp_port: 11_211,
       user: 'nobody',
       max_connections: 8192,
       install_dev: false,
@@ -65,8 +65,8 @@ describe 'memcached' do
      max_memory: 2,
      lock_memory: true,
      listen_ip: '127.0.0.1',
-     tcp_port: 11212,
-     udp_port: 11213,
+     tcp_port: 11_212,
+     udp_port: 11_213,
      user: 'somebdy',
      max_connections: 8193,
      verbosity: 'vvv',
@@ -81,8 +81,8 @@ describe 'memcached' do
      max_memory: '20%',
      lock_memory: false,
      listen_ip: '127.0.0.1',
-     tcp_port: 11212,
-     udp_port: 11213,
+     tcp_port: 11_212,
+     udp_port: 11_213,
      user: 'somebdy',
      max_connections: 8193,
      verbosity: 'vvv',
@@ -210,7 +210,7 @@ describe 'memcached' do
     end
   end
 
-  context 'On Solaris' do
+  context 'with osfamily = Solaris' do
     let :facts do
       {
         osfamily: 'Solaris',
@@ -255,7 +255,7 @@ describe 'memcached' do
     end
   end
 
-  context 'On FreeBSD' do
+  context 'with osfamily = FreeBSD' do
     let :facts do
       {
         osfamily: 'FreeBSD',

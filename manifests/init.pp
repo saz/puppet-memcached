@@ -26,6 +26,7 @@ class memcached (
   Integer $max_connections                            = 8192,
   Optional[String] $verbosity                         = undef,
   Optional[String] $unix_socket                       = undef,
+  String $unix_socket_mask                            = '0755',
   Boolean $install_dev                                = false,
   Variant[String,Integer] $processorcount             = $::processorcount,
   Boolean $service_restart                            = true,

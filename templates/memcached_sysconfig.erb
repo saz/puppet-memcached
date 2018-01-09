@@ -13,7 +13,7 @@ if @udp_port
   result << '-U ' + @udp_port.to_s
 end
 if @unix_socket
-  result << '-s ' + @unix_socket.to_s + ' -a 0755 '
+  result << '-s ' + @unix_socket.to_s + ' -a ' + @unix_socket_mask.to_s
 end
 if @max_item_size
   result << '-I ' + @max_item_size.to_s

@@ -1,6 +1,6 @@
 require: rubocop-rspec
 AllCops:
-  TargetRubyVersion: 1.9
+  TargetRubyVersion: 2.1
   Include:
     - ./**/*.rb
   Exclude:
@@ -162,6 +162,9 @@ Style/ClassAndModuleChildren:
 
 Style/ClassCheck:
   Enabled: true
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
 
 # Class length is not necessarily an indicator of code quality
 Metrics/ClassLength:
@@ -412,7 +415,7 @@ Style/NumericLiterals:
 Style/OneLineConditional:
   Enabled: true
 
-Style/OpMethod:
+Naming/BinaryOperatorParameterName:
   Enabled: true
 
 Style/ParenthesesAroundCondition:
@@ -516,5 +519,8 @@ RSpec/DescribeClass:
 RSpec/ExampleLength:
   Enabled: False
 
-RSpec/NestedGroups:                                                                                                                                                                                              
+RSpec/NestedGroups:
   Max: 4
+
+RSpec/MultipleExpectations:
+  Enabled: False

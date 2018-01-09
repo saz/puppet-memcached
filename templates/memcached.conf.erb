@@ -87,3 +87,7 @@ logfile <%= @logfile -%>
 <% if @extended_opts -%>
 -o <%= @extended_opts.join(',') -%>
 <% end -%>
+
+<% if @disable_cachedump -%>
+-X
+<% end -%>

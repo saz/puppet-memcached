@@ -74,5 +74,9 @@ end
 
 if @extended_opts
   result << '"-o" "' + @extended_opts.join(',') + '"'
+end
+
+if @disable_cachedump
+  result << '"-X"'
 end -%>
 <%= result.join(' ') %>

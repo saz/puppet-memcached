@@ -33,5 +33,8 @@ if @extended_opts
 end
 if @logfile
   result << '>> ' + @logfile + ' 2>&1'
+end
+if @disable_cachedump
+  result << '-X'
 end -%>
 c:\memcached\memcached.exe -d runservice <%= result.join(' ') %>

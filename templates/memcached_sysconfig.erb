@@ -44,8 +44,7 @@ end
 PORT="<%= @tcp_port %>"
 USER="<%= @user %>"
 MAXCONN="<%= @max_connections %>"
-<% Puppet::Parser::Functions.function('memcached_max_memory') -%>
-CACHESIZE="<%= scope.function_memcached_max_memory([@max_memory]) %>"
+CACHESIZE="<%= scope.call_function('memcached::max_memory', [@max_memory]) %>"
 OPTIONS="<%= result.join(' ') %>"
 <%- else -%>
 MEMCACHED_PARAMS="<%= result.join(' ') %>"

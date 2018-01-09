@@ -1,5 +1,4 @@
 module Puppet::Parser::Functions
-<<<<<<< HEAD
   newfunction(:memcached_max_memory, :type => :rvalue, :doc => <<-ENDHEREDOC
     Calculate max_memory size from fact 'memsize' and passed argument.
     ENDHEREDOC

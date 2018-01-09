@@ -518,3 +518,9 @@ RSpec/MultipleExpectations:
 
 RSpec/LetBeforeExamples:
   Enabled: false
+
+RSpec/OverwritingSetup:
+  Enabled: false
+
+RSpec/ScatteredLet:
+  Enabled: false

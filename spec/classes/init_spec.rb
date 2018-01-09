@@ -6,8 +6,8 @@ describe 'memcached' do
       logfile: '/var/log/memcached.log',
       lock_memory: false,
       listen_ip: '127.0.0.1',
-      tcp_port: 11211,
-      udp_port: 11211,
+      tcp_port: 11_211,
+      udp_port: 11_211,
       user: 'nobody',
       max_connections: 8192,
       install_dev: false,
@@ -215,9 +215,7 @@ describe 'memcached' do
             expected_lines.push('-vvv') if param_hash[:verbosity]
             expected_lines.push('-S') if param_hash[:use_sasl]
             expected_lines.push('-L') if param_hash[:large_mem_pages]
-            if param_hash[:disable_cachedump] == true
-              expected_lines.push('-X')
-            end
+            expected_lines.push('-X') if param_hash[:disable_cachedump] == true
             if param_hash[:extended_opts]
               expected_lines.push('-o lru_crawler,lru_maintainer')
             end
@@ -351,7 +349,7 @@ describe 'memcached' do
       end
     end
   end
-  context 'On Redhat' do
+  context 'with osfamily = Redhat' do
     let :facts do
       {
         osfamily: 'RedHat',
@@ -382,6 +380,5 @@ describe 'memcached' do
       end
     end
   end
-
 end
 # vim: expandtab shiftwidth=2 softtabstop=2

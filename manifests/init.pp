@@ -19,7 +19,7 @@ class memcached (
   Optional[Variant[Integer, String]] $min_item_size   = undef,
   Boolean $factor                                     = false,
   Boolean $lock_memory                                = false,
-  Optional[Stdlib::Compat::Ip_address] $listen_ip     = '127.0.0.1',
+  $listen_ip                                          = '127.0.0.1',
   Integer $tcp_port                                   = 11211,
   Integer $udp_port                                   = 11211,
   String $user                                        = $::memcached::params::user,

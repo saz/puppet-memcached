@@ -270,7 +270,7 @@ describe 'memcached' do
         is_expected.to contain_svcprop('memcached/options').with(
           'fmri'     => 'memcached:default',
           'property' => 'memcached/options',
-          'value'    => "\"-m\" \"950\" \"-l\" \"127.0.0.1\" \"-p\" \"11211\" \"-U\" \"11211\" \"-u\" \"nobody\" \"-c\" \"8192\" \"-t\" \"1\"\n",
+          'value'    => "\"-m\" \"950\" \"-l\" \"127.0.0.1\" \"-p\" \"11211\" \"-U\" \"11211\" \"-u\" \"nobody\" \"-c\" \"8192\" \"-t\" \"1\"",
           'notify'   => 'Service[memcached]'
         )
       end

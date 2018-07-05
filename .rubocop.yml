@@ -6,12 +6,14 @@ AllCops:
   Exclude:
     - files/**/*
     - vendor/**/*
+    - Gemfile
+    - Rakefile
     - .vendor/**/*
     - pkg/**/*
     - spec/fixtures/**/*
     - Gemfile
     - Rakefile
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Enabled: true
 
 Lint/ElseLayout:
@@ -73,13 +75,13 @@ Lint/AmbiguousRegexpLiteral:
 Security/Eval:
   Enabled: true
 
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   Enabled: true
 
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   Enabled: true
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   Enabled: true
 
 Lint/DeprecatedClassMethods:
@@ -159,9 +161,6 @@ Style/ClassAndModuleChildren:
 
 Style/ClassCheck:
   Enabled: true
-
-Naming/HeredocDelimiterNaming:
-  Enabled: false
 
 # Class length is not necessarily an indicator of code quality
 Metrics/ClassLength:
@@ -298,6 +297,9 @@ Style/EmptyLiteral:
 Metrics/LineLength:
   Enabled: false
 
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: true
+
 Style/MethodDefParentheses:
   Enabled: true
 
@@ -318,7 +320,7 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   Enabled: true
-  
+
 Style/GlobalVars:
   Enabled: true
 
@@ -500,9 +502,6 @@ Lint/UselessAssignment:
 Layout/ClosingParenthesisIndentation:
   Enabled: false
 
-Metrics/BlockLength:
-  Enabled: false
-
 # RSpec
 
 # We don't use rspec in this way
@@ -512,18 +511,7 @@ RSpec/DescribeClass:
 # Example length is not necessarily an indicator of code quality
 RSpec/ExampleLength:
   Enabled: False
-
 RSpec/NestedGroups:                                                                                                                                                                                              
   Max: 4 
-
 RSpec/MultipleExpectations:
-  Max: 3
-
-RSpec/LetBeforeExamples:
-  Enabled: false
-
-RSpec/OverwritingSetup:
-  Enabled: false
-
-RSpec/ScatteredLet:
-  Enabled: false
+  Max: 2

@@ -2,7 +2,6 @@
 Puppet::Functions.create_function(:'memcached::max_memory') do
   dispatch :max_memory do
     required_param 'Any', :arg
-    return_type 'Integer'
   end
 
   def max_memory(arg)

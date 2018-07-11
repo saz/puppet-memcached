@@ -37,9 +37,9 @@ logfile <%= @logfile -%>
 -a <%= @unix_socket_mask %>
 <% else -%>
 
-<% if @listen_ip -%>
+<% if @real_listen_ip -%>
 # IP to listen on
--l <%= @listen_ip %>
+-l <%= @real_listen_ip.join(',') %>
 <% end -%>
 
 # TCP port to listen on

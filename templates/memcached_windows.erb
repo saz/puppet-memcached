@@ -6,8 +6,8 @@ end
 if @lock_memory
   result << '-k'
 end
-if @listen_ip
-  result << '-l ' + @listen_ip
+if @real_listen_ip
+  result << '-l ' + @real_listen_ip.join(',')
 end
 if @tcp_port
   result << '-p ' + @tcp_port.to_s
@@ -25,7 +25,7 @@ if @factor
   result << '-f ' + @factor.to_s
 end
 result << '-t ' + @processorcount
-if @max_connections 
+if @max_connections
   result << '-c ' + @max_connections
 end
 if @extended_opts

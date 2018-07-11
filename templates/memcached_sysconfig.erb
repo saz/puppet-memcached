@@ -6,8 +6,8 @@ end
 if @lock_memory
   result << '-k'
 end
-if @listen_ip
-  result << '-l ' + @listen_ip
+if @real_listen_ip
+  result << '-l ' + @real_listen_ip.join(',')
 end
 if @udp_port
   result << '-U ' + @udp_port.to_s
@@ -26,7 +26,7 @@ if @factor
 end
 if @extended_opts
   result << '-o ' + @extended_opts.join(',')
-end 
+end
 if @disable_cachedump
   result << '-X'
 end

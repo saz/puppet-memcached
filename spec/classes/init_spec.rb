@@ -379,6 +379,28 @@ describe 'memcached' do
         )
       end
     end
+
+    describe 'when setting logstdout to true' do
+      let :custom_params do
+        {
+          'logstdout' => true
+        }
+      end
+
+      let :param_hash do
+        default_params.merge(custom_params)
+      end
+
+      let :params do
+        custom_params
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sysconfig/memcached').with_content(
+          "PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"950\"\nOPTIONS=\"-l 127.0.0.1 -U 11211 -t 4\"\n"
+        )
+      end
+    end
   end
 end
 # vim: expandtab shiftwidth=2 softtabstop=2

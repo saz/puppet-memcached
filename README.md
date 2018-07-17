@@ -44,6 +44,7 @@ To change this behavior, you need to set listen_ip to '0.0.0.0'.
 
 * $package_ensure = 'present'
 * $logfile = '/var/log/memcached.log'
+* $logstdout = false (Set this to true to disable logging to a file/syslog entirely, useful when memcached runs in containers)
 * $pidfile = '/var/run/memcached.pid' (Debian family only, set to false to disable pidfile)
 * $max_memory = false
 * $max_item_size = false

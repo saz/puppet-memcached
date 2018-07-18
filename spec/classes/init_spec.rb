@@ -356,7 +356,7 @@ describe 'memcached' do
       let :param_hash do
         default_params.merge(custom_params)
       end
-      
+
       let :params do
         custom_params
       end

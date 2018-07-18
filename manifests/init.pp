@@ -11,6 +11,7 @@ class memcached (
   Enum['present', 'latest', 'absent'] $package_ensure                                        = 'present',
   Boolean $service_manage                                                                    = true,
   Optional[Stdlib::Absolutepath] $logfile                                                    = $::memcached::params::logfile,
+  Boolean $logstdout                                                                         = false,
   Boolean $syslog                                                                            = false,
   Optional[Stdlib::Absolutepath] $pidfile                                                    = '/var/run/memcached.pid',
   Boolean $manage_firewall                                                                   = false,

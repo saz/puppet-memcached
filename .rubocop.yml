@@ -13,7 +13,7 @@ AllCops:
     - spec/fixtures/**/*
     - Gemfile
     - Rakefile
-Layout/ConditionPosition:
+Lint/ConditionPosition:
   Enabled: true
 
 Lint/ElseLayout:
@@ -75,13 +75,13 @@ Lint/AmbiguousRegexpLiteral:
 Security/Eval:
   Enabled: true
 
-Layout/BlockAlignment:
+Lint/BlockAlignment:
   Enabled: true
 
-Layout/DefEndAlignment:
+Lint/DefEndAlignment:
   Enabled: true
 
-Layout/EndAlignment:
+Lint/EndAlignment:
   Enabled: true
 
 Lint/DeprecatedClassMethods:
@@ -117,7 +117,7 @@ Lint/Void:
 Layout/AccessModifierIndentation:
   Enabled: true
 
-Naming/AccessorMethodName:
+Style/AccessorMethodName:
   Enabled: true
 
 Style/Alias:
@@ -153,7 +153,7 @@ Layout/CaseIndentation:
 Style/CharacterLiteral:
   Enabled: true
 
-Naming/ClassAndModuleCamelCase:
+Style/ClassAndModuleCamelCase:
   Enabled: true
 
 Style/ClassAndModuleChildren:
@@ -248,7 +248,7 @@ Style/CommentAnnotation:
 Metrics/CyclomaticComplexity:
   Enabled: false
 
-Naming/ConstantName:
+Style/ConstantName:
   Enabled: true
 
 Style/Documentation:
@@ -315,12 +315,6 @@ Style/StringLiterals:
 Style/TrailingCommaInArguments:
   Enabled: true
 
-Style/TrailingCommaInArrayLiteral:
-  Enabled: true
-
-Style/TrailingCommaInHashLiteral:
-  Enabled: true
-
 Style/GlobalVars:
   Enabled: true
 
@@ -360,7 +354,7 @@ Style/UnlessElse:
 Style/VariableInterpolation:
   Enabled: true
 
-Naming/VariableName:
+Style/VariableName:
   Enabled: true
 
 Style/WhileUntilDo:
@@ -369,7 +363,7 @@ Style/WhileUntilDo:
 Style/EvenOdd:
   Enabled: true
 
-Naming/FileName:
+Style/FileName:
   Enabled: true
 
 Style/For:
@@ -378,7 +372,7 @@ Style/For:
 Style/Lambda:
   Enabled: true
 
-Naming/MethodName:
+Style/MethodName:
   Enabled: true
 
 Style/MultilineTernaryOperator:
@@ -414,9 +408,6 @@ Style/NumericLiterals:
 Style/OneLineConditional:
   Enabled: true
 
-Naming/BinaryOperatorParameterName:
-  Enabled: true
-
 Style/ParenthesesAroundCondition:
   Enabled: true
 
@@ -426,7 +417,7 @@ Style/PercentLiteralDelimiters:
 Style/PerlBackrefs:
   Enabled: true
 
-Naming/PredicateName:
+Style/PredicateName:
   Enabled: true
 
 Style/RedundantException:
@@ -512,6 +503,6 @@ RSpec/DescribeClass:
 RSpec/ExampleLength:
   Enabled: False
 RSpec/NestedGroups:                                                                                                                                                                                              
-  Max: 4 
+  Max: 5 
 RSpec/MultipleExpectations:
-  Max: 2
+  Max: 3

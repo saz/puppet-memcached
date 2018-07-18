@@ -26,9 +26,9 @@ if @unix_socket
   # UNIX socket access mask
   result << '"-a" "' + @unix_socket_mask + '"'
 else
-  if @listen_ip
+  if @real_listen_ip
     # IP to listen on
-    result << '"-l" "' + @listen_ip + '"'
+    result << '"-l" "' + @real_listen_ip.join(',') + '"'
   end
 
   # TCP port to listen on

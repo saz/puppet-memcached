@@ -14,7 +14,8 @@ describe 'memcached' do
       processorcount: 1,
       use_sasl: false,
       large_mem_pages: false,
-      pidfile: '/var/run/memcached.pid'
+      pidfile: '/var/run/memcached.pid',
+      disable_cachedump: false
     }
   end
 
@@ -58,25 +59,6 @@ describe 'memcached' do
     end
   end
 
-  let :default_params do
-    {
-      package_ensure: 'present',
-      logfile: '/var/log/memcached.log',
-      lock_memory: false,
-      listen_ip: '127.0.0.1',
-      tcp_port: 11_211,
-      udp_port: 11_211,
-      user: 'nobody',
-      max_connections: 8192,
-      install_dev: false,
-      processorcount: 1,
-      use_sasl: false,
-      large_mem_pages: false,
-      pidfile: '/var/run/memcached.pid',
-      disable_cachedump: false
-    }
-  end
-
   [{},
    {
      package_ensure: 'latest',
@@ -117,6 +99,9 @@ describe 'memcached' do
    {
      package_ensure: 'absent',
      install_dev: true
+   },
+   {
+     listen_ip: ['127.0.0.1', '127.0.0.2']
    },
    {
      service_manage: false
@@ -206,7 +191,11 @@ describe 'memcached' do
               expected_lines.push('-m 950')
             end
             if param_hash[:listen_ip] != ''
-              expected_lines.push("-l #{param_hash[:listen_ip]}")
+              if param_hash[:listen_ip].is_a?(String)
+                expected_lines.push("-l #{param_hash[:listen_ip]}")
+              else
+                expected_lines.push("-l #{param_hash[:listen_ip].join(',')}")
+              end
             end
             expected_lines.push('-k') if param_hash[:lock_memory]
             if param_hash[:pidfile]
@@ -270,7 +259,7 @@ describe 'memcached' do
         is_expected.to contain_svcprop('memcached/options').with(
           'fmri'     => 'memcached:default',
           'property' => 'memcached/options',
-          'value'    => "\"-m\" \"950\" \"-l\" \"127.0.0.1\" \"-p\" \"11211\" \"-U\" \"11211\" \"-u\" \"nobody\" \"-c\" \"8192\" \"-t\" \"1\"",
+          'value'    => '"-m" "950" "-l" "127.0.0.1" "-p" "11211" "-U" "11211" "-u" "nobody" "-c" "8192" "-t" "1"',
           'notify'   => 'Service[memcached]'
         )
       end
@@ -341,7 +330,6 @@ describe 'memcached' do
         custom_params
       end
 
-      # TODO: figure out how to check the file contents
       it do
         is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
           "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 2 -l 127.0.0.1 -c 8192 -p 9999 -U 9999 -X\"\n"
@@ -356,6 +344,28 @@ describe 'memcached' do
         memorysize: '1000 MB',
         processorcount: '4'
       }
+    end
+
+    describe 'when listen_ip is an array' do
+      let :custom_params do
+        {
+          'listen_ip' => ['127.0.0.1', '127.0.0.2']
+        }
+      end
+
+      let :param_hash do
+        default_params.merge(custom_params)
+      end
+      
+      let :params do
+        custom_params
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sysconfig/memcached').with_content(
+          "PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"950\"\nOPTIONS=\"-l 127.0.0.1,127.0.0.2 -U 11211 -t 4 >> /var/log/memcached.log 2>&1\"\n"
+        )
+      end
     end
 
     describe 'when using custom class parameters' do

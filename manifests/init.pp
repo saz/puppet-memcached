@@ -57,7 +57,7 @@ class memcached (
     $service_enable = true
   }
 
-  # Handle if $listen_ip is an array
+  # Handle if $listen_ip is not an array
   $real_listen_ip = [ $listen_ip ]
 
   package { $memcached::params::package_name:

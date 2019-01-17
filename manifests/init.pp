@@ -18,7 +18,7 @@ class memcached (
   $max_memory                                                                                = '95%',
   Optional[Variant[Integer, String]] $max_item_size                                          = undef,
   Optional[Variant[Integer, String]] $min_item_size                                          = undef,
-  Boolean $factor                                                                            = false,
+  Optional[Variant[Integer, String]] $factor                                                 = '1.25',
   Boolean $lock_memory                                                                       = false,
   Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1',
   Integer $tcp_port                                                                          = 11211,

@@ -16,6 +16,10 @@ if @item_size
   flags << "-I #{@item_size.to_s}"
 end
 
+if @max_memory
+  flags << "-m #{@max_memory}"
+end
+
 if @real_listen_ip
   flags << "-l #{@real_listen_ip.join(',')}"
 end

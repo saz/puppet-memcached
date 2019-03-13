@@ -9,15 +9,11 @@ end
 
 flags = []
 # required flags
-flags << "-d -u #{@user} -P #{@pidfile} -t #{@processorcount}"
+flags << "-d -u #{@user} -P #{@pidfile} -t #{@processorcount} -m #{@max_memory}"
 
 # optional flags
 if @item_size
   flags << "-I #{@item_size.to_s}"
-end
-
-if @max_memory
-  flags << "-m #{@max_memory}"
 end
 
 if @real_listen_ip

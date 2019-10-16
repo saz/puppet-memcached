@@ -13,7 +13,7 @@ flags << "-d -u #{@user} -P #{@pidfile} -t #{@processorcount}"
 
 # optional flags
 if @item_size
-  flags << "-I #{@item_size.to_s}"
+  flags << "-I #{@item_size}"
 end
 
 if @real_listen_ip
@@ -33,11 +33,11 @@ end
 #end
 
 if @tcp_port
-  flags << "-p #{@tcp_port.to_s}"
+  flags << "-p #{@tcp_port}"
 end
 
 if @udp_port
-  flags << "-U #{@udp_port.to_s}"
+  flags << "-U #{@udp_port}"
 end
 
 if @unix_socket
@@ -45,11 +45,25 @@ if @unix_socket
 end
 
 if @verbosity
-  flags << "-#{@verbosity.to_s}"
+  flags << "-#{@verbosity}"
+end
+
+flags << "-m #{scope.call_function('memcached::max_memory', [@max_memory])}"
+
+if @use_sasl
+  flags << "-S"
+end
+
+if @large_mem_pages
+  flags << "-L"
 end
 
 if @disable_cachedump
-  flags << '-X'
+  flags << "-X"
+end
+
+if @extended_opts
+  flags << "-o #{@extended_opts.join(',')}"
 end
 -%>
 memcached_enable="<%= enabled %>"

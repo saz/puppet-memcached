@@ -20,7 +20,7 @@ describe 'memcached' do
   end
 
   describe 'with manage_firewall parameter' do
-    %w[Debian RedHat].each do |osfam|
+    %w[Debian RedHat FreeBSD].each do |osfam|
       context "on osfamily #{osfam}" do
         let(:facts) do
           { osfamily: osfam,
@@ -113,6 +113,101 @@ describe 'memcached' do
 
       let :params do
         param_set
+      end
+
+      ['FreeBSD'].each do |osfamily|
+        context "on osfamily #{osfamily}" do
+          let(:facts) do
+            { osfamily: osfamily,
+              memorysize: '1000 MB',
+              processorcount: '1' }
+          end
+
+          describe "on supported osfamily: #{osfamily}" do
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_class('memcached') }
+
+            it { is_expected.to contain_class('memcached::params') }
+
+            it { is_expected.not_to contain_firewall('100_tcp_11211_for_memcached') }
+            it { is_expected.not_to contain_firewall('100_udp_11211_for_memcached') }
+
+          it do
+            if param_hash[:install_dev]
+              is_expected.to contain_package('libmemcached').with_ensure(param_hash[:package_ensure])
+            end
+          end
+
+            it do
+              is_expected.to contain_file('/etc/rc.conf.d/memcached').with(
+                'owner'   => 'root',
+                'group'   => 0
+            )
+            end
+
+            it do
+              if param_hash[:service_manage] == false
+                is_expected.not_to contain_service('memcached')
+              elsif param_hash[:package_ensure] == 'absent'
+                is_expected.to contain_service('memcached').with(
+                  'ensure'     => 'stopped',
+                  'enable'     => false
+                )
+              else
+                is_expected.to contain_service('memcached').with(
+                  'ensure'     => 'running',
+                  'enable'     => true,
+                  'hasrestart' => true,
+                  'hasstatus'  => false
+                )
+              end
+            end
+
+            it 'compiles the template based on the class parameters' do
+              flags = ["-d"]
+	      flags.push("-u #{param_hash[:user]}")
+              flags.push("-P #{param_hash[:pidfile]}") if param_hash[:pidfile]
+	      flags.push("-t #{param_hash[:processorcount]}")
+ 
+              if param_hash[:listen_ip] != ''
+                if param_hash[:listen_ip].is_a?(String)
+                  flags.push("-l #{param_hash[:listen_ip]}")
+                else
+                  flags.push("-l #{param_hash[:listen_ip].join(',')}")
+                end
+              end
+
+              flags.push('-k') if param_hash[:lock_memory]
+	      flags.push("-c #{param_hash[:max_connections]}")
+	      flags.push("-p #{param_hash[:tcp_port]}")
+	      flags.push("-U #{param_hash[:udp_port]}")
+              flags.push("-" + param_hash[:verbosity]) if param_hash[:verbosity]
+
+              if param_hash[:max_memory]
+                if param_hash[:max_memory].is_a?(String) && param_hash[:max_memory].end_with?('%')
+                  flags.push('-m 200')
+                else
+                  flags.push("-m #{param_hash[:max_memory]}")
+                end
+              else
+                flags.push('-m 950')
+              end
+	      
+              flags.push('-S') if param_hash[:use_sasl]
+              flags.push('-L') if param_hash[:large_mem_pages]
+              flags.push('-X') if param_hash[:disable_cachedump]
+              flags.push('-o lru_crawler,lru_maintainer') if param_hash[:extended_opts]
+
+	      enabled = "YES"
+	      if param_hash[:service_manage] == false
+	        enabled = "NO"
+	      end
+
+	      is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
+		"### MANAGED BY PUPPET\n### DO NOT EDIT\n\nmemcached_enable=\"#{enabled}\"\nmemcached_flags=\"#{flags.join(" ")}\"\n")
+            end
+	  end
+	end
       end
 
       ['Debian'].each do |osfamily|
@@ -280,59 +375,12 @@ describe 'memcached' do
         default_params
       end
 
-      it { is_expected.to contain_class('memcached::params') }
-
-      it { is_expected.to contain_package('memcached').with_ensure('present') }
-
-      it { is_expected.not_to contain_firewall('100_tcp_11211_for_memcached') }
-      it { is_expected.not_to contain_firewall('100_udp_11211_for_memcached') }
-
-      it do
-        is_expected.to contain_service('memcached').with(
-          'ensure'     => 'running',
-          'enable'     => true,
-          'hasrestart' => true,
-          'hasstatus'  => false
-        )
-      end
-
-      it do
-        is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
-          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 1 -l 127.0.0.1 -c 8192 -p 11211 -U 11211\"\n"
-        )
-      end
-
       it do
         is_expected.not_to contain_svcprop('memcached/options').with(
           'fmri'     => 'memcached:default',
           'property' => 'memcached/options',
           'value'    => '"-m" "950" "-l" "127.0.0.1" "-p" "11211" "-U" "11211" "-u" "nobody" "-c" "8192" "-t" "1"',
           'notify'   => 'Service[memcached]'
-        )
-      end
-    end
-
-    describe 'when using custom class parameters' do
-      let :custom_params do
-        {
-          'listen_ip' => '127.0.0.1',
-          'tcp_port'  => 9999,
-          'udp_port'  => 9999,
-          'disable_cachedump' => true
-        }
-      end
-
-      let :param_hash do
-        default_params.merge(custom_params)
-      end
-
-      let :params do
-        custom_params
-      end
-
-      it do
-        is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
-          "### MANAGED BY PUPPET\n### DO NOT EDIT\n\n\memcached_enable=\"YES\"\nmemcached_flags=\"-d -u nobody -P /var/run/memcached.pid -t 2 -l 127.0.0.1 -c 8192 -p 9999 -U 9999 -X\"\n"
         )
       end
     end

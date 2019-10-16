@@ -132,11 +132,11 @@ describe 'memcached' do
             it { is_expected.not_to contain_firewall('100_tcp_11211_for_memcached') }
             it { is_expected.not_to contain_firewall('100_udp_11211_for_memcached') }
 
-          it do
-            if param_hash[:install_dev]
-              is_expected.to contain_package('libmemcached').with_ensure(param_hash[:package_ensure])
+            it do
+              if param_hash[:install_dev]
+                is_expected.to contain_package('libmemcached').with_ensure(param_hash[:package_ensure])
+              end
             end
-          end
 
             it do
               is_expected.to contain_file('/etc/rc.conf.d/memcached').with(
@@ -164,11 +164,11 @@ describe 'memcached' do
             end
 
             it 'compiles the template based on the class parameters' do
-              flags = ["-d"]
-	      flags.push("-u #{param_hash[:user]}")
+              flags = ['-d']
+              flags.push("-u #{param_hash[:user]}")
               flags.push("-P #{param_hash[:pidfile]}") if param_hash[:pidfile]
-	      flags.push("-t #{param_hash[:processorcount]}")
- 
+              flags.push("-t #{param_hash[:processorcount]}")
+
               if param_hash[:listen_ip] != ''
                 if param_hash[:listen_ip].is_a?(String)
                   flags.push("-l #{param_hash[:listen_ip]}")
@@ -178,10 +178,10 @@ describe 'memcached' do
               end
 
               flags.push('-k') if param_hash[:lock_memory]
-	      flags.push("-c #{param_hash[:max_connections]}")
-	      flags.push("-p #{param_hash[:tcp_port]}")
-	      flags.push("-U #{param_hash[:udp_port]}")
-              flags.push("-" + param_hash[:verbosity]) if param_hash[:verbosity]
+              flags.push("-c #{param_hash[:max_connections]}")
+              flags.push("-p #{param_hash[:tcp_port]}")
+              flags.push("-U #{param_hash[:udp_port]}")
+              flags.push('-' + param_hash[:verbosity]) if param_hash[:verbosity]
 
               if param_hash[:max_memory]
                 if param_hash[:max_memory].is_a?(String) && param_hash[:max_memory].end_with?('%')
@@ -192,22 +192,21 @@ describe 'memcached' do
               else
                 flags.push('-m 950')
               end
-	      
+
               flags.push('-S') if param_hash[:use_sasl]
               flags.push('-L') if param_hash[:large_mem_pages]
               flags.push('-X') if param_hash[:disable_cachedump]
               flags.push('-o lru_crawler,lru_maintainer') if param_hash[:extended_opts]
 
-	      enabled = "YES"
-	      if param_hash[:service_manage] == false
-	        enabled = "NO"
-	      end
+              enabled = 'YES'
+              enabled = 'NO' if param_hash[:service_manage] == false
 
-	      is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
-		"### MANAGED BY PUPPET\n### DO NOT EDIT\n\nmemcached_enable=\"#{enabled}\"\nmemcached_flags=\"#{flags.join(" ")}\"\n")
+              is_expected.to contain_file('/etc/rc.conf.d/memcached').with_content(
+                "### MANAGED BY PUPPET\n### DO NOT EDIT\n\nmemcached_enable=\"#{enabled}\"\nmemcached_flags=\"#{flags.join(' ')}\"\n"
+      )
             end
-	  end
-	end
+          end
+        end
       end
 
       ['Debian'].each do |osfamily|

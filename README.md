@@ -63,4 +63,9 @@ To change this behavior, you need to set listen_ip to '0.0.0.0'.
 * $processorcount = $::processorcount
 * $service_restart = true (restart service after configuration changes, false to prevent restarts)
 * $use_sasl = false (start memcached with SASL support)
+* $use_tls = false (start memcached with TLS support)
+* $tls_cert_chain = undef
+* $tls_key = undef
+* $tls_ca_cert = undef
+* $tls_verify_mode = 1 (0: None, 1: Request, 2: Require, 3: Once)
 * $large_mem_pages = false (try to use large memory pages)

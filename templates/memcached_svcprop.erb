@@ -19,6 +19,15 @@ if @use_sasl
   result << '"-S"'
 end
 
+if @use_tls
+  # Start with TLS support
+  result << '"-Z"'
+  result << '"-o" "ssl_chain_cert="' + @tls_cert_chain + '"'
+  result << '"-o" "ssl_key="' + @tls_key + '"'
+  result << '"-o" "ssl_ca_cert="' + @tls_ca_cert + '"'
+  result << '"-o" "ssl_verify_mode="' + @tls_verify_mode + '"'
+end
+
 if @unix_socket
   # UNIX socket path to listen on
   result << '"-s" "' + @unix_socket + '"'

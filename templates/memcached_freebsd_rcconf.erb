@@ -54,6 +54,14 @@ if @use_sasl
   flags << "-S"
 end
 
+if @use_tls
+  flags << "-Z"
+  flags << "-o ssl_chain_cert=#{@tls_cert_chain}"
+  flags << "-o ssl_key=#{@tls_key}"
+  flags << "-o ssl_ca_cert=#{@tls_ca_cert}"
+  flags << "-o ssl_verify_mode=#{@tls_verify_mode}"
+end
+
 if @large_mem_pages
   flags << "-L"
 end

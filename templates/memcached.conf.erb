@@ -34,7 +34,9 @@ logfile <%= @logfile -%>
 -Z
 -o ssl_chain_cert=<%= @tls_cert_chain %>
 -o ssl_key=<%= @tls_key %>
+<% if @tls_ca_cert -%>
 -o ssl_ca_cert=<%= @tls_ca_cert %>
+<% end -%>
 -o ssl_verify_mode=<%= @tls_verify_mode %>
 <% end -%>
 

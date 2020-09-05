@@ -475,6 +475,56 @@ describe 'memcached' do
         )
       end
     end
+
+    describe 'when setting use_tls to true' do
+      let :custom_params do
+        {
+          'use_tls'         => true,
+          'tls_cert_chain'  => '/path/to/cert',
+          'tls_key'         => '/path/to/key',
+          'tls_ca_cert'     => '/path/to/cacert',
+          'tls_verify_mode' => 0
+        }
+      end
+
+      let :param_hash do
+        default_params.merge(custom_params)
+      end
+
+      let :params do
+        custom_params
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sysconfig/memcached').with_content(
+          "PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"950\"\nOPTIONS=\"-l 127.0.0.1 -U 11211 -t 4 -Z -o ssl_chain_cert=/path/to/cert -o ssl_key=/path/to/key -o ssl_ca_cert=/path/to/cacert -o ssl_verify_mode=0 >> /var/log/memcached.log 2>&1\"\n"
+        )
+      end
+    end
+
+    describe 'when setting use_tls to true and unset tls_ca_cert' do
+      let :custom_params do
+        {
+          'use_tls'        => true,
+          'tls_cert_chain' => '/path/to/cert',
+          'tls_key'        => '/path/to/key'
+        }
+      end
+
+      let :param_hash do
+        default_params.merge(custom_params)
+      end
+
+      let :params do
+        custom_params
+      end
+
+      it do
+        is_expected.to contain_file('/etc/sysconfig/memcached').with_content(
+          "PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"950\"\nOPTIONS=\"-l 127.0.0.1 -U 11211 -t 4 -Z -o ssl_chain_cert=/path/to/cert -o ssl_key=/path/to/key -o ssl_verify_mode=1 >> /var/log/memcached.log 2>&1\"\n"
+        )
+      end
+    end
   end
 end
 # vim: expandtab shiftwidth=2 softtabstop=2

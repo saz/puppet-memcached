@@ -31,6 +31,15 @@ if @disable_cachedump
   result << '-X'
 end
 result << '-t ' + @processorcount.to_s
+if @use_tls
+  result << '-Z'
+  result << '-o ssl_chain_cert=' + @tls_cert_chain
+  result << '-o ssl_key=' + @tls_key
+  if @tls_ca_cert
+    result << '-o ssl_ca_cert=' + @tls_ca_cert
+  end
+  result << '-o ssl_verify_mode=' + @tls_verify_mode.to_s
+end
 
 if !@logstdout
   # log to syslog via logger

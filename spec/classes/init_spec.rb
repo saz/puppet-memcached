@@ -16,7 +16,8 @@ describe 'memcached' do
       use_tls: false,
       large_mem_pages: false,
       pidfile: '/var/run/memcached.pid',
-      disable_cachedump: false
+      disable_cachedump: false,
+      tls_verify_mode: 1
     }
   end
 
@@ -103,6 +104,17 @@ describe 'memcached' do
    },
    {
      listen_ip: ['127.0.0.1', '127.0.0.2']
+   },
+   {
+     use_tls: true,
+     tls_cert_chain: '/path/to/cert',
+     tls_key: '/path/to/key',
+     tls_ca_cert: '/path/to/cacert'
+   },
+   {
+     use_tls: true,
+     tls_cert_chain: '/path/to/cert',
+     tls_key: '/path/to/key'
    },
    {
      service_manage: false
@@ -200,7 +212,9 @@ describe 'memcached' do
                 flags.push('-Z')
                 flags.push("-o ssl_chain_cert=#{param_hash[:tls_cert_chain]}")
                 flags.push("-o ssl_key=#{param_hash[:tls_key]}")
-                flags.push("-o ssl_ca_cert=#{param_hash[:tls_ca_cert]}")
+                if param_hash[:tls_ca_cert]
+                  flags.push("-o ssl_ca_cert=#{param_hash[:tls_ca_cert]}")
+                end
                 flags.push("-o ssl_verify_mode=#{param_hash[:tls_verify_mode]}")
               end
 
@@ -311,7 +325,9 @@ describe 'memcached' do
               expected_lines.push('-Z')
               expected_lines.push("-o ssl_chain_cert=#{param_hash[:tls_cert_chain]}")
               expected_lines.push("-o ssl_key=#{param_hash[:tls_key]}")
-              expected_lines.push("-o ssl_ca_cert=#{param_hash[:tls_ca_cert]}")
+              if param_hash[:tls_ca_cert]
+                expected_lines.push("-o ssl_ca_cert=#{param_hash[:tls_ca_cert]}")
+              end
               expected_lines.push("-o ssl_verify_mode=#{param_hash[:tls_verify_mode]}")
             end
             expected_lines.push('-L') if param_hash[:large_mem_pages]

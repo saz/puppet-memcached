@@ -55,6 +55,12 @@ class memcached (
     fail 'Define either syslog or logfile as logging destinations but not both.'
   }
 
+  if $use_tls {
+    if $tls_cert_chain == undef or $tls_key == undef {
+      fail 'tls_cert_chain and tls_key should be set when use_tls is true.'
+    }
+  }
+
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'
     $service_enable = false

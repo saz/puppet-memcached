@@ -1,0 +1,10 @@
+[Unit]
+Description=<%= @service_name %> service
+After=network.target
+Documentation=man:memcached(1)
+
+[Service]
+ExecStart=/usr/share/memcached/scripts/systemd-memcached-wrapper <%= @config_file %>
+
+[Install]
+WantedBy=multi-user.target

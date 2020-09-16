@@ -1,0 +1,12 @@
+[Unit]
+Description=<%= @service_name %> service
+Before=httpd.service
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=-<%= @config_file %>
+ExecStart=/usr/bin/memcached -u $USER -p $PORT -m $CACHESIZE -c $MAXCONN $OPTIONS
+
+[Install]
+WantedBy=multi-user.target

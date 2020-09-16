@@ -1,26 +1,26 @@
-# == Class: memcached
+# == Ressource type : memcached
 #
-# Manage memcached
+# Manage multiple memcached instances
 #
 # == Parameters
 # [* syslog *]
 # Boolean.
 # If true will pipe output to /bin/logger, sends to syslog.
 #
-class memcached (
+define memcached::instance (
   Enum['present', 'latest', 'absent'] $package_ensure                                        = 'present',
   Boolean $service_manage                                                                    = true,
-  Optional[Stdlib::Absolutepath] $logfile                                                    = $::memcached::params::logfile,
+  String $service_name                                                                       = $name,
+  Optional[Stdlib::Absolutepath] $logfile                                                    = "${::memcached::params::logpath}${service_name}",
   Boolean $logstdout                                                                         = false,
   Boolean $syslog                                                                            = false,
-  Optional[Stdlib::Absolutepath] $pidfile                                                    = '/var/run/memcached.pid',
+  Optional[Stdlib::Absolutepath] $pidfile                                                    = "/var/run/${name}.pid",
   Boolean $manage_firewall                                                                   = false,
   $max_memory                                                                                = '95%',
   Optional[Variant[Integer, String]] $max_item_size                                          = undef,
   Optional[Variant[Integer, String]] $min_item_size                                          = undef,
   Optional[Variant[Integer, String]] $factor                                                 = undef,
   Boolean $lock_memory                                                                       = false,
-  Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1',
   Integer $tcp_port                                                                          = 11211,
   Integer $udp_port                                                                          = 11211,
   String $user                                                                               = $::memcached::params::user,
@@ -45,11 +45,14 @@ class memcached (
   String $svcprop_fmri                                                                       = 'memcached:default',
   String $svcprop_key                                                                        = 'memcached/options',
   Optional[Array[String]] $extended_opts                                                     = undef,
+  String $config_file                                                                        = "${::memcached::params::config_path}${service_name}${::memcached::params::config_ext}",
   String $config_tmpl                                                                        = $::memcached::params::config_tmpl,
-  Boolean $disable_cachedump                                                                 = false
-) inherits memcached::params {
-  include memcached::params
-
+  Boolean $disable_cachedump                                                                 = false,
+  Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1'
+) {
+  if ! $::memcached::params::service_path {
+    fail 'Multiple instances are not supported for this platform'
+  }
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined
   if $syslog and str2bool($logfile) {
@@ -73,16 +76,16 @@ class memcached (
   # Handle if $listen_ip is not an array
   $real_listen_ip = [ $listen_ip ]
 
-  package { $memcached::params::package_name:
+  ensure_resource('package', $memcached::params::package_name, {
     ensure   => $package_ensure,
     provider => $memcached::params::package_provider,
-  }
+  })
 
   if $install_dev {
-    package { $memcached::params::dev_package_name:
-      ensure  => $package_ensure,
+    ensure_resource('package', $memcached::params::dev_package_name, {
+     ensure  => $package_ensure,
       require => Package[$memcached::params::package_name],
-    }
+    })
   }
 
   if $manage_firewall {
@@ -100,13 +103,13 @@ class memcached (
   }
 
   if $service_restart and $service_manage {
-    $service_notify_real = Service[$memcached::params::service_name]
+    $service_notify_real = Service[$service_name]
   } else {
     $service_notify_real = undef
   }
 
-  if ( $memcached::params::config_file ) {
-    file { $memcached::params::config_file:
+  if ( $config_file ) {
+    file { $config_file:
       owner   => 'root',
       group   => 0,
       mode    => '0644',
@@ -117,11 +120,21 @@ class memcached (
   }
 
   if $service_manage {
-    service { $memcached::params::service_name:
+    $service_file = "${memcached::params::service_path}${service_name}.service"
+    file { $service_file:
+      owner   => 'root',
+      group   => 0,
+      mode    => '0644',
+      content => template($::memcached::params::service_tmpl),
+      require => Package[$memcached::params::package_name],
+      notify  => $service_notify_real,
+    }
+    service { $service_name:
       ensure     => $service_ensure,
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => $memcached::params::service_hasstatus,
+      require    => File[$service_file]
     }
   }
 

@@ -40,6 +40,26 @@ To change this behavior, you need to set listen_ip to '0.0.0.0'.
     }
 ```
 
+### Install multiple memcached instances
+
+```ruby
+    include memcached::params
+    memcached::instance { 'memcached_fpc':
+      tcp_port => 11212,
+      udp_port => 11212,
+      max_item_size => '4m',
+      max_memory => '50%',
+      listen_ip => '0.0.0.0',
+    }
+    
+    memcached::instance { 'memcached_session':
+      tcp_port => 11213,
+      udp_port => 11213,
+      max_item_size => '2m',
+      max_memory => '30%',
+      listen_ip => '0.0.0.0',
+    }
+```
 ### Other class parameters
 
 * $package_ensure = 'present'

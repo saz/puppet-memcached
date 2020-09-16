@@ -83,7 +83,7 @@ define memcached::instance (
 
   if $install_dev {
     ensure_resource('package', $memcached::params::dev_package_name, {
-     ensure  => $package_ensure,
+      ensure  => $package_ensure,
       require => Package[$memcached::params::package_name],
     })
   }

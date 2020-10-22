@@ -3,25 +3,65 @@ language: ruby
 cache: bundler
 bundler_args: "--without system_tests development"
 before_install:
-- bundle -v
-- rm Gemfile.lock || true
-- gem update --system
-- gem update bundler
-- gem --version
-- bundle -v
+  - bundle -v
+  - rm Gemfile.lock || true
+  - gem update --system
+  - gem update bundler
+  - gem --version
+  - bundle -v
 script:
 - bundle exec rake $CHECK
-matrix:
+jobs:
   fast_finish: true
   include:
-  - rvm: 2.3.1
-    env: PUPPET_VERSION="~> 5.0" CHECK=test FORGEDEPLOY=yes
-  - rvm: 2.3.1
-    env: PUPPET_VERSION="~> 5.0" CHECK=rubocop
-  - rvm: 2.5.3
-    env: PUPPET_VERSION="~> 6.1" CHECK=test
-  - rvm: 2.5.3
-    env: PUPPET_VERSION="~> 6.1" CHECK=rubocop
+    - rvm: 2.3.1
+      env: PUPPET_VERSION="~> 5.0" CHECK=test FORGEDEPLOY=yes
+    - rvm: 2.3.1
+      env: PUPPET_VERSION="~> 5.0" CHECK=rubocop
+    - rvm: 2.5.3
+      env: PUPPET_VERSION="~> 6.1" CHECK=test
+    - rvm: 2.5.3
+      env: PUPPET_VERSION="~> 6.1" CHECK=rubocop
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=centos7-64{image=centos:7.6.1810} CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=centos7-64{image=centos:7.6.1810} CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian10-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian10-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian9-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian9-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu2004-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu2004-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubunt1804-64 CHECK=beaker
+      services: docker
 notifications:
   email: false
 deploy:

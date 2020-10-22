@@ -1,7 +1,7 @@
 # == Class: memcached::params
 #
 class memcached::params {
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
       $package_name      = 'memcached'
       $package_provider  = undef
@@ -68,7 +68,7 @@ class memcached::params {
       $use_svcprop       = false
     }
     default: {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Amazon': {
           $package_name      = 'memcached'
           $package_provider  = undef
@@ -83,7 +83,7 @@ class memcached::params {
           $use_svcprop       = false
         }
         default: {
-          fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+          fail("Unsupported platform: ${facts['os']['family']}/${facts['os']['name']}")
         }
       }
     }

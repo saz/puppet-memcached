@@ -13,7 +13,7 @@ test/tmp
 test/version_tmp
 tmp
 vendor/
-
+.vendor/
 # YARD artifacts
 .yardoc
 _yardoc

@@ -10,7 +10,7 @@
 class memcached (
   Enum['present', 'latest', 'absent'] $package_ensure                                        = 'present',
   Boolean $service_manage                                                                    = true,
-  Optional[Stdlib::Absolutepath] $logfile                                                    = $::memcached::params::logfile,
+  Optional[Stdlib::Absolutepath] $logfile                                                    = $memcached::params::logfile,
   Boolean $logstdout                                                                         = false,
   Boolean $syslog                                                                            = false,
   Optional[Stdlib::Absolutepath] $pidfile                                                    = '/var/run/memcached.pid',
@@ -23,13 +23,13 @@ class memcached (
   Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1',
   Integer $tcp_port                                                                          = 11211,
   Integer $udp_port                                                                          = 11211,
-  String $user                                                                               = $::memcached::params::user,
+  String $user                                                                               = $memcached::params::user,
   Integer $max_connections                                                                   = 8192,
   Optional[String] $verbosity                                                                = undef,
   Optional[String] $unix_socket                                                              = undef,
   String $unix_socket_mask                                                                   = '0755',
   Boolean $install_dev                                                                       = false,
-  Variant[String,Integer] $processorcount                                                    = $::processorcount,
+  Variant[String,Integer] $processorcount                                                    = $facts['processors']['count'],
   Boolean $service_restart                                                                   = true,
   Boolean $auto_removal                                                                      = false,
   Boolean $use_sasl                                                                          = false,
@@ -38,17 +38,16 @@ class memcached (
   Optional[Stdlib::Absolutepath] $tls_key                                                    = undef,
   Optional[Stdlib::Absolutepath] $tls_ca_cert                                                = undef,
   Optional[Integer] $tls_verify_mode                                                         = 1,
-  Boolean $use_registry                                                                      = $::memcached::params::use_registry,
+  Boolean $use_registry                                                                      = $memcached::params::use_registry,
   String $registry_key                                                                       = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
   Boolean $large_mem_pages                                                                   = false,
-  Boolean $use_svcprop                                                                       = $::memcached::params::use_svcprop,
+  Boolean $use_svcprop                                                                       = $memcached::params::use_svcprop,
   String $svcprop_fmri                                                                       = 'memcached:default',
   String $svcprop_key                                                                        = 'memcached/options',
   Optional[Array[String]] $extended_opts                                                     = undef,
-  String $config_tmpl                                                                        = $::memcached::params::config_tmpl,
+  String $config_tmpl                                                                        = $memcached::params::config_tmpl,
   Boolean $disable_cachedump                                                                 = false
 ) inherits memcached::params {
-
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined
   if $syslog and str2bool($logfile) {
@@ -70,7 +69,7 @@ class memcached (
   }
 
   # Handle if $listen_ip is not an array
-  $real_listen_ip = [ $listen_ip ]
+  $real_listen_ip = [$listen_ip]
 
   package { $memcached::params::package_name:
     ensure   => $package_ensure,
@@ -125,7 +124,7 @@ class memcached (
   }
 
   if $use_registry {
-    registry_value{ $registry_key:
+    registry_value { $registry_key:
       ensure => 'present',
       type   => 'string',
       data   => template($config_tmpl),

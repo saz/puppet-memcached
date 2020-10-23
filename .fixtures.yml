@@ -1,10 +1,5 @@
 fixtures:
   repositories:
-    firewall: 'git://github.com/puppetlabs/puppetlabs-firewall.git'
-    stdlib:
-      repo: 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
-    svcprop:
-      repo: 'https://github.com/bolthole/puppet-svcprop.git'
-      ref: 'e60b1abddb8b8861408e0eccf8c989737d112a60'
-  symlinks:
-    memcached: "#{source_dir}"
+    firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
+    stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
+    svcprop: 'https://github.com/bolthole/puppet-svcprop.git'

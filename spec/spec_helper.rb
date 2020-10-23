@@ -1,19 +1,2 @@
-require 'puppetlabs_spec_helper/module_spec_helper'
-
-RSpec.configure do |config|
-  config.hiera_config = 'spec/fixtures/hiera/hiera.yaml'
-  config.before do
-    # Ensure that we don't accidentally cache facts and environment between
-    # test cases.  This requires each example group to explicitly load the
-    # facts being exercised with something like
-    # Facter.collection.loader.load(:ipaddress)
-    Facter.clear
-    Facter.clear_messages
-  end
-  config.default_facts = {
-    environment: 'rp_env',
-    memsize: '1000',
-    processorcount: 1,
-    osfamily: 'RedHat'
-  }
-end
+# Thie file is based on voxpupuli/modulesync_config
+require 'voxpupuli/test/spec_helper'

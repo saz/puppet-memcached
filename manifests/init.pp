@@ -105,6 +105,7 @@ class memcached (
 
   if ( $memcached::params::config_file ) {
     file { $memcached::params::config_file:
+      ensure  => 'file',
       owner   => 'root',
       group   => 0,
       mode    => '0644',

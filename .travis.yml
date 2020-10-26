@@ -60,7 +60,7 @@ jobs:
       services: docker
     - rvm: 2.5.3
       bundler_args: --without development release
-      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubunt1804-64 CHECK=beaker
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
       services: docker
 notifications:
   email: false

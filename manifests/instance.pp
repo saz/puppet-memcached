@@ -17,7 +17,6 @@ define memcached::instance (
   Optional[String[1]] $override_content         = undef,
   Optional[Stdlib::Filesource] $override_source = undef,
 ) {
-
   unless $facts['kernel'] == 'Linux' {
     fail("memcached::instance currently only works with Linux, you are running ${facts['kernel']}")
   }

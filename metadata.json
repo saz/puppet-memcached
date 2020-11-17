@@ -1,6 +1,6 @@
 {
   "name": "saz-memcached",
-  "version": "3.7.0",
+  "version": "4.0.0",
   "author": "saz",
   "summary": "Manage memcached via Puppet",
   "license": "Apache-2.0",
@@ -58,6 +58,9 @@
     },
     {
       "operatingsystem": "Windows"
+    },
+    {
+      "operatingsystem": "FreeBSD"
     }
   ]
 }

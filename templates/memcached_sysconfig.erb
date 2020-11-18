@@ -40,6 +40,9 @@ if @use_tls
   end
   result << '-o ssl_verify_mode=' + @tls_verify_mode.to_s
 end
+if @use_sasl
+  result << '-S'
+end
 
 if !@logstdout
   # log to syslog via logger

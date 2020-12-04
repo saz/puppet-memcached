@@ -71,4 +71,4 @@ deploy:
     tags: true
     all_branches: true
     rvm: 2.4.4
-    condition: "$FORGEDEPLOY = true"
+    condition: "$FORGEDEPLOY = yes"

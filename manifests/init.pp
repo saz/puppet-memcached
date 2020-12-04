@@ -38,6 +38,8 @@ class memcached (
   Optional[Stdlib::Absolutepath] $tls_key                                                    = undef,
   Optional[Stdlib::Absolutepath] $tls_ca_cert                                                = undef,
   Optional[Integer] $tls_verify_mode                                                         = 1,
+  Optional[Stdlib::IP::Address] $notls_listener_addr                                         = '127.0.0.1',
+  Optional[Stdlib::Port] $notls_listener_port                                                = undef,
   Boolean $use_registry                                                                      = $memcached::params::use_registry,
   String $registry_key                                                                       = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
   Boolean $large_mem_pages                                                                   = false,

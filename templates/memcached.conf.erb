@@ -38,6 +38,9 @@ logfile <%= @logfile -%>
 -o ssl_ca_cert=<%= @tls_ca_cert %>
 <% end -%>
 -o ssl_verify_mode=<%= @tls_verify_mode %>
+<% if @notls_listener_port -%>
+-l notls:<%= @notls_listener_addr %>:<%= @notls_listener_port %>
+<% end -%>
 <% end -%>
 
 <% if @unix_socket -%>

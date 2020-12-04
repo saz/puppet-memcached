@@ -62,6 +62,9 @@ if @use_tls
     flags << "-o ssl_ca_cert=#{@tls_ca_cert}"
   end
   flags << "-o ssl_verify_mode=#{@tls_verify_mode}"
+  if @notls_listener_port
+    flags << "-l notls:#{@notls_listener_addr}:#{@notls_listener_port}"
+  end
 end
 
 if @large_mem_pages

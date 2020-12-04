@@ -39,6 +39,9 @@ if @use_tls
     result << '-o ssl_ca_cert=' + @tls_ca_cert
   end
   result << '-o ssl_verify_mode=' + @tls_verify_mode.to_s
+  if @notls_listener_port
+    result << '-l notls:' + @notls_listener_addr + ':' + @notls_listener_port
+  end
 end
 if @use_sasl
   result << '-S'

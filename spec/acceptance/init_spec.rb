@@ -16,7 +16,7 @@ describe 'memcached' do
     end
     describe port(11_211) do
       it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
-      it { is_expected.to be_listening.on('127.0.0.1').with('udp') }
+      it { is_expected.not_to be_listening.on('127.0.0.1').with('udp') }
     end
   end
 end

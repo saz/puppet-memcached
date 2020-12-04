@@ -22,7 +22,7 @@ class memcached (
   Boolean $lock_memory                                                                       = false,
   Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1',
   Integer $tcp_port                                                                          = 11211,
-  Integer $udp_port                                                                          = 11211,
+  Integer $udp_port                                                                          = 0,
   String $user                                                                               = $memcached::params::user,
   Integer $max_connections                                                                   = 8192,
   Optional[String] $verbosity                                                                = undef,
@@ -92,10 +92,12 @@ class memcached (
       action => 'accept',
     }
 
-    firewall { "100_udp_${udp_port}_for_memcached":
-      dport  => $udp_port,
-      proto  => 'udp',
-      action => 'accept',
+    if $udp_port != 0 {
+      firewall { "100_udp_${udp_port}_for_memcached":
+        dport  => $udp_port,
+        proto  => 'udp',
+        action => 'accept',
+      }
     }
   }
 

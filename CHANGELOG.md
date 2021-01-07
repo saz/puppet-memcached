@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0]
+### Added
+- Add sasl support on RHEL derivatives (#122)
+- Add notls_listener_addr and notls_listener_port parameters (#124)
+### Changed
+- BREAKING CHANGE: Disable UDP by default (#125)
+  If you need UDP enabled, set `memcached::udp_port` to a non-zero value, e.g. 11211
+
 ## [4.0.0]
 ### Added
 - Support management of multiple memcached instances (systemd required!) #120

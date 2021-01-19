@@ -27,9 +27,9 @@ if @use_tls
   if @tls_ca_cert
     result << '"-o" "ssl_ca_cert="' + @tls_ca_cert + '"'
   end
-  result << '"-o" "ssl_verify_mode="' + @tls_verify_mode + '"'
+  result << '"-o" "ssl_verify_mode="' + @tls_verify_mode.to_s + '"'
   if @notls_listener_port
-    result << '"-l" "notls:"' + @notls_listener_addr + ':' + @notls_listener_port + '"'
+    result << '"-l" "notls:"' + @notls_listener_addr + ':' + @notls_listener_port.to_s + '"'
   end
 end
 

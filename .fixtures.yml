@@ -3,5 +3,9 @@ fixtures:
     firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
     stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
     svcprop: 'https://github.com/bolthole/puppet-svcprop.git'
-    systemd: 'https://github.com/camptocamp/puppet-systemd.git'
     selinux: 'https://github.com/voxpupuli/puppet-selinux.git'
+  forge_modules:
+    systemd: 'https://github.com/camptocamp/puppet-systemd.git'
+      repo: 'camptocamp/systemd'
+      ref: '2.12.0'
+

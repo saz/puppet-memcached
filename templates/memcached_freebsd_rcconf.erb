@@ -16,8 +16,8 @@ if @item_size
   flags << "-I #{@item_size}"
 end
 
-if @real_listen_ip
-  flags << "-l #{@real_listen_ip.join(',')}"
+if @real_listen
+  flags << "-l #{@real_listen.join(',')}"
 end
 
 if @lock_memory

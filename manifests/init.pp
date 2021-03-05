@@ -20,6 +20,7 @@ class memcached (
   Optional[Variant[Integer, String]] $min_item_size                                          = undef,
   Optional[Variant[Integer, String]] $factor                                                 = undef,
   Boolean $lock_memory                                                                       = false,
+  Optional[Variant[String,Array[String]]] $listen                                            = undef,
   Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1',
   Integer $tcp_port                                                                          = 11211,
   Integer $udp_port                                                                          = 0,
@@ -70,8 +71,13 @@ class memcached (
     $service_enable = true
   }
 
-  # Handle if $listen_ip is not an array
-  $real_listen_ip = [$listen_ip]
+  if $listen {
+    # Handle if $listen is not an array
+    $real_listen = [$listen]
+  } else {
+    # Handle if $listen_ip is not an array
+    $real_listen = [$listen_ip]
+  }
 
   package { $memcached::params::package_name:
     ensure   => $package_ensure,

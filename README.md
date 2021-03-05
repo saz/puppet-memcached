@@ -120,7 +120,8 @@ memcached::instance{'11222':
 * $min_item_size = false
 * $factor = false
 * $lock_memory = false (WARNING: good if used intelligently, google for -k key)
-* $listen_ip = '127.0.0.1'
+* $listen = '127.0.0.1' (if TLS/SSL is enabled, 'notls' prefix can be used to disable for specific listeners "notls:<ip>:<port>")
+* $listen_ip = '127.0.0.1' (deprecated, listen will take precedence over this)
 * $tcp_port = 11211
 * $udp_port = 0
 * $manage_firewall = false

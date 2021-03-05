@@ -138,6 +138,4 @@ memcached::instance{'11222':
 * $tls_key = undef
 * $tls_ca_cert = undef
 * $tls_verify_mode = 1 (0: None, 1: Request, 2: Require, 3: Once)
-* $notls_listener_addr = '127.0.0.1'
-* $notls_listener_port = undef
 * $large_mem_pages = false (try to use large memory pages)

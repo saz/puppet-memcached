@@ -73,6 +73,7 @@ class memcached (
     # Handle if $listen is not an array
     $real_listen = [$listen]
   } else {
+    warning('memcached::listen_ip is deprecated in favor of memcached::listen')
     # Handle if $listen_ip is not an array
     $real_listen = [$listen_ip]
   }

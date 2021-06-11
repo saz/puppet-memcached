@@ -49,10 +49,10 @@ define memcached::instance (
     }
     # eager is required to reload systemd before we reload the service
     systemd::dropin_file { "${service_name}-override.conf":
-      unit          => $service_name,
-      source        => $override_source,
-      content       => $override_content,
-      notify        => Service[$service_name],
+      unit    => $service_name,
+      source  => $override_source,
+      content => $override_content,
+      notify  => Service[$service_name],
     }
   }
 

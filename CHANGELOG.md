@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0]
+### Changed
+- BREAKING CHANGE: Testing for Puppet 5 has been dropped
+- Switched from Travis to Github Actions
+- Dependencies updated to support the newest releases
+
 ## [6.0.0]
 ### Added
 - Add listen parameter as successor for listen_ip (#127)

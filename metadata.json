@@ -9,7 +9,7 @@
   "issues_url": "https://github.com/saz/puppet-memcached/issues",
   "description": "Manage memcached via Puppet",
   "requirements": [
-    {"name":"puppet","version_requirement":">= 6.1.0 < 7.0.0" }
+    {"name":"puppet","version_requirement":">= 6.1.0 < 8.0.0" }
   ],
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 4.13.1 < 8.0.0"},

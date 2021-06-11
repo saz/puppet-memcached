@@ -52,7 +52,6 @@ define memcached::instance (
       unit          => $service_name,
       source        => $override_source,
       content       => $override_content,
-      daemon_reload => 'eager',
       notify        => Service[$service_name],
     }
   }

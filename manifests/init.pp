@@ -20,8 +20,8 @@ class memcached (
   Optional[Variant[Integer, String]] $min_item_size                                          = undef,
   Optional[Variant[Integer, String]] $factor                                                 = undef,
   Boolean $lock_memory                                                                       = false,
-  Optional[Variant[String,Array[String]]] $listen                                            = undef,
-  Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1',
+  Optional[Variant[String,Array[String]]] $listen                                            = '127.0.0.1',
+  Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = undef,
   Integer $tcp_port                                                                          = 11211,
   Integer $udp_port                                                                          = 0,
   String $user                                                                               = $memcached::params::user,
@@ -69,13 +69,13 @@ class memcached (
     $service_enable = true
   }
 
-  if $listen {
-    # Handle if $listen is not an array
-    $real_listen = [$listen]
-  } else {
+  if $listen_ip != undef {
     warning('memcached::listen_ip is deprecated in favor of memcached::listen')
     # Handle if $listen_ip is not an array
     $real_listen = [$listen_ip]
+  } else {
+    # Handle if $listen is not an array
+    $real_listen = [$listen]
   }
 
   package { $memcached::params::package_name:

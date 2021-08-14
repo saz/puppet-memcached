@@ -1,4 +1,6 @@
-# puppet-memcached [![Build Status](https://secure.travis-ci.org/saz/puppet-memcached.png)](http://travis-ci.org/saz/puppet-memcached)
+# memached module for Puppet
+
+[![Build Status](https://github.com/saz/puppet-memcached/workflows/CI/badge.svg)](https://github.com/saz/puppet-memcached/actions?query=workflow%3ACI)
 
 Manage memcached via Puppet
 

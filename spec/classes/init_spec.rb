@@ -76,6 +76,10 @@ describe 'memcached' do
         context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
           it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content("PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"462\"\nOPTIONS=\"-l 127.0.0.1 -U 0 -t 1 >> /var/log/memcached.log 2>&1\"\n") }
         end
+
+        context 'on Debian', if: facts[:os]['family'] == 'Debian' do
+          it { is_expected.to contain_file('/etc/memcached.conf').with_content(%r{^-l 127.0.0.1$}) }
+        end
       end
 
       describe 'when setting listen parameter to an array with a single string' do
@@ -88,6 +92,10 @@ describe 'memcached' do
         context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
           it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content("PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"462\"\nOPTIONS=\"-l 127.0.0.1 -U 0 -t 1 >> /var/log/memcached.log 2>&1\"\n") }
         end
+
+        context 'on Debian', if: facts[:os]['family'] == 'Debian' do
+          it { is_expected.to contain_file('/etc/memcached.conf').with_content(%r{^-l 127.0.0.1$}) }
+        end
       end
 
       describe 'when setting listen parameter to an array of strings' do
@@ -99,6 +107,10 @@ describe 'memcached' do
 
         context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
           it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content("PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"462\"\nOPTIONS=\"-l 127.0.0.1,127.0.0.2 -U 0 -t 1 >> /var/log/memcached.log 2>&1\"\n") }
+        end
+
+        context 'on Debian', if: facts[:os]['family'] == 'Debian' do
+          it { is_expected.to contain_file('/etc/memcached.conf').with_content(%r{^-l 127.0.0.1,127.0.0.2$}) }
         end
       end
     end

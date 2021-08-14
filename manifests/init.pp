@@ -13,7 +13,7 @@ class memcached (
   Optional[Stdlib::Absolutepath] $logfile                                                    = $memcached::params::logfile,
   Boolean $logstdout                                                                         = false,
   Boolean $syslog                                                                            = false,
-  Optional[Stdlib::Absolutepath] $pidfile                                                    = '/var/run/memcached.pid',
+  Variant[Stdlib::Absolutepath, Undef] $pidfile                                              = '/var/run/memcached.pid',
   Boolean $manage_firewall                                                                   = false,
   $max_memory                                                                                = '95%',
   Optional[Variant[Integer, String]] $max_item_size                                          = undef,
@@ -21,7 +21,7 @@ class memcached (
   Optional[Variant[Integer, String]] $factor                                                 = undef,
   Boolean $lock_memory                                                                       = false,
   Optional[Variant[String,Array[String]]] $listen                                            = undef,
-  Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = '127.0.0.1',
+  Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = undef,
   Integer $tcp_port                                                                          = 11211,
   Integer $udp_port                                                                          = 0,
   String $user                                                                               = $memcached::params::user,
@@ -38,7 +38,7 @@ class memcached (
   Optional[Stdlib::Absolutepath] $tls_cert_chain                                             = undef,
   Optional[Stdlib::Absolutepath] $tls_key                                                    = undef,
   Optional[Stdlib::Absolutepath] $tls_ca_cert                                                = undef,
-  Optional[Integer] $tls_verify_mode                                                         = 1,
+  Integer $tls_verify_mode                                                                   = 1,
   Boolean $use_registry                                                                      = $memcached::params::use_registry,
   String $registry_key                                                                       = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
   Boolean $large_mem_pages                                                                   = false,
@@ -69,13 +69,18 @@ class memcached (
     $service_enable = true
   }
 
-  if $listen {
-    # Handle if $listen is not an array
-    $real_listen = [$listen]
+  if ! $listen and ! $listen_ip {
+    # if both are not set, we're setting $real_listen to 127.0.0.1
+    $real_listen = ['127.0.0.1']
   } else {
-    warning('memcached::listen_ip is deprecated in favor of memcached::listen')
-    # Handle if $listen_ip is not an array
-    $real_listen = [$listen_ip]
+    if $listen {
+      # Handle if $listen is not an array
+      $real_listen = [$listen]
+    } else {
+      warning('memcached::listen_ip is deprecated in favor of memcached::listen')
+      # Handle if $listen_ip is not an array
+      $real_listen = [$listen_ip]
+    }
   }
 
   package { $memcached::params::package_name:

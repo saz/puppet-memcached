@@ -65,6 +65,43 @@ describe 'memcached' do
           it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content("PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"462\"\nOPTIONS=\"-l 127.0.0.1 -U 0 -t 1 -Z -o ssl_chain_cert=/path/to/cert -o ssl_key=/path/to/key -o ssl_ca_cert=/path/to/cacert -o ssl_verify_mode=0 >> /var/log/memcached.log 2>&1\"\n") }
         end
       end
+
+      describe 'when setting listen parameter to a string' do
+        let :params do
+          {
+            'listen' => '127.0.0.1',
+          }
+        end
+
+        context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
+          it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content("PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"462\"\nOPTIONS=\"-l 127.0.0.1 -U 0 -t 1 >> /var/log/memcached.log 2>&1\"\n") }
+        end
+      end
+
+      describe 'when setting listen parameter to an array with a single string' do
+        let :params do
+          {
+            'listen' => ['127.0.0.1'],
+          }
+        end
+
+        context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
+          it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content("PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"462\"\nOPTIONS=\"-l 127.0.0.1 -U 0 -t 1 >> /var/log/memcached.log 2>&1\"\n") }
+        end
+      end
+
+
+      describe 'when setting listen parameter to an array of strings' do
+        let :params do
+          {
+            'listen' => ['127.0.0.1', '127.0.0.2'],
+          }
+        end
+
+        context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
+          it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content("PORT=\"11211\"\nUSER=\"memcached\"\nMAXCONN=\"8192\"\nCACHESIZE=\"462\"\nOPTIONS=\"-l 127.0.0.1,127.0.0.2 -U 0 -t 1 >> /var/log/memcached.log 2>&1\"\n") }
+        end
+      end
     end
   end
 end

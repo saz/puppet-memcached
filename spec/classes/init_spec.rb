@@ -90,7 +90,6 @@ describe 'memcached' do
         end
       end
 
-
       describe 'when setting listen parameter to an array of strings' do
         let :params do
           {

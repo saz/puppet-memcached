@@ -101,3 +101,7 @@ logfile <%= @logfile -%>
 <% if @disable_cachedump -%>
 -X
 <% end -%>
+
+<% if @max_reqs_per_event -%>
+-R <%= @max_reqs_per_event %>
+<% end -%>

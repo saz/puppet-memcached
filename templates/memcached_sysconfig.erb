@@ -30,6 +30,9 @@ end
 if @disable_cachedump
   result << '-X'
 end
+if @max_reqs_per_event
+  result << '-R' + @max_reqs_per_event.to_s
+end
 result << '-t ' + @processorcount.to_s
 if @use_tls
   result << '-Z'

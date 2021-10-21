@@ -36,5 +36,8 @@ if @logfile
 end
 if @disable_cachedump
   result << '-X'
+end
+if @max_reqs_per_event
+  result << '-R' + @max_reqs_per_event.to_s
 end -%>
 c:\memcached\memcached.exe -d runservice <%= result.join(' ') %>

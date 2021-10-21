@@ -48,6 +48,7 @@ class memcached (
   Optional[Array[String]] $extended_opts                                                     = undef,
   String $config_tmpl                                                                        = $memcached::params::config_tmpl,
   Boolean $disable_cachedump                                                                 = false,
+  Optional[Integer] $max_reqs_per_event                                                      = undef,
 ) inherits memcached::params {
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined

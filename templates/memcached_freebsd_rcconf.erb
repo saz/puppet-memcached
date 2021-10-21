@@ -75,6 +75,10 @@ end
 if @extended_opts
   flags << "-o #{@extended_opts.join(',')}"
 end
+
+if @max_reqs_per_event
+  flags << "-R #{@max_reqs_per_event}"
+end
 -%>
 memcached_enable="<%= enabled %>"
 memcached_flags="<%= flags.join(" ") %>"

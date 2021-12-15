@@ -53,10 +53,10 @@ define memcached::instance (
       unit    => $service_name,
       source  => $override_source,
       content => $override_content,
-      notify  => Exec['memcached_force_systemd_reload'],
+      notify  => Exec["${service_name}_force_systemd_reload"],
     }
 
-    exec { 'memcached_force_systemd_reload':
+    exec { "${service_name}_force_systemd_reload":
       command     => 'systemctl daemon-reload',
       user        => 'root',
       path        => ['/sbin', '/bin', '/usr/sbin', '/usr/bin'],

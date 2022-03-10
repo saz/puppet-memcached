@@ -6,7 +6,11 @@ Puppet::Functions.create_function(:'memcached::max_memory') do
 
   def max_memory(arg)
     scope = closure_scope
-    memsize = scope['facts']['memorysize']
+    memsize = if scope['facts']['memory'].nil?
+                scope['facts']['memorysize']
+              else
+                scope['facts']['memory']['system']['total']
+              end
 
     if arg && !arg.to_s.end_with?('%')
       result_in_mb = arg.to_i

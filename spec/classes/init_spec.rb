@@ -53,6 +53,7 @@ describe 'memcached' do
       describe 'when setting use_tls to true and unset tls_ca_cert' do
         let :params do
           {
+            'processorcount'  => 1,
             'use_tls'         => true,
             'tls_cert_chain'  => '/path/to/cert',
             'tls_key'         => '/path/to/key',

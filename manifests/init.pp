@@ -129,6 +129,17 @@ class memcached (
     }
   }
 
+  if $logfile and !$syslog {
+    file { $logfile:
+      ensure  => 'file',
+      owner   => $user,
+      group   => $user',
+      mode    => '0640',
+      require => Package[$memcached::params::package_name],
+      notify  => $service_notify_real,
+    }
+  }
+
   if $service_manage {
     service { $memcached::params::service_name:
       ensure     => $service_ensure,

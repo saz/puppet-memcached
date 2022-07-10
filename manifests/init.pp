@@ -133,7 +133,7 @@ class memcached (
     file { $logfile:
       ensure  => 'file',
       owner   => $user,
-      group   => $user',
+      group   => $user,
       mode    => '0640',
       require => Package[$memcached::params::package_name],
       notify  => $service_notify_real,

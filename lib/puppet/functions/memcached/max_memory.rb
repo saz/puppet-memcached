@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Calculate max_memory size from fact 'memsize' and passed argument.
 Puppet::Functions.create_function(:'memcached::max_memory') do
   dispatch :max_memory do
@@ -15,14 +17,13 @@ Puppet::Functions.create_function(:'memcached::max_memory') do
     if arg && !arg.to_s.end_with?('%')
       result_in_mb = arg.to_i
     else
-      max_memory_percent = arg ? arg : '95%'
+      max_memory_percent = arg || '95%'
 
       # Taken from puppetlabs-stdlib to_bytes() function
       value, suffix = *%r{([0-9.e+-]*)\s*([^bB]?)}.match(memsize)[1, 2]
 
       value = value.to_f
       case suffix
-      when '' then value = value
       when 'k' then value *= (1 << 10)
       when 'M' then value *= (1 << 20)
       when 'G' then value *= (1 << 30)

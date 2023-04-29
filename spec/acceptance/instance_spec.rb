@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'memcached' do
@@ -13,28 +15,33 @@ describe 'memcached' do
       apply_manifest(pp1, catch_failures: true)
       apply_manifest(pp1, catch_changes: true)
     end
-    describe service('memcached') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
-    end
-    describe service('memcached@11222') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
-    end
-    describe service('memcached@11223') do
+
+    describe service('memcached'), :default do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
 
-    describe port(11_222) do
+    describe service('memcached@11222'), :memcached11222 do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe service('memcached@11223'), :memcached11223 do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe port(11_222), :port11222 do
       it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
       it { is_expected.not_to be_listening.on('127.0.0.1').with('udp') }
     end
-    describe port(11_223) do
+
+    describe port(11_223), :port11223 do
       it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
       it { is_expected.not_to be_listening.on('127.0.0.1').with('udp') }
     end
   end
+
   context 'with service limits' do
     let :pp2 do
       <<-PUPPET
@@ -51,6 +58,7 @@ describe 'memcached' do
       apply_manifest(pp2, catch_failures: true)
       apply_manifest(pp2, catch_changes: true)
     end
+
     describe service('memcached@11222') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
@@ -65,6 +73,7 @@ describe 'memcached' do
       its(:content) { is_expected.to match %r{LimitNOFILE=8192\nLimitNPROC=16384} }
     end
   end
+
   context 'with LISTEN override' do
     let :pp3 do
       <<-PUPPET
@@ -78,6 +87,7 @@ describe 'memcached' do
       apply_manifest(pp3, catch_failures: true)
       apply_manifest(pp3, catch_changes: true)
     end
+
     describe service('memcached@11222') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'memcached::instance', type: :define do
   on_supported_os.each do |os, facts|
-    context "on #{os} " do
+    context "on #{os}" do
       let :facts do
         facts
       end
@@ -18,6 +20,7 @@ describe 'memcached::instance', type: :define do
         context 'on selinux', if: facts[:os]['selinux']['enabled'] == true do
           it { is_expected.to contain_selinux__port('allow-memcached@3489.service') }
         end
+
         context 'without selinux', if: facts[:os]['family'] != 'RedHat' do
           it { is_expected.not_to contain_selinux__port('allow-memcached@3489.service') }
         end

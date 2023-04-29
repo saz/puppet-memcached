@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'memcached' do
@@ -6,7 +8,7 @@ describe 'memcached' do
   end
 
   on_supported_os.each do |os, facts|
-    context "on #{os} " do
+    context "on #{os}" do
       let :facts do
         facts
       end
@@ -18,9 +20,11 @@ describe 'memcached' do
         it { is_expected.to contain_package('memcached').with_ensure('present') }
         it { is_expected.not_to contain_firewall('100_tcp_11211_for_memcached') }
         it { is_expected.not_to contain_firewall('100_udp_11211_for_memcached') }
+
         context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
           it { is_expected.to contain_file('/etc/sysconfig/memcached').with_ensure('file') }
         end
+
         context 'on Debian', if: facts[:os]['family'] == 'Debian' do
           it { is_expected.to contain_file('/etc/memcached.conf').with_ensure('file') }
         end
@@ -67,7 +71,7 @@ describe 'memcached' do
         end
       end
 
-      describe 'when both listen and listen_ip parameters are not set ' do
+      describe 'when both listen and listen_ip parameters are not set' do
         context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
           it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content(%r{^OPTIONS="-l 127.0.0.1 }) }
         end

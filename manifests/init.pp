@@ -21,7 +21,7 @@ class memcached (
   Optional[Variant[Integer, String]] $factor                                                 = undef,
   Boolean $lock_memory                                                                       = false,
   Optional[Variant[String,Array[String]]] $listen                                            = undef,
-  Optional[Variant[Stdlib::Compat::Ip_address,Array[Stdlib::Compat::Ip_address]]] $listen_ip = undef,
+  Optional[Variant[Stdlib::Ip::Address,Array[Stdlib::Ip::Address]]] $listen_ip               = undef,
   Integer $tcp_port                                                                          = 11211,
   Integer $udp_port                                                                          = 0,
   String $user                                                                               = $memcached::params::user,

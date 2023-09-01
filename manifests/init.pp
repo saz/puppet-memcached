@@ -65,9 +65,11 @@ class memcached (
   if $package_ensure == 'absent' {
     $service_ensure = 'stopped'
     $service_enable = false
+    $file_ensure = 'absent'
   } else {
     $service_ensure = 'running'
     $service_enable = true
+    $file_ensure = 'file'
   }
 
   if ! $listen and ! $listen_ip {
@@ -120,7 +122,7 @@ class memcached (
 
   if ( $memcached::params::config_file ) {
     file { $memcached::params::config_file:
-      ensure  => 'file',
+      ensure  => $file_ensure,
       owner   => 'root',
       group   => 0,
       mode    => '0644',
@@ -132,7 +134,7 @@ class memcached (
 
   if $logfile and !$syslog {
     file { $logfile:
-      ensure  => 'file',
+      ensure  => $file_ensure,
       owner   => $user,
       group   => 0,
       mode    => '0640',

@@ -57,7 +57,7 @@ if !@logstdout
   end
 end
 -%>
-<%- if scope['osfamily'] != 'Suse' -%>
+<%- if scope['facts']['os']['family'] != 'Suse' -%>
 PORT="<%= @tcp_port %>"
 USER="<%= @user %>"
 MAXCONN="<%= @max_connections %>"

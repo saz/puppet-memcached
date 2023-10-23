@@ -17,7 +17,7 @@ If you find this module useful, send some bitcoins to 1Na3YFUmdxKxJLiuRXQYJU2kiN
 Starting with version 3.0.0, memcached will be listening on 127.0.0.1 only.
 This should make setups more secure (e.g. if there are no firewall rules in place).
 
-To change this behavior, you need to set listen to '0.0.0.0'.
+For the old behaviour, you need to set listen to '0.0.0.0'.
 ```
 
 ### Use roughly 90% of memory

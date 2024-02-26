@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0]
+### Added
+- Add max_reqs_per_event option for the memcached config (#136)
+- Add support for Puppet < 9, stdlib < 10, firewall < 9, systemd < 7, selinux < 5 (#157)
+### Fixed
+- Allow disabling PID file (#156)
+- README: use new parameter for address binding (#152)
+- Bugfix: replace legacy fact in sysconfig-template (#151)
+- set file ensure based on $package_ensure (#150)
+- fix: wrong camelcase in Stdlib::IP::Address type (#148)
+
 ## [8.2.0]
 ### Added
 - Support puppet/systemd < 5.0.0 (#143)

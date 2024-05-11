@@ -66,6 +66,12 @@
     },
     {
       "operatingsystem": "FreeBSD"
+    },
+    {
+      "operatingsystem": "OpenBSD",
+      "operatingsystemrelease": [
+        "7"
+      ]
     }
   ]
 }

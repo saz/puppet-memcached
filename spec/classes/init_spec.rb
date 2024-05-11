@@ -21,6 +21,19 @@ describe 'memcached' do
         it { is_expected.not_to contain_firewall('100_tcp_11211_for_memcached') }
         it { is_expected.not_to contain_firewall('100_udp_11211_for_memcached') }
 
+        context 'on OpenBSD', if: facts[:kernel] == 'OpenBSD' do
+          it { is_expected.not_to contain_file('/etc/sysconfig/memcached').with_ensure('file') }
+          it { is_expected.not_to contain_file('/var/log/memcached.log').with_ensure('file') }
+
+          it {
+            is_expected.to contain_service('memcached').with(
+              ensure: 'running',
+              enable: 'true',
+              flags: '-l 127.0.0.1 -u _memcached -P /var/run/memcached.pid'
+            )
+          }
+        end
+
         context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
           it { is_expected.to contain_file('/etc/sysconfig/memcached').with_ensure('file') }
         end
@@ -30,13 +43,31 @@ describe 'memcached' do
         end
       end
 
+      describe 'with service_flags parameter', if: facts[:os]['family'] == 'OpenBSD' do
+        let(:params) { { service_flags: '-l 0.0.0.0 -u _memcached -P /var/run/memcached.pid' } }
+
+        it {
+          is_expected.to contain_service('memcached').with(
+            ensure: 'running',
+            enable: 'true',
+            flags: '-l 0.0.0.0 -u _memcached -P /var/run/memcached.pid'
+          )
+        }
+      end
+
       describe 'with manage_firewall parameter' do
         context 'with manage_firewall set to true and unset udp_port' do
           let(:params) { { manage_firewall: true } }
 
           it { is_expected.to contain_class('memcached') }
 
-          it { is_expected.to contain_firewall('100_tcp_11211_for_memcached') }
+          context 'on Linux', if: facts[:kernel] == 'Linux' do
+            it { is_expected.to contain_firewall('100_tcp_11211_for_memcached') }
+          end
+
+          context 'not on Linux', if: facts[:kernel] != 'Linux' do
+            it { is_expected.not_to contain_firewall('100_tcp_11211_for_memcached') }
+          end
         end
 
         context 'with manage_firewall set to true and udp_port set to 11211' do
@@ -49,8 +80,15 @@ describe 'memcached' do
 
           it { is_expected.to contain_class('memcached') }
 
-          it { is_expected.to contain_firewall('100_tcp_11211_for_memcached') }
-          it { is_expected.to contain_firewall('100_udp_11211_for_memcached') }
+          context 'on Linux', if: facts[:kernel] == 'Linux' do
+            it { is_expected.to contain_firewall('100_tcp_11211_for_memcached') }
+            it { is_expected.to contain_firewall('100_udp_11211_for_memcached') }
+          end
+
+          context 'not on Linux', if: facts[:kernel] != 'Linux' do
+            it { is_expected.not_to contain_firewall('100_tcp_11211_for_memcached') }
+            it { is_expected.not_to contain_firewall('100_udp_11211_for_memcached') }
+          end
         end
       end
 

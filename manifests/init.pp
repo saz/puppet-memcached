@@ -10,6 +10,7 @@
 class memcached (
   Enum['present', 'latest', 'absent'] $package_ensure                                        = 'present',
   Boolean $service_manage                                                                    = true,
+  Optional[String] $service_flags                                                            = $memcached::params::service_flags,
   Optional[Stdlib::Absolutepath] $logfile                                                    = $memcached::params::logfile,
   Boolean $logstdout                                                                         = false,
   Boolean $syslog                                                                            = false,
@@ -98,7 +99,7 @@ class memcached (
     }
   }
 
-  if $manage_firewall {
+  if $facts['kernel'] == 'Linux' and $manage_firewall {
     firewall { "100_tcp_${tcp_port}_for_memcached":
       dport  => $tcp_port,
       proto  => 'tcp',
@@ -147,6 +148,7 @@ class memcached (
     service { $memcached::params::service_name:
       ensure     => $service_ensure,
       enable     => $service_enable,
+      flags      => $service_flags,
       hasrestart => true,
       hasstatus  => $memcached::params::service_hasstatus,
     }

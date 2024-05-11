@@ -134,6 +134,7 @@ memcached::instance{'11222':
 * $install_dev = false (TRUE if 'libmemcached-dev' package should be installed)
 * $processorcount = $::processorcount
 * $service_restart = true (restart service after configuration changes, false to prevent restarts)
+* $service_flags = '-l 127.0.0.1 -u _memcached -P /var/run/memcached.pid' (only relevant for OpenBSD, to configure the service)
 * $use_sasl = false (start memcached with SASL support)
 * $use_tls = false (start memcached with TLS support)
 * $tls_cert_chain = undef

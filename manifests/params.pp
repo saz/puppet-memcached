@@ -7,6 +7,7 @@ class memcached::params {
       $package_provider  = undef
       $service_name      = 'memcached'
       $service_hasstatus = false
+      $service_flags     = undef
       $dev_package_name  = 'libmemcached-dev'
       $config_file       = '/etc/memcached.conf'
       $config_tmpl       = "${module_name}/memcached.conf.erb"
@@ -20,6 +21,7 @@ class memcached::params {
       $package_provider  = undef
       $service_name      = 'memcached'
       $service_hasstatus = true
+      $service_flags     = undef
       $dev_package_name  = 'libmemcached-devel'
       $config_file       = '/etc/sysconfig/memcached'
       $config_tmpl       = "${module_name}/memcached_sysconfig.erb"
@@ -33,6 +35,7 @@ class memcached::params {
       $package_provider  = 'chocolatey'
       $service_name      = 'memcached'
       $service_hasstatus = true
+      $service_flags     = undef
       $dev_package_name  = 'libmemcached-devel'
       $config_file       = undef
       $config_tmpl       = "${module_name}/memcached_windows.erb"
@@ -46,6 +49,7 @@ class memcached::params {
       $package_provider  = undef
       $service_name      = 'memcached'
       $service_hasstatus = false
+      $service_flags     = undef
       $dev_package_name  = 'libmemcached'
       $config_file       = undef
       $config_tmpl       = "${module_name}/memcached_svcprop.erb"
@@ -59,11 +63,26 @@ class memcached::params {
       $package_provider  = undef
       $service_name      = 'memcached'
       $service_hasstatus = false
+      $service_flags     = undef
       $dev_package_name  = 'libmemcached'
       $config_file       = '/etc/rc.conf.d/memcached'
       $config_tmpl       = "${module_name}/memcached_freebsd_rcconf.erb"
       $user              = 'nobody'
       $logfile           = '/var/log/memcached.log'
+      $use_registry      = false
+      $use_svcprop       = false
+    }
+    'OpenBSD': {
+      $package_name      = 'memcached'
+      $package_provider  = undef
+      $service_name      = 'memcached'
+      $service_hasstatus = false
+      $service_flags     = '-l 127.0.0.1 -u _memcached -P /var/run/memcached.pid'
+      $dev_package_name  = 'libmemcached'
+      $config_file       = undef
+      $config_tmpl       = ''
+      $user              = '_memcached'
+      $logfile           = undef
       $use_registry      = false
       $use_svcprop       = false
     }
@@ -74,6 +93,7 @@ class memcached::params {
           $package_provider  = undef
           $service_name      = 'memcached'
           $service_hasstatus = true
+          $service_flags     = undef
           $dev_package_name  = 'libmemcached-devel'
           $config_file       = '/etc/sysconfig/memcached'
           $config_tmpl       = "${module_name}/memcached_sysconfig.erb"

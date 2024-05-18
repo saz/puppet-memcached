@@ -10,8 +10,9 @@ class memcached::params {
       $dev_package_name  = 'libmemcached-dev'
       $config_file       = '/etc/memcached.conf'
       $config_tmpl       = "${module_name}/memcached.conf.erb"
-      $user              = 'nobody'
+      $user              = 'memcache'
       $logfile           = '/var/log/memcached.log'
+      $pidfile           = '/var/run/memcached/memcached.pid'
       $use_registry      = false
       $use_svcprop       = false
     }
@@ -25,6 +26,7 @@ class memcached::params {
       $config_tmpl       = "${module_name}/memcached_sysconfig.erb"
       $user              = 'memcached'
       $logfile           = '/var/log/memcached.log'
+      $pidfile           = '/var/run/memcached.pid'
       $use_registry      = false
       $use_svcprop       = false
     }
@@ -38,6 +40,7 @@ class memcached::params {
       $config_tmpl       = "${module_name}/memcached_windows.erb"
       $user              = 'BUILTIN\Administrators'
       $logfile           = undef
+      $pidfile           = undef
       $use_registry      = true
       $use_svcprop       = false
     }
@@ -51,6 +54,7 @@ class memcached::params {
       $config_tmpl       = "${module_name}/memcached_svcprop.erb"
       $user              = 'nobody'
       $logfile           = '/var/log/memcached.log'
+      $pidfile           = '/var/run/memcached.pid'
       $use_registry      = false
       $use_svcprop       = true
     }
@@ -64,6 +68,7 @@ class memcached::params {
       $config_tmpl       = "${module_name}/memcached_freebsd_rcconf.erb"
       $user              = 'nobody'
       $logfile           = '/var/log/memcached.log'
+      $pidfile           = '/var/run/memcached.pid'
       $use_registry      = false
       $use_svcprop       = false
     }
@@ -79,6 +84,7 @@ class memcached::params {
           $config_tmpl       = "${module_name}/memcached_sysconfig.erb"
           $user              = 'memcached'
           $logfile           = '/var/log/memcached.log'
+          $pidfile           = '/var/run/memcached.pid'
           $use_registry      = false
           $use_svcprop       = false
         }

@@ -4,10 +4,10 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 group :test do
-  gem 'voxpupuli-test', '~> 5.4',   :require => false
+  gem 'voxpupuli-test', '~> 7.0',   :require => false
   gem 'coveralls',                  :require => false
   gem 'simplecov-console',          :require => false
-  gem 'puppet_metadata', '~> 2.0',  :require => false
+  gem 'puppet_metadata', '~> 4.0',  :require => false
 end
 
 group :development do
@@ -16,13 +16,11 @@ group :development do
 end
 
 group :system_tests do
-  gem 'voxpupuli-acceptance', '~> 1.0',  :require => false
+  gem 'voxpupuli-acceptance', '~> 3.0',  :require => false
 end
 
 group :release do
-  gem 'github_changelog_generator', '>= 1.16.1',  :require => false if RUBY_VERSION >= '2.5'
-  gem 'voxpupuli-release', '~> 2.0',              :require => false
-  gem 'faraday-retry', '~> 2.1',                  :require => false if RUBY_VERSION >= '2.6'
+  gem 'voxpupuli-release', '~> 3.0',  :require => false
 end
 
 gem 'rake', :require => false

@@ -88,6 +88,7 @@ class memcached::params {
       $config_tmpl       = ''
       $user              = '_memcached'
       $logfile           = undef
+      $pidfile           = undef
       $use_registry      = false
       $use_svcprop       = false
     }

@@ -1,11 +1,7 @@
 fixtures:
   repositories:
-    firewall:
-      repo: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
-      ref: 'v6.0.0'
+    firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
     stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
     svcprop: 'https://github.com/bolthole/puppet-svcprop.git'
     selinux: 'https://github.com/voxpupuli/puppet-selinux.git'
-    systemd:
-      repo: 'https://github.com/camptocamp/puppet-systemd.git'
-      ref: '2.12.0'
+    systemd: 'https://github.com/camptocamp/puppet-systemd.git'

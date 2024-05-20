@@ -38,8 +38,11 @@ define memcached::instance (
   }
 
   if $limits {
-    systemd::service_limits { $service_name:
-      limits => $limits,
+    systemd::manage_dropin { "${service_name}-90-limits.conf":
+      unit           => $service_name,
+      filename       => '90-limits.conf',
+      notify_service => true,
+      service_entry  => $limits,
     }
   }
 

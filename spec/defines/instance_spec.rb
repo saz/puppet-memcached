@@ -42,7 +42,7 @@ describe 'memcached::instance', type: :define do
           it { is_expected.to contain_class('memcached::instance::servicefile') }
           it { is_expected.to contain_service('memcached@3489.service') }
           it { is_expected.to contain_systemd__unit_file('memcached@.service') }
-          it { is_expected.to contain_systemd__Service_limits('memcached@3489.service') }
+          it { is_expected.to contain_systemd__Manage_dropin('memcached@3489.service-90-limits.conf') }
         end
 
         context 'with overrides' do

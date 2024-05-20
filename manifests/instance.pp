@@ -26,9 +26,9 @@ define memcached::instance (
   $service_name = "memcached@${port}.service"
   if $manage_firewall {
     firewall { "100_tcp_${port}_for_memcached":
-      dport  => $port,
-      proto  => 'tcp',
-      action => 'accept',
+      dport => $port,
+      proto => 'tcp',
+      jump  => 'accept',
     }
   }
 

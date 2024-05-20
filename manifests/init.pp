@@ -101,16 +101,16 @@ class memcached (
 
   if $facts['kernel'] == 'Linux' and $manage_firewall {
     firewall { "100_tcp_${tcp_port}_for_memcached":
-      dport  => $tcp_port,
-      proto  => 'tcp',
-      action => 'accept',
+      dport => $tcp_port,
+      proto => 'tcp',
+      jump  => 'accept',
     }
 
     if $udp_port != 0 {
       firewall { "100_udp_${udp_port}_for_memcached":
-        dport  => $udp_port,
-        proto  => 'udp',
-        action => 'accept',
+        dport => $udp_port,
+        proto => 'udp',
+        jump  => 'accept',
       }
     }
   }

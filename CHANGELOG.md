@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.0.0]
+### Added
+- Add support for OpenBSD (#162, #166)
+### Changed
+- BREAKING CHANGE: Fix Ubuntu pidfile and default user (#160)
+- replace systemd::service_limits with systemd::manage_dropin (#169)
+- make module firewall < 9.0.0 compatible (#168)
+- allow puppet/systemd < 8, add Debian 12 as supported OS (#164)
+### Removed
+- BREAKING CHANGE: drop EOL Ubuntu 18.04 (#170)
+- BREAKING CHANGE: drop puppet6 support (#165)
+
 ## [8.3.0]
 ### Added
 - Add max_reqs_per_event option for the memcached config (#136)

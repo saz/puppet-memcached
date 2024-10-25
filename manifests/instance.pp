@@ -50,21 +50,10 @@ define memcached::instance (
     if $override_content and $override_source {
       fail('memcached::instance: you can only set override_content OR override_source, dont set both')
     }
-    # manually reload systemd to make puppet 5 users happy.
-    # puppet 6 and newer are reloading systemd properly
     systemd::dropin_file { "${service_name}-override.conf":
       unit    => $service_name,
       source  => $override_source,
       content => $override_content,
-      notify  => Exec["${service_name}_force_systemd_reload"],
-    }
-
-    exec { "${service_name}_force_systemd_reload":
-      command     => 'systemctl daemon-reload',
-      user        => 'root',
-      path        => ['/sbin', '/bin', '/usr/sbin', '/usr/bin'],
-      refreshonly => true,
-      notify      => Service[$service_name],
     }
   }
 

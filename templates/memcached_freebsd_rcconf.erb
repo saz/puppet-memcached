@@ -79,6 +79,18 @@ end
 if @max_reqs_per_event
   flags << "-R #{@max_reqs_per_event}"
 end
+
+if @disable_flush_all
+  flags << "--disable-flush-all"
+end
+
+if @disable_watch
+  flags << "--disable-watch"
+end
+
+if @memory_file
+  flags << "--memory-file=#{@memory_file}"
+end
 -%>
 memcached_enable="<%= enabled %>"
 memcached_flags="<%= flags.join(" ") %>"

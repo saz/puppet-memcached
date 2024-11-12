@@ -39,5 +39,15 @@ if @disable_cachedump
 end
 if @max_reqs_per_event
   result << '-R' + @max_reqs_per_event.to_s
-end -%>
+end
+if @disable_flush_all
+  result << '--disable-flush-all'
+end
+if @disable_watch
+  result << '--disable-watch'
+end
+if @memory_file
+  result << '--memory-file=' + @memory_file
+end
+-%>
 c:\memcached\memcached.exe -d runservice <%= result.join(' ') %>

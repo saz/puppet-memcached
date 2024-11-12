@@ -105,3 +105,15 @@ logfile <%= @logfile -%>
 <% if @max_reqs_per_event -%>
 -R <%= @max_reqs_per_event %>
 <% end -%>
+
+<% if @disable_flush_all -%>
+--disable-flush-all
+<% end -%>
+
+<% if @disable_watch -%>
+--disable-watch
+<% end -%>
+
+<% if @memory_file -%>
+--memory-file=<%= @memory_file %>
+<% end -%>

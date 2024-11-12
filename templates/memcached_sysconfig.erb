@@ -47,6 +47,18 @@ if @use_sasl
   result << '-S'
 end
 
+if @disable_flush_all
+  result << '--disable-flush-all'
+end
+
+if @disable_watch
+  result << '--disable-watch'
+end
+
+if @memory_file
+  result << '--memory-file=' + @memory_file
+end
+
 if !@logstdout
   # log to syslog via logger
   if @syslog && !@logfile

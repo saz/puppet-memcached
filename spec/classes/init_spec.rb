@@ -166,6 +166,54 @@ describe 'memcached' do
           it { is_expected.to contain_file('/etc/memcached.conf').with_content(%r{^-l 127.0.3.1,127.0.3.2$}) }
         end
       end
+
+      describe 'when setting disable_flush_all parameter to true' do
+        let :params do
+          {
+            'disable_flush_all' => true,
+          }
+        end
+
+        context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
+          it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content(%r{^OPTIONS="-l 127.0.0.1 -U 0 -t \d+ --disable-flush-all }) }
+        end
+
+        context 'on Debian', if: facts[:os]['family'] == 'Debian' do
+          it { is_expected.to contain_file('/etc/memcached.conf').with_content(%r{^--disable-flush-all$}) }
+        end
+      end
+
+      describe 'when setting disable_watch parameter to true' do
+        let :params do
+          {
+            'disable_watch' => true,
+          }
+        end
+
+        context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
+          it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content(%r{^OPTIONS="-l 127.0.0.1 -U 0 -t \d+ --disable-watch }) }
+        end
+
+        context 'on Debian', if: facts[:os]['family'] == 'Debian' do
+          it { is_expected.to contain_file('/etc/memcached.conf').with_content(%r{^--disable-watch$}) }
+        end
+      end
+
+      describe 'when setting memory_file parameter to /tmpfs_mount/memory_file' do
+        let :params do
+          {
+            'memory_file' => '/tmpfs_mount/memory_file',
+          }
+        end
+
+        context 'on RedHat', if: facts[:os]['family'] == 'RedHat' do
+          it { is_expected.to contain_file('/etc/sysconfig/memcached').with_content(%r{^OPTIONS="-l 127.0.0.1 -U 0 -t \d+ --memory-file=/tmpfs_mount/memory_file }) }
+        end
+
+        context 'on Debian', if: facts[:os]['family'] == 'Debian' do
+          it { is_expected.to contain_file('/etc/memcached.conf').with_content(%r{^--memory-file=/tmpfs_mount/memory_file$}) }
+        end
+      end
     end
   end
 end

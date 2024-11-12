@@ -50,6 +50,9 @@ class memcached (
   String $config_tmpl                                                                        = $memcached::params::config_tmpl,
   Boolean $disable_cachedump                                                                 = false,
   Optional[Integer] $max_reqs_per_event                                                      = undef,
+  Boolean $disable_flush_all                                                                 = false,
+  Boolean $disable_watch                                                                     = false,
+  Optional[Stdlib::Absolutepath] $memory_file                                                = undef,
 ) inherits memcached::params {
   # Logging to syslog and file are mutually exclusive
   # Fail if both options are defined

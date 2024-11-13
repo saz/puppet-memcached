@@ -1,11 +1,141 @@
-# == Class: memcached
+# @summary
+#   This class manages memcached
 #
-# Manage memcached
+# @example Use default settings
+#   include memcached
 #
-# == Parameters
-# [* syslog *]
-# Boolean.
-# If true will pipe output to /bin/logger, sends to syslog.
+# @param package_ensure
+#   Set ensure of the memcached package
+#
+# @param service_manage
+#   Manage the memcached service
+#
+# @param service_flags
+#   Pass flags to the service managed by Puppet
+#
+# @param logfile
+#   Specify file to log to. Not supported on OS using systemd
+#
+# @param logstdout
+#   Disable logging to a file or syslog entirely. Only supported on RedHat-based OS and Suse
+#
+# @param syslog
+#   Log to syslog. Only supported on RedHat-based OS and Suse
+#
+# @param pidfile
+#   Save pid in file
+#
+# @param manage_firewall
+#   Create simple firewall rules. Only supported on Linux
+#
+# @param max_memory
+#   Max memory memcached should use to store items. Either in percent or mb
+#
+# @param max_item_size
+#   Adjusts max item size
+#
+# @param min_item_size
+#   Min space used for key+value+flags
+#
+# @param factor
+#   Chunk size growth factor
+#
+# @param lock_memory
+#   Lock down all paged memory
+#
+# @param listen
+#   Interface to listen on
+#
+# @param listen_ip
+#   Deprecated. Use `listen` instead
+#
+# @param tcp_port
+#   TCP port to listen on
+#
+# @param udp_port
+#   UDP port to listen on
+#
+# @param user
+#   User to run memcached service as
+#
+# @param max_connections
+#   Max simultaneous connections
+#
+# @param verbosity
+#   v: verbose (print errors/warnings while in event loop)
+#   vv: very verbose (also print client commands/responses)
+#   vvv: extremely verbose (internal state transitions)
+#
+# @param unix_socket
+#   UNIX socket to listen on (disables network support)
+#
+# @param unix_socket_mask
+#   access mask for UNIX socket, in octal
+#
+# @param install_dev
+#   Manage installation of the memcached dev package
+#
+# @param processorcount
+#   Number of threads to use
+#
+# @param service_restart
+#   Whether or not to restart the memcached service on changes
+#
+# @param auto_removal
+#   Return error on memory exhausted instead of evicting
+#
+# @param use_sasl
+#   Turn on SASL authentication
+#
+# @param use_tls
+#   Enable TLS/SSL
+#
+# @param tls_cert_chain
+#   Path to certificate chain file
+#
+# @param tls_key
+#   Path to certificate key file
+#
+# @param tls_ca_cert
+#   Path to CA certificate file
+#
+# @param tls_verify_mode
+#   Peer certificate verify mode
+#
+# @param use_registry
+#
+# @param registry_key
+#
+# @param large_mem_pages
+#   Try to use large memory pages (if available)
+#
+# @param use_svcprop
+#
+# @param svcprop_fmri
+#
+# @param svcprop_key
+#
+# @param extended_opts
+#   Array of extended options
+#
+# @param config_tmpl
+#   Use a different config template
+#
+# @param disable_cachedump
+#   Disable stats cachedump and lru_crawler metadump
+#
+# @param max_reqs_per_event
+#   Maximum number of requests per event, limits the
+#   requests processed per connection to prevent starvation
+#
+# @param disable_flush_all
+#   Disable flush_all command
+#
+# @param disable_watch
+#   Disable watch commands (live logging)
+#
+# @param memory_file
+#   mmap a file for item memory.
 #
 class memcached (
   Enum['present', 'latest', 'absent'] $package_ensure                                        = 'present',
@@ -16,7 +146,7 @@ class memcached (
   Boolean $syslog                                                                            = false,
   Variant[Stdlib::Absolutepath, Boolean[false], Undef] $pidfile                              = $memcached::params::pidfile,
   Boolean $manage_firewall                                                                   = false,
-  $max_memory                                                                                = '95%',
+  String[1] $max_memory                                                                      = '95%',
   Optional[Variant[Integer, String]] $max_item_size                                          = undef,
   Optional[Variant[Integer, String]] $min_item_size                                          = undef,
   Optional[Variant[Integer, String]] $factor                                                 = undef,
@@ -27,7 +157,7 @@ class memcached (
   Integer $udp_port                                                                          = 0,
   String $user                                                                               = $memcached::params::user,
   Integer $max_connections                                                                   = 8192,
-  Optional[String] $verbosity                                                                = undef,
+  Optional[Enum['v', 'vv', 'vvv']] $verbosity                                                = undef,
   Optional[String] $unix_socket                                                              = undef,
   String $unix_socket_mask                                                                   = '0755',
   Boolean $install_dev                                                                       = false,
@@ -39,7 +169,7 @@ class memcached (
   Optional[Stdlib::Absolutepath] $tls_cert_chain                                             = undef,
   Optional[Stdlib::Absolutepath] $tls_key                                                    = undef,
   Optional[Stdlib::Absolutepath] $tls_ca_cert                                                = undef,
-  Integer $tls_verify_mode                                                                   = 1,
+  Integer[0,3] $tls_verify_mode                                                              = 1,
   Boolean $use_registry                                                                      = $memcached::params::use_registry,
   String $registry_key                                                                       = 'HKLM\System\CurrentControlSet\services\memcached\ImagePath',
   Boolean $large_mem_pages                                                                   = false,

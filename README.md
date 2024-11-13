@@ -1,4 +1,4 @@
-# memached module for Puppet
+# memcached module for Puppet
 
 [![Build Status](https://github.com/saz/puppet-memcached/workflows/CI/badge.svg)](https://github.com/saz/puppet-memcached/actions?query=workflow%3ACI)
 
@@ -103,35 +103,3 @@ memcached::instance{'11222':
   override_source => "${module_name}/memcached_11222_override.conf\n",
 }
 ```
-
-### Other class parameters
-
-* $package_ensure = 'present'
-* $logfile = '/var/log/memcached.log'
-* $logstdout = false (Set this to true to disable logging to a file/syslog entirely, useful when memcached runs in containers)
-* $pidfile = '/var/run/memcached.pid' (Debian family only, set to false to disable pidfile)
-* $max_memory = false
-* $max_item_size = false
-* $min_item_size = false
-* $factor = false
-* $lock_memory = false (WARNING: good if used intelligently, google for -k key)
-* $listen = '127.0.0.1' (if TLS/SSL is enabled, 'notls' prefix can be used to disable for specific listeners "notls:<ip>:<port>")
-* $listen_ip = '127.0.0.1' (deprecated, listen will take precedence over this)
-* $tcp_port = 11211
-* $udp_port = 0
-* $manage_firewall = false
-* $user = '' (OS specific setting, see params.pp)
-* $max_connections = 8192
-* $verbosity = undef
-* $unix_socket = undef
-* $install_dev = false (TRUE if 'libmemcached-dev' package should be installed)
-* $processorcount = $::processorcount
-* $service_restart = true (restart service after configuration changes, false to prevent restarts)
-* $service_flags = '-l 127.0.0.1 -u _memcached -P /var/run/memcached.pid' (only relevant for OpenBSD, to configure the service)
-* $use_sasl = false (start memcached with SASL support)
-* $use_tls = false (start memcached with TLS support)
-* $tls_cert_chain = undef
-* $tls_key = undef
-* $tls_ca_cert = undef
-* $tls_verify_mode = 1 (0: None, 1: Request, 2: Require, 3: Once)
-* $large_mem_pages = false (try to use large memory pages)

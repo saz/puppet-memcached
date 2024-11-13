@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
+# @summary Returns memory in mb based on fact `memsize` and passed argument
+
 # Calculate max_memory size from fact 'memsize' and passed argument.
 Puppet::Functions.create_function(:'memcached::max_memory') do
   dispatch :max_memory do
+    # @param arg Amount of memory to use in percent or MB
     required_param 'Any', :arg
+    # @return memory size in MB
+    return_type 'Integer'
   end
 
   def max_memory(arg)

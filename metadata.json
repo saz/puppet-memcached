@@ -39,12 +39,6 @@
       ]
     },
     {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "11",

@@ -118,6 +118,9 @@
 # @param extended_opts
 #   Array of extended options
 #
+# @param extra_config
+#   Array of extended configarion options
+#
 # @param config_tmpl
 #   Use a different config template
 #
@@ -177,6 +180,7 @@ class memcached (
   String $svcprop_fmri                                                                       = 'memcached:default',
   String $svcprop_key                                                                        = 'memcached/options',
   Optional[Array[String]] $extended_opts                                                     = undef,
+  Optional[Array[String]] $extra_config                                                      = undef,
   String $config_tmpl                                                                        = $memcached::params::config_tmpl,
   Boolean $disable_cachedump                                                                 = false,
   Optional[Integer] $max_reqs_per_event                                                      = undef,

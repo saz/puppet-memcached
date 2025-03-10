@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.0.1](https://github.com/saz/puppet-memcached/tree/v10.0.1) (2025-03-10)
+
+[Full Changelog](https://github.com/saz/puppet-memcached/compare/v10.0.0...v10.0.1)
+
+**Fixed bugs:**
+
+- Accept integer value for max\_memory [\#187](https://github.com/saz/puppet-memcached/pull/187) ([kajinamit](https://github.com/kajinamit))
+
+**Closed issues:**
+
+- memcached::max\_memory no longer accepts an integer [\#186](https://github.com/saz/puppet-memcached/issues/186)
+
 ## [v10.0.0](https://github.com/saz/puppet-memcached/tree/v10.0.0) (2025-03-07)
 
 [Full Changelog](https://github.com/saz/puppet-memcached/compare/v9.0.0...v10.0.0)

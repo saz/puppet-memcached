@@ -153,7 +153,7 @@ Default value: `false`
 
 ##### <a name="-memcached--max_memory"></a>`max_memory`
 
-Data type: `String[1]`
+Data type: `Variant[Integer[0], Pattern[/^1?\d?\d%$/]]`
 
 Max memory memcached should use to store items. Either in percent or mb
 

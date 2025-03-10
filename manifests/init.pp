@@ -146,7 +146,7 @@ class memcached (
   Boolean $syslog                                                                            = false,
   Variant[Stdlib::Absolutepath, Boolean[false], Undef] $pidfile                              = $memcached::params::pidfile,
   Boolean $manage_firewall                                                                   = false,
-  String[1] $max_memory                                                                      = '95%',
+  Variant[Integer[0], Pattern[/^1?\d?\d%$/]] $max_memory                                     = '95%',
   Optional[Variant[Integer, String]] $max_item_size                                          = undef,
   Optional[Variant[Integer, String]] $min_item_size                                          = undef,
   Optional[Variant[Integer, String]] $factor                                                 = undef,

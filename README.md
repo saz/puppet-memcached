@@ -35,6 +35,14 @@ For the old behaviour, you need to set listen to '0.0.0.0'.
     }
 ```
 
+### Keep persistent data upon service restart (https://docs.memcached.org/features/restart/)
+
+```ruby
+    class { 'memcached':
+      extra_config => ["-e /tmpfs_mount/memory_file"]
+    }
+```
+
 ### Install multiple memcached instances
 
 the multiinstance support uses a systemd instance unit file. This will be placed

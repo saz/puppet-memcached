@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v11.0.0](https://github.com/saz/puppet-memcached/tree/v11.0.0) (2025-10-21)
+
+[Full Changelog](https://github.com/saz/puppet-memcached/compare/v10.0.1...v11.0.0)
+
+**Breaking changes:**
+
+- replace puppet requirement by openvox [\#194](https://github.com/saz/puppet-memcached/pull/194) ([saz](https://github.com/saz))
+
+**Implemented enhancements:**
+
+- Support CentOS Stream 10 / RHEL 10 [\#191](https://github.com/saz/puppet-memcached/pull/191) ([kajinamit](https://github.com/kajinamit))
+- puppet/systemd: allow 9.x [\#190](https://github.com/saz/puppet-memcached/pull/190) ([kajinamit](https://github.com/kajinamit))
+
 ## [v10.0.1](https://github.com/saz/puppet-memcached/tree/v10.0.1) (2025-03-10)
 
 [Full Changelog](https://github.com/saz/puppet-memcached/compare/v10.0.0...v10.0.1)

@@ -80,6 +80,7 @@ The following parameters are available in the `memcached` class:
 * [`svcprop_fmri`](#-memcached--svcprop_fmri)
 * [`svcprop_key`](#-memcached--svcprop_key)
 * [`extended_opts`](#-memcached--extended_opts)
+* [`extra_config`](#-memcached--extra_config)
 * [`config_tmpl`](#-memcached--config_tmpl)
 * [`disable_cachedump`](#-memcached--disable_cachedump)
 * [`max_reqs_per_event`](#-memcached--max_reqs_per_event)
@@ -398,6 +399,14 @@ Default value: `'memcached/options'`
 Data type: `Optional[Array[String]]`
 
 Array of extended options
+
+Default value: `undef`
+
+##### <a name="-memcached--extra_config"></a>`extra_config`
+
+Data type: `Optional[Array[String]]`
+
+Array of extended configarion options
 
 Default value: `undef`
 

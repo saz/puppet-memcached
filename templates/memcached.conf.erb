@@ -98,6 +98,10 @@ logfile <%= @logfile -%>
 -o <%= @extended_opts.join(',') -%>
 <% end -%>
 
+<% if @extra_config -%>
+<%= @extra_config.join(',') -%>
+<% end -%>
+
 <% if @disable_cachedump -%>
 -X
 <% end -%>

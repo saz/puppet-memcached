@@ -6,6 +6,7 @@ name: CI
 
 # yamllint disable-line rule:truthy
 on:
+  workflow_dispatch: {}
   pull_request: {}
   push:
     branches:

@@ -13,7 +13,7 @@
 define memcached::instance (
   Boolean $manage_firewall                      = false,
   Stdlib::Port::Unprivileged $port              = Integer($name),
-  Optional[Systemd::ServiceLimits] $limits      = undef,
+  Optional[Systemd::Unit::Service] $limits      = undef,
   Optional[String[1]] $override_content         = undef,
   Optional[Stdlib::Filesource] $override_source = undef,
 ) {

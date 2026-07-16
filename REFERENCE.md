@@ -488,7 +488,7 @@ Default value: `Integer($name)`
 
 ##### <a name="-memcached--instance--limits"></a>`limits`
 
-Data type: `Optional[Systemd::ServiceLimits]`
+Data type: `Optional[Systemd::Unit::Service]`
 
 systemd limits for the service
 
